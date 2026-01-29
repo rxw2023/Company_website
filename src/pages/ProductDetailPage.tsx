@@ -42,6 +42,8 @@ import a9Image2 from '../assets/images/a9-2.png';
 import a9Image3 from '../assets/images/a9-3.png';
 import a9Image4 from '../assets/images/a9-4.png';
 
+import h1pdf from '../assets/pdf/VMM系列高清混合矩阵切换器.pdf';
+import h5pdf from '../assets/pdf/按键式控制面板.pdf';
 // 导入AISPEECH产品PDF
 import a1Pdf from '../assets/pdf/MC10吸顶麦克风.pdf';
 import a2Pdf from '../assets/pdf/MA600D矩阵麦克风.pdf';
@@ -149,7 +151,8 @@ const productData = {
       { type: 'DVI/VGA', description: '支持4通道DVI/VGA信号输出，最大支持分辨率1920*1200@60Hz,支持独立音频' },
       { type: 'SDI', description: '支持4通道SDI信号输出，最大支持12G SDI分辨率3840*2160@60Hz，支持内嵌音频' },
       { type: 'HDBaseT', description: '支持4通道HDBaseT信号输出，最大3840*2160@60Hz信号最远为70米，支持独立音频' },
-      { type: '单模光纤', description: '支持4通道单模光纤信号输入，SFP模块，LC接口，最大3840+2160@60Hz信号最远为10千米，支持独立音频' }
+      { type: '单模光纤', description: '支持4通道单模光纤信号输入，SFP模块，LC接口，最大3840+2160@60Hz信号最远为10千米，支持独立音频' },
+      { type: '选配：音频处理器',description:'8*8音频处理器，矩阵内部2*2，并支持外部6*6输入输出'}
     ],
     chassisSpecs: [
       { model: 'VMM0808', description: '支持2输入槽位，2输出槽位，最大支持8x8;', size: '2U；483mm+89mm+365mm', power: '80W' },
@@ -159,7 +162,7 @@ const productData = {
       { model: 'VMM8080', description: '支持20输入槽位，20输出槽位，最大支持80x80;', size: '11U；483mm+489mm+365mm', power: '600W' },
       { model: 'VMM160160', description: '支持40输入槽位，40输出槽位，最大支持160x160;', size: '20U；483mm+900mm+365mm', power: '1200W' }
     ],
-     brochureUrl: 'https://example.com/brochures/vmm-series-brochure.pdf', // 示例PDF链接
+     brochureUrl: h1pdf, // 示例PDF链接
   },
   'h2': {
     id: 'h2',
@@ -191,7 +194,7 @@ const productData = {
       '尺寸 (L x W x H)\t: 109 x 74 x 11.5 mm (excluding connectors)',
       '重量 (Unit only)\t: Transmitter: 165g\tReceiver: 165g'
     ],
-     brochureUrl: 'https://example.com/brochures/ssh70-brochure.pdf', // 示例PDF链接
+     brochureUrl: 'https://example.com/brochures/4k-matrix-brochure.pdf', // 示例PDF链接
   },
   'h3': {
     id: 'h3',
@@ -276,18 +279,29 @@ const productData = {
         'https://lf-code-agent.coze.cn/obj/x-ai-cn/355308075266/attachment/WP6-3_20260119122226.jpg'
       ],
      technicalSpecs: [
-      '产品规格：',
-      '1、6 个可⾃定义控制按键，且有扩展组合功能',
-      '2、1 个带按键的⾳量控制旋钮',
-      '3、⽀持通过在线的图形⽤户界⾯进⾏控制和配置',
-      '4、⽀持继电器控制',
-      '5、⽀持红外控制',
-      '6、⽀持 RS232 控制',
-      '7、⽀持 TCP/IP 控制',
-      '8、以太⽹供电功能允许控制器通过单根以太⽹电缆获取电源',
-      '9、双⾊、可现场贴标签的背光按键'
+      '6 个可⾃定义控制按键，且有扩展组合功能',
+      '1 个带按键的⾳量控制旋钮',
+      '⽀持通过在线的图形⽤户界⾯进⾏控制和配置',
+      '⽀持继电器控制',
+      '⽀持红外控制',
+      '⽀持 RS232 控制',
+      '⽀持 TCP/IP 控制',
+      '以太⽹供电功能允许控制器通过单根以太⽹电缆获取电源',
+      '双⾊、可现场贴标签的背光按键',
+      '输出端口：2 × RS232, 2 × IR, 2 × Relay',
+      '端口连接器：2 × 3 凤凰插头、2 × 2 凤凰插头',
+      '波特率：默认 9600，支持 9600,19200,38400,57600,115200',
+      '功耗：最大 2.5W',
+      '输入电源：12VDC 及 PoE 供电',
+      '净重：195g',
+      '产品尺寸 (W*H*D)：86mm × 86mm × 50.5mm',
+      '质保：2年',
+      '运行温度：0-40 摄氏度',
+      '运行湿度：10%-90%（无冷凝）',
+      '存储温度：-10~55 摄氏度',
+      '存储湿度：10%~90%'
     ],
-     brochureUrl: 'https://example.com/brochures/wp6-brochure.pdf', // 示例PDF链接
+     brochureUrl: h5pdf, // 示例PDF链接
   },
   'h6': {
     id: 'h6',

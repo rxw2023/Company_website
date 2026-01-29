@@ -192,7 +192,7 @@ nginx: configuration file /etc/nginx/nginx.conf test is successful
 如果配置检查通过，运行以下命令重新加载Nginx配置：
 ```bash
 # 重新加载Nginx配置
- 
+systemctl reload nginx
 ```
 
 ## ✅ 第七步：验证部署结果
