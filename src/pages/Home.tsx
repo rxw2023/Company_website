@@ -226,9 +226,21 @@ export default function Home() {
         <div className="mt-8 sm:mt-12 text-center text-sm text-gray-500 dark:text-gray-400">
           <p className="mb-1">联系方式：guo@techhdi.com | 18814845538</p>
           <p className="mb-1">地址：杭州市余杭区七彩汇商业中心2-305室</p>
-          <p className="text-xs mt-2">ICP备案号：浙ICP备XXXXXXXX号 | 公安备案号：浙公网安备XXXXXXXX号</p>
+          <p className="text-xs mt-2" style={{color: '#9ca3af'}}>
+          <a 
+          href="https://beian.miit.gov.cn/" 
+          target="_blank" 
+          rel="nofollow noopener"
+          style={{color: '#9ca3af', textDecoration: 'none'}}
+          className="hover:text-gray-700 dark:hover:text-gray-300"
+          >
+          ICP备案号：浙ICP备XXXXXXXX号-1
+          </a>
+          <span style={{margin: '0 4px'}}>|</span>
+          <span>公安备案号：浙公网安备XXXXXXXX号（办理中）</span>
+          </p>
         </div>
       </div>
-    </div>
+    </div> 
   );
 }
