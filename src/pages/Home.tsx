@@ -12,6 +12,8 @@ import a7Image from '../assets/images/a7-1.png';
 import a8Image from '../assets/images/a8-2.png';
 import a9Image from '../assets/images/a9-1.png';
 
+import GIcon from '../assets/images/G.png';
+
 // 定义产品数据类型
 interface Product {
   id: string;
@@ -226,19 +228,15 @@ export default function Home() {
         <div className="mt-8 sm:mt-12 text-center text-sm text-gray-500 dark:text-gray-400">
           <p className="mb-1">联系方式：guo@techhdi.com | 18814845538</p>
           <p className="mb-1">地址：杭州市余杭区七彩汇商业中心2-305室</p>
-          <p className="text-xs mt-2" style={{color: '#9ca3af'}}>
-          <a 
-          href="https://beian.miit.gov.cn/" 
-          target="_blank" 
-          rel="nofollow noopener"
-          style={{color: '#9ca3af', textDecoration: 'none'}}
-          className="hover:text-gray-700 dark:hover:text-gray-300"
-          >
-          ICP备案号：浙ICP备XXXXXXXX号-1
-          </a>
-          <span style={{margin: '0 4px'}}>|</span>
-          <span>公安备案号：浙公网安备XXXXXXXX号（办理中）</span>
-          </p>
+      <p className="text-xs mt-2 flex justify-center items-center gap-4" style={{color: '#9ca3af'}}>
+  	<a href="https://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener" style={{color: '#9ca3af', textDecoration: 'none'}} className="hover:text-gray-700 dark:hover:text-gray-300">
+     		 ICP备案号：浙ICP备2026007647号-1
+    	</a>
+    	<a href="https://beian.mps.gov.cn/#/query/webSearch?code=33011002019014" rel="noreferrer" target="_blank" className="flex items-center">
+      	<img src={GIcon} alt="公安备案" className="w-4 h-4 mr-1" />
+      		浙公网安备33011002019014号
+    	</a>
+      </p>
         </div>
       </div>
     </div> 
