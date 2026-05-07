@@ -15,6 +15,18 @@ import e5Image1 from '../assets/images/e5-1.webp';
 import e5Image2 from '../assets/images/e5-2.webp';
 import e6Image1 from '../assets/images/e6-1.webp';
 import e6Image2 from '../assets/images/e6-2.webp';
+import e7Image1 from '../assets/images/e7-1.webp';
+import e7Image2 from '../assets/images/e7-2.webp';
+import e8Image1 from '../assets/images/e8-1.webp';
+import e8Image2 from '../assets/images/e8-2.webp';
+import e9Image1 from '../assets/images/e9-1.webp';
+import e9Image2 from '../assets/images/e9-2.webp';
+import e10Image1 from '../assets/images/e10-1.webp';
+import e10Image2 from '../assets/images/e10-2.webp';
+import e11Image1 from '../assets/images/e11-1.webp';
+import e11Image2 from '../assets/images/e11-2.webp';
+import e12Image1 from '../assets/images/e12-1.webp';
+import e12Image2 from '../assets/images/e12-2.webp';
 function ImageLightbox({ 
   isOpen, 
   images, 
@@ -123,7 +135,7 @@ interface Case {
 const caseData: Record<string, Case> = {
   'e1': {
     id: 'e1',
-    name: '教育行业案例分享 - 香港科技大学',
+    name: '行业案例分享 - 香港科技大学',
     tag: '声像追踪案例',
     tagColor:'red',// 可选颜色: red, blue, green, purple, orange, pink, indigo
     images: [
@@ -155,7 +167,7 @@ const caseData: Record<string, Case> = {
   },
   'e2':{
     id: 'e2',
-    name: '教育行业案例分享 - 上海交通大学',
+    name: '案例分享 - 上海交通大学',
     tag: '会议扩声案例',
     tagColor:'indigo', 
     images:[
@@ -187,7 +199,7 @@ const caseData: Record<string, Case> = {
   },
   'e3':{
     id: 'e3',
-    name: '教育行业案例分享 - 上海虹口艺术幼儿园',
+    name: '案例分享 - 上海虹口艺术幼儿园',
     tag: '舞台场景案例',
     tagColor: 'pink',  
     images:[
@@ -215,7 +227,7 @@ const caseData: Record<string, Case> = {
   },
   'e4':{
     id:'e4',
-    name: '教育行业案例分享 - 华东师范大学',
+    name: '案例分享 - 华东师范大学',
     tag:'MC08',
     tagColor:'green',
     images:[
@@ -243,7 +255,7 @@ const caseData: Record<string, Case> = {
   },
   'e5':{
     id:'e5',
-    name: '教育行业案例分享 - 北京理工大学',
+    name: '案例分享 - 北京理工大学',
     tag:'扇形教室案例',
     tagColor:'blue',
     images:[
@@ -271,7 +283,7 @@ const caseData: Record<string, Case> = {
   },
   'e6':{
     id:'e6',
-    name: '教育行业案例分享 - 成都大学',
+    name: '案例分享 - 成都大学',
     tag: '接待室案例',
     tagColor: 'gray',
     images:[
@@ -281,7 +293,7 @@ const caseData: Record<string, Case> = {
     sections:[
       {
         label:'学校简介',
-        content:'成都大学（Chengdu University）， 简称“成大”， 是一所由四川省主管，实行的是省市共建的全日制普通高等本科院校； 是教育部“卓越工程师教育培养计划”高校、教育部国防教育特色高校、教育部“双万计划”一流本科专业建设点立项单位、四川省博士建设单位递进培育计划“优先培育”类建设单位。'
+        content:'成都大学（Chengdu University），简称“成大”，是一所由四川省主管，实行的是省市共建的全日制普通高等本科院校； 是教育部“卓越工程师教育培养计划”高校、教育部国防教育特色高校、教育部“双万计划”一流本科专业建设点立项单位、四川省博士建设单位递进培育计划“优先培育”类建设单位。'
       },
       {
         label:'项目背景',
@@ -296,7 +308,175 @@ const caseData: Record<string, Case> = {
         content:'MC10级联能够实现大空间轻松扩音，即使座位距离相隔较远，也能轻松听清楚，由于会议室没有会议桌，无法放置鹅颈麦，手持麦传递在正式会议时不雅观，使用不便捷，用吸顶麦效果解决了所有难题。'
       },
     ]
-  }
+  },
+  'e7':{
+    id:'e7',
+    name: '案例分享 - 苏州广电跨年演讲晚会',
+    tag: 'MA600D',
+    tagColor: 'purple',
+    images:[
+      e7Image1,
+      e7Image2
+    ],
+    sections:[
+      {
+        label:'公司简介',
+        content:'2025年12月31日，“苏州名片·相约12点跨年演讲”活动迎来了科技与人文交融的高光时刻。'
+      },
+      {
+        label:'项目背景',
+        content:'传统舞台圆桌论坛常受限于麦克风的物理限制：麦克风的传递打乱交流节奏、拾音死角导致发言遗漏、环境噪音干扰声音清晰度、与扩声系统兼容复杂等挑战。这些技术层面的障碍往往限制了思想交流的流畅性和深度。'
+      },
+      {
+        label:'产品方案',
+        content:'矩阵麦 3台'
+      },
+      {
+        label:'案例效果',
+        content:'通过智能拾音区的定制化设置，精准定位每位嘉宾的发言位置，同时智能屏蔽环境噪音与干扰音。其超低15ms延迟特性和洪亮清晰的无感扩声效果，为现场嘉宾和观众创造了“无感扩声”的沉浸式体验。矩阵麦的稳定拾音能力克服了传统麦克风的局限：无论嘉宾坐姿如何变化、与麦克风距离远近，声音都能保持稳定清晰。'
+      },
+    ]
+  },
+  'e8':{
+    id:'e8',
+    name: '案例分享 - 苏州独墅湖世尊酒店',
+    tag: '酒店',
+    tagColor: 'yellow',
+    images:[
+      e8Image1,
+      e8Image2
+    ],
+    sections:[
+      {
+        label:'公司简介',
+        content:'苏州独墅湖世尊酒店位于苏州城市副中心，是苏州地区高端商务会议型酒店，拥有20余个功能各异的宴会厅与会议室，每日承接多场高端商务会议、国际论坛与大型宴会。'
+      },
+      {
+        label:'项目背景',
+        content:'酒店会议厅每日多达3-4场的密集会议排期，给设备维护团队带来巨大的工作量，手持麦克风需要反复充电调试，鹅颈麦克风每次会议都要重新部署定位。不同会议对音频设备的需求各异，舞台型会议需要根据舞台方位部署话筒，培训课程要求全场互动，而远程视频会议则必须确保声音纯净度。'
+      },
+      {
+        label:'产品方案',
+        content:'吸顶麦MC10*2，DP88*1，DC20*9，DU11*1'
+      },
+      {
+        label:'案例效果',
+        content:'吊顶式安装与智能声学处理，实现了一次部署，无需重复调试，让会议室翻台效率提升，彻底告别传统话筒反复调试的繁琐，全年减少部署调试次数上万次；系统7×24小时稳定运行，有效杜绝设备突发故障，话筒“罢工”对会议进程的干扰，每年可为酒店节省大量运维人力成本。'
+      }
+    ]
+  },
+  'e9':{
+    id:'e9',
+    name: '案例分享 - 国泰基金',
+    tag: '金融案例',
+    tagColor: 'orange',
+    images:[
+      e9Image1,
+      e9Image2
+    ],
+    sections:[
+      {
+        label:'公司简介',
+        content:'国泰基金管理有限公司成立于1998年3月，是国内首批规范成立的基金管理公司之一。具有公募基金、社保基金投资管理人、企业年金投资管理人、特定客户资产管理业务和合格境内机构投资人资格，是业内为数不多的具有全牌照的基金管理公司。'
+      },
+      {
+        label:'项目背景',
+        content:'会议室面积较大，原有的拾音设备无法达到用户理想效果需求，室内装修已经成型，想要解决拾音设备美观性问题。'
+      },
+      {
+        label:'产品方案',
+        content:'吸顶麦克风MC10+Dante数字音频处理器DP88'
+      },
+      {
+        label:'案例效果',
+        content:'MC10实现大空间会议无感扩声，为客户带来了清晰的拾音体验，吸顶的设计满足了客户对灵活空间处理的需求，使拾音设备在高效拾音的同时实现了便利美观。'
+      }
+    ]
+  },
+  'e10':{
+    id:'e10',
+    name: '案例分享 - 上海交通大学医学院附属仁济医院',
+    tag: '声像追踪案例',
+    tagColor: 'red',
+    images:[
+      e10Image1,
+      e10Image2
+    ],
+    sections:[
+      {
+        label:'公司简介',
+        content:'上海交通大学医学院附属仁济医院（以下简称仁济医院），这所拥有180年历史的顶级三甲医院，正以创新技术重塑医疗协作模式。医院年门急诊量超500万人次、手术量逾10万台次的庞大诊疗规模，以及国家级重点学科和临床医学研究中心的科研需求，使其对多学科协作和远程医疗会诊的数字化解决方案提出了极高要求。'
+      },
+      {
+        label:'项目背景',
+        content:'传统的视频会诊系统面临严峻挑战。当多位专家同时参与会诊讨论或学术交流时，现有远程会议终端因仅配置了单台摄像机，存在拍摄角度受限、无法自动追踪发言人等问题，既无法给予授课专家特写镜头，又严重影响互动效果。同时，手持麦音质效果不好。'
+      },
+      {
+        label:'产品方案',
+        content:'吸顶麦MC10+AI摄像头（声像追踪解决方案）'
+      },
+      {
+        label:'案例效果',
+        content:'实现了全场景智能拾音、多角度发言人追踪和高质量音视频传输，显著提升了远程医疗协作效率和会诊质量。'
+      }
+    ]
+  },
+  'e11':{
+    id:'e11',
+    name: '案例分享 - 国际陆港集团',
+    tag: '声像追踪案例',
+    tagColor: 'green',
+    images:[
+      e11Image1,
+      e11Image2
+    ],
+    sections:[
+      {
+        label:'公司简介',
+        content:'河北陆港集团是以内陆港建设为主，海港、空港等多式联运运营管理为辅的现代化、国际化物流企业。'
+      },
+      {
+        label:'项目背景',
+        content:'陆港集团的业务覆盖多个领域，项目团队需要频繁进行跨部门、跨地区的沟通协作。集团对办公设备、会议系统、远程协作的高效性、灵活性提出了更高要求。'
+      },
+      {
+        label:'产品方案',
+        content:'吸顶麦MC10*2，声像追踪主机MT100*1，摄像头C40T*2'
+      },
+      {
+        label:'案例效果',
+        content:'AI声像追踪让远程会议参与者能够获得身临其境的会议体验，自新系统上线以来，集团的会议效率提升了30%，项目协同时间缩短了20%。'
+      }
+    ]
+  },
+  'e12':{
+    id:'e12',
+    name: '案例分享 - 成都新希望金融科技',
+    tag: '展厅案例',
+    tagColor: 'blue',
+    images:[
+      e12Image1,
+      e12Image2
+    ],
+    sections:[
+      {
+        label:'公司简介',
+        content:'成都新希望金融科技有限公司（下称"新希望金科"或"新希望金融科技"），一家为全国银行零售数字化转型提供"整车交付"服务的公司。'
+      },
+      {
+        label:'项目背景',
+        content:'一个300平的展厅，用于对接语音数字人，需要屏蔽窃窃私语，开放式展厅，需要屏蔽过道、走廊，隔壁会议室的声音干扰，保证展厅任意位置都能和数字人顺畅对话。'
+      },
+      {
+        label:'产品方案',
+        content:'4台吸顶麦MC10+一台DP88+DU11'
+      },
+      {
+        label:'案例效果',
+        content:'成功为展厅构建了一个高效、清晰、稳定的语音采集前端。它不仅有效解决了周边环境噪音和混响的干扰问题，更确保了展厅内全域的高质量语音覆盖，从而为数字人应用提供了坚实的"听觉"保障，使每一位访客都能享受到无缝、流畅、自然的沉浸式语音交互体验，充分彰显了展厅的科技感与专业性。'
+      }
+    ]
+  },
 };
 // 标签颜色映射
 const tagColorClasses = {

@@ -18,6 +18,12 @@ import e3Image from '../assets/images/e3-1.webp';
 import e4Image from '../assets/images/e4-1.webp';
 import e5Image from '../assets/images/e5-1.webp';
 import e6Image from '../assets/images/e6-1.webp';
+import e7Image from '../assets/images/e7-1.webp';
+import e8Image from '../assets/images/e8-1.webp';
+import e9Image from '../assets/images/e9-1.webp';
+import e10Image from '../assets/images/e10-1.webp';
+import e11Image from '../assets/images/e11-1.webp';
+import e12Image from '../assets/images/e12-1.webp';
 // 定义产品数据类型
 interface Product {
   id: string;
@@ -117,39 +123,75 @@ export default function Home() {
   const exampleProducts: CaseProduct[] = [
     {
       id: 'e1',
-      name: '教育行业案例分享 - 香港科技大学',
+      name: '案例分享 - 香港科技大学',
       image:  e1Image,
       brand: 'AISPEECH'
     },
     {
       id:'e2',
-      name:'教育行业案例分享 - 上海交通大学',
+      name:'案例分享 - 上海交通大学',
       image: e2Image,
       brand:'AISPEECH'
 
     },
     {
       id:'e3',
-      name:'教育行业案例分享 - 上海虹口艺术幼儿园',
+      name:'案例分享 - 上海虹口艺术幼儿园',
       image: e3Image,
       brand:'AISPEECH'
     },
     {
       id:'e4',
-      name:'教育行业案例分享 - 华东师范大学',
+      name:'案例分享 - 华东师范大学',
       image: e4Image,
       brand:'AISPEECH'
     },
     {
       id:'e5',
-      name:'教育行业案例分享 - 北京理工大学',
+      name:'案例分享 - 北京理工大学',
       image: e5Image,
       brand:'AISPEECH'
     },
     {
       id:'e6',
-      name:'教育行业案例分享 - 成都大学',
+      name:'案例分享 - 成都大学',
       image: e6Image,
+      brand:'AISPEECH'
+    },
+    {
+      id:'e7',
+      name:'案例分享 - 苏州广电跨年演讲晚会',
+      image: e7Image,
+      brand:'AISPEECH'
+    },
+    {
+      id:'e8',
+      name:'案例分享 - 苏州独墅湖世尊酒店',
+      image: e8Image,
+      brand:'AISPEECH'
+    },
+    {
+      id:'e9',
+      name:'案例分享 - 国泰基金',
+      image: e9Image,
+      brand:'AISPEECH'
+    },
+    {
+      id:'e10',
+      name:'案例分享 - 上海交通大学医学院附属仁济医院',
+      image: e10Image,
+      brand:'AISPEECH'
+    },
+    {
+      id:'e11',
+      name:'案例分享 - 国际陆港集团',
+      image: e11Image,
+      brand:'AISPEECH'
+    },
+    {
+      id:'e12',
+      name:'案例分享 - 成都新希望金融科技',
+      image: e12Image,
       brand:'AISPEECH'
     }
   ];
