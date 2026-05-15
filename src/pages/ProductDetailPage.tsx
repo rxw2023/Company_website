@@ -147,6 +147,7 @@ interface Product {
   images: string[];
   specs?: ProductSpec[];
   brochureUrl?: string;
+  faq?: { question: string; answer: string }[];
 }
 
 const productData: Record<string, Product> = {
@@ -316,6 +317,17 @@ const productData: Record<string, Product> = {
       }
     ],
      brochureUrl: a2Pdf, 
+    faq: [
+      { question: 'MA600D矩阵麦克风拾音半径是多少？', answer: '现场扩声：3米拾音半径，纯录音或远程通话：6米拾音半径。' },
+      { question: 'MA600D矩阵麦克风安装方式有哪些？', answer: '支持桌面放置、壁挂（水平或垂直）、吊顶、落地支架安装，内置空间感知6轴陀螺仪，可智能感知自身存在状态并自动调用对应的波束模型，提供更高性能的拾音覆盖。' },
+      { question: 'MA600D矩阵麦克风现场扩声模式时的延时时间是多少？', answer: '≤15ms，听感同步。' },
+      { question: '有效扩声增益能做到多少？', answer: '≥18dB。' },
+      { question: '采用桌面放置，支持嵌入桌面安装吗？', answer: '可以使用MK300嵌入套件配合完成安装。' },
+      { question: 'MA600D矩阵麦克风拾音角度怎么控制？', answer: '本身具备360°全向拾音能力，通过软件自定义拾音角度和范围（可设置24个拾音区）。' },
+      { question: '主席台发言时需要屏蔽其他拾音区的声音可以吗？', answer: '可以，可配置B100系列有线或无线的静音/优先按钮或接入中控系统。' },
+      { question: '单个MA600D覆盖范围有限，更大的场地怎么办？', answer: 'MA600D支持无限制台数的级联。这意味着可以将多台MA600D或与其他思必驰音频设备（如吸顶麦）组合使用，无缝覆盖超大型会议室、多功能厅，甚至构建整个楼宇的分区音频系统，并通过统一平台集中管理。' },
+      { question: '提前预埋线缆有什么要求？', answer: '有两种方案可以。一是纯Dante传输，每个MA600D布置一条Cat6以上的线缆即可完成供电、音频传输以及完整的控制功能；二是采用模拟信号传输，每个MA600D布置1条Cat6网线（供电及控制）以及4条模拟音频线。' }
+    ],
   },
   'a3': {
     id: 'a3',
@@ -1074,6 +1086,29 @@ export default function ProductDetailPage() {
                     </button>
                  ))}
               </div>
+              {/* 产品问答 - 可选部分 */}
+              {(product as any).faq && ((product as any).faq as { question: string; answer: string }[]).length > 0 && (
+                <div className="mt-6 bg-gray-50 dark:bg-gray-800 rounded-lg p-4">
+                  <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
+                    <i className="fa-solid fa-circle-question text-blue-600"></i>
+                    关于{product.name}的常见问题
+                  </h3>
+                  <div className="space-y-4">
+                    {((product as any).faq as { question: string; answer: string }[]).map((item: { question: string; answer: string }, index: number) => (
+                      <div key={index} className="border-b border-gray-200 dark:border-gray-700 last:border-0 pb-3 last:pb-0">
+                        <p className="font-medium text-gray-900 dark:text-white mb-1">
+                          <span className="text-blue-600 mr-1">问{index + 1}、</span>
+                          {item.question}
+                        </p>
+                        <p className="text-gray-600 dark:text-gray-300 pl-5">
+                          <span className="text-green-600 font-medium">答：</span>
+                          {item.answer}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
              {/* 产品信息区域 */}
             <div>
