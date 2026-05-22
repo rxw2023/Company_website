@@ -13,4 +13,14 @@ function getPlugins() {
 
 export default defineConfig({
   plugins: getPlugins(),
+  server: {
+    proxy: {
+      '/api-ai': {
+        target: 'https://api.siliconflow.cn',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api-ai/, ''),
+        headers: { Origin: 'https://api.siliconflow.cn' },
+      },
+    },
+  },
 });
