@@ -37,7 +37,7 @@ export function Header({ showAiSpeechLogo = true, isProductDetailPage = false }:
               <img 
                 src={aispeechLogo} 
                 alt="AISPEECH Logo" 
-                className="w-[150px] sm:w-[200px] h-auto object-contain hover:opacity-80 transition-opacity"
+                className="w-[150px] sm:w-[200px] h-auto object-contain opacity-70 hover:opacity-30 transition-opacity"
                 loading="lazy"
               />
             </div>

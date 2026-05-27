@@ -1023,7 +1023,7 @@ export default function ProductDetailPage() {
         onPrev={goToPrevImage}
         onNext={goToNextImage}
       />
-      <div className="min-h-screen bg-white text-gray-900">
+      <div className="min-h-screen text-gray-900">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
           {/* 返回按钮 - 调整样式以适应触摸屏幕 */}
           <button 
@@ -1046,7 +1046,7 @@ export default function ProductDetailPage() {
                 <i className="fa-solid fa-images text-blue-600"></i>
                 产品图片
               </h3>
-              <div className="aspect-video bg-gray-100 dark:bg-gray-800 rounded-md overflow-hidden cursor-pointer relative"
+              <div className="aspect-video bg-white rounded-md overflow-hidden cursor-pointer relative"
                    onClick={() => openLightbox(selectedImageIndex)}>
                      <img 
                        src={product.images[selectedImageIndex]} 

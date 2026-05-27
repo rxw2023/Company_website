@@ -196,7 +196,7 @@ export default function Home() {
     }
   ];
   return (
-    <div className="min-h-screen bg-white text-gray-900">
+    <div className="min-h-screen text-gray-900">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
         {/* Header section with company name and logos */}
         <Header />
@@ -211,7 +211,7 @@ export default function Home() {
             {aispeechProducts.map((product) => (
               <div 
                 key={product.id} 
-                className="border border-gray-200 dark:border-gray-700 rounded-lg p-4 hover:shadow-md transition-shadow cursor-pointer"
+                className="border border-gray-200 dark:border-gray-700 rounded-lg p-4 hover:shadow-md transition-shadow cursor-pointer bg-white"
               >
                 <Link to={`/product/${product.id}`} className="block">
                   <div className="aspect-video bg-gray-75 dark:bg-gray-800 mb-3 rounded-md overflow-hidden">
@@ -238,7 +238,7 @@ export default function Home() {
             {exampleProducts.map((product) => (
               <div 
                 key={product.id} 
-                className="border border-gray-200 dark:border-gray-700 rounded-lg p-4 hover:shadow-md transition-shadow cursor-pointer"
+                className="border border-gray-200 dark:border-gray-700 rounded-lg p-4 hover:shadow-md transition-shadow cursor-pointer bg-white"
               >
                 <Link to={`/case/${product.id}`} className="block">
                   <div className="aspect-video bg-gray-75 dark:bg-gray-800 mb-3 rounded-md overflow-hidden">

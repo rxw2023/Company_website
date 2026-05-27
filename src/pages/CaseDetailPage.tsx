@@ -542,7 +542,7 @@ export default function CaseDetailPage() {
         onPrev={goToPrevImage}
         onNext={goToNextImage}
       />
-      <div className="min-h-screen bg-white text-gray-900">
+      <div className="min-h-screen text-gray-900">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
           {/* 返回按钮 */}
           <button 
@@ -564,7 +564,7 @@ export default function CaseDetailPage() {
                 案例图片
               </h3>
               <div 
-                className="relative aspect-video bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden cursor-pointer"
+                className="relative aspect-video bg-white rounded-lg overflow-hidden cursor-pointer"
                 onClick={() => openLightbox(selectedImageIndex)}
               >
                 <img 

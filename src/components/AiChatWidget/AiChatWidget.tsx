@@ -12,7 +12,7 @@ const CONFIG = {
 // ============ 组件 ============
 
 export default function AiChatWidget() {
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
