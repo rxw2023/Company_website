@@ -5,9 +5,10 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import tsconfigPaths from "vite-tsconfig-paths";
+import sitemapPlugin from "./sitemap-generator.js";
 
 function getPlugins() {
-  const plugins = [react(), tsconfigPaths()];
+  const plugins = [react(), tsconfigPaths(), sitemapPlugin()];
   return plugins;
 }
 
