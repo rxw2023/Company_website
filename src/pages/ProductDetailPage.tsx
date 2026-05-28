@@ -3,6 +3,7 @@ const { useState, useEffect } = React;
 import { useParams, useNavigate } from 'react-router-dom';
 import { Header } from '../components/Header';
 import { toast } from 'sonner';
+import SeoHead from '../components/SeoHead';
 import { motion } from 'framer-motion';
 
 import a1Image1 from '../assets/images/a1-1.webp';
@@ -1015,6 +1016,25 @@ export default function ProductDetailPage() {
   };
   return (
     <>
+      <SeoHead
+        title={product.name}
+        description={product.description || `${product.name} - 思必驰AISPEECH专业音视频产品，恒迪视讯代理销售。`}
+        url={`/product/${product.id}`}
+        image={product.images[0]}
+        type="product"
+        product={{
+          id: product.id,
+          name: product.name,
+          description: product.description || product.name,
+          image: product.images[0],
+          brand: 'AISPEECH',
+        }}
+        breadcrumbs={[
+          { name: '首页', url: '/' },
+          { name: '产品', url: '/' },
+          { name: product.name, url: `/product/${product.id}` },
+        ]}
+      />
       <ImageLightbox 
         isOpen={showLightbox} 
         images={product.images}

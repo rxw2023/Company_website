@@ -3,6 +3,7 @@ const { useState, useEffect } = React;
 import { useParams, useNavigate } from 'react-router-dom';
 import { Header } from '../components/Header';
 import { motion } from 'framer-motion';
+import SeoHead from '../components/SeoHead';
 import e1Image from '../assets/images/e1.webp';
 import e1Video from '../assets/videos/e1.mp4';
 import e2Image from '../assets/images/e2.webp';
@@ -534,6 +535,18 @@ export default function CaseDetailPage() {
   };
   return (
     <>
+      <SeoHead
+        title={caseItem.name}
+        description={`${caseItem.name} - 恒迪视讯音视频解决方案案例分享，思必驰AISPEECH智能会议系统实际应用。`}
+        url={`/case/${caseItem.id}`}
+        image={caseItem.images[0]}
+        type="article"
+        breadcrumbs={[
+          { name: '首页', url: '/' },
+          { name: '案例', url: '/' },
+          { name: caseItem.name, url: `/case/${caseItem.id}` },
+        ]}
+      />
       <ImageLightbox 
         isOpen={showLightbox} 
         images={caseItem.images}

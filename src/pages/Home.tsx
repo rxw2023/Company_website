@@ -1,5 +1,6 @@
 import { Header } from '../components/Header';
 import { Link } from 'react-router-dom'
+import SeoHead from '../components/SeoHead';
 // 导入AISPEECH产品图片
 import a1Image from '../assets/images/a1-1.webp';
 import a2Image from '../assets/images/a2-1.webp';
@@ -197,11 +198,17 @@ export default function Home() {
   ];
   return (
     <div className="min-h-screen text-gray-900">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
+      <SeoHead
+        title="恒迪视讯 - 专业音视频解决方案"
+        description="恒迪视讯（杭州）科技有限公司，专注于专业音视频解决方案，代理思必驰AISPEECH智能会议产品，涵盖吸顶麦克风、矩阵麦克风、会议摄像机、AI追踪设备等，服务高校、企业、政府、酒店等场景。"
+        url="/"
+        breadcrumbs={[{ name: '首页', url: '/' }]}
+      />
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
         {/* Header section with company name and logos */}
         <Header />
         {/* AISPEECH Brand Products */}
-        <div id="aispeech-products" className="mb-8 sm:mb-12">
+        <section id="aispeech-products" className="mb-8 sm:mb-12" aria-label="思必驰AISPEECH产品列表">
           <h2 className="text-lg sm:text-xl font-semibold mb-4 sm:mb-6 text-gray-600">
             思必驰AISPEECH
             <br />
@@ -209,15 +216,15 @@ export default function Home() {
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
             {aispeechProducts.map((product) => (
-              <div 
-                key={product.id} 
+              <article
+                key={product.id}
                 className="border border-gray-200 dark:border-gray-700 rounded-lg p-4 hover:shadow-md transition-shadow cursor-pointer bg-white"
               >
                 <Link to={`/product/${product.id}`} className="block">
                   <div className="aspect-video bg-gray-75 dark:bg-gray-800 mb-3 rounded-md overflow-hidden">
-                      <img 
-                        src={product.image} 
-                        alt={product.name} 
+                      <img
+                        src={product.image}
+                        alt={`${product.name} - 思必驰AISPEECH专业会议音视频产品`}
                         className="w-full h-full object-contain"
                         loading="lazy"
                       />
@@ -227,36 +234,41 @@ export default function Home() {
                     {product.description}
                   </p>
                 </Link>
-              </div>
+              </article>
             ))}
           </div>
-        </div>
+        </section>
         {/* 案例展示 */}
-        <div id="example-products" className="mb-8 sm:mb-12">
+        <section id="example-products" className="mb-8 sm:mb-12" aria-label="音视频工程案例">
           <h2 className="text-lg sm:text-xl font-semibold mb-4 sm:mb-6 text-gray-900">案例集锦</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
             {exampleProducts.map((product) => (
-              <div 
-                key={product.id} 
+              <article
+                key={product.id}
                 className="border border-gray-200 dark:border-gray-700 rounded-lg p-4 hover:shadow-md transition-shadow cursor-pointer bg-white"
               >
                 <Link to={`/case/${product.id}`} className="block">
                   <div className="aspect-video bg-gray-75 dark:bg-gray-800 mb-3 rounded-md overflow-hidden">
-                     <img 
-                        src={product.image} 
-                        alt={product.name} 
+                     <img
+                        src={product.image}
+                        alt={`${product.name} - 恒迪视讯音视频解决方案案例`}
                         className="w-full h-full object-contain"
                         loading="lazy"
                       />
                   </div>
                   <h3 className="font-medium">{product.name}</h3>
                 </Link>
-              </div>
+              </article>
             ))}
           </div>
-        </div>
+        </section>
         {/* Contact Information */}
-        <div className="mt-8 sm:mt-12 text-center text-sm text-gray-500 dark:text-gray-400">
+        <footer className="mt-8 sm:mt-12 text-center text-sm text-gray-500 dark:text-gray-400">
+          <p className="mb-2">
+            <Link to="/faq" className="inline-block px-4 py-1.5 bg-gray-100 hover:bg-gray-200 text-gray-600 rounded-full text-sm transition-colors">
+              常见问题 FAQ →
+            </Link>
+          </p>
           <p className="mb-1">联系方式：guo@techhdi.com | 18814845538</p>
           <p className="mb-1">地址：杭州市余杭区七彩汇商业中心2-305室</p>
       <p className="text-xs mt-2 flex justify-center items-center gap-4" style={{color: '#9ca3af'}}>
@@ -268,8 +280,8 @@ export default function Home() {
       		浙公网安备33011002019014号
     	</a>
       </p>
-        </div>
-      </div>
+        </footer>
+      </main>
     </div> 
   );
 }
