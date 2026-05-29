@@ -215,6 +215,32 @@ const cases = [
   { id: 'e12', name: '案例分享 - 成都新希望金融科技' },
 ];
 
+function generate404HTML(assets) {
+  const iconTag = assets.icon
+    ? `  <link rel="icon" href="${assets.icon}" type="image/webp" />`
+    : '';
+  const cssTag = assets.css
+    ? `  <link rel="stylesheet" crossorigin href="${assets.css}">`
+    : '';
+
+  return `<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>页面不存在 - 恒迪视讯</title>
+  <meta name="robots" content="noindex" />
+  <meta http-equiv="refresh" content="3;url=/" />
+${iconTag}
+${cssTag}
+</head>
+<body>
+  <div id="root"></div>
+  <script type="module" crossorigin src="${assets.js}"></script>
+</body>
+</html>`;
+}
+
 function prerender() {
   console.log('\n[Prerender] Generating static HTML for product and case pages...');
 
@@ -238,6 +264,10 @@ function prerender() {
   }
 
   console.log(`[Prerender] Generated ${products.length + cases.length} static HTML pages`);
+
+  // 生成 404.html
+  fs.writeFileSync(path.join(distDir, '404.html'), generate404HTML(assets));
+  console.log('[Prerender] Generated 404.html');
 }
 
 prerender();
