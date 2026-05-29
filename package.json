@@ -7,7 +7,7 @@
     "dev:client": "vite --host --port 3000",
     "dev": "pnpm dev:client",
     "build:client": "vite build",
-    "build": "rm -rf dist && pnpm build:client && touch dist/build.flag"
+    "build": "rm -rf dist && pnpm build:client && node prerender.js && touch dist/build.flag"
   },
   "dependencies": {
     "framer-motion": "^12.9.2",

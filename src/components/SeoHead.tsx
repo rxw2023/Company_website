@@ -16,6 +16,7 @@ interface SeoHeadProps {
   type?: 'website' | 'product' | 'article';
   product?: ProductSchemaProps;
   breadcrumbs?: { name: string; url: string }[];
+  itemList?: { name: string; url: string }[];
 }
 
 const SITE_URL = 'https://www.techhdi.com';
@@ -29,6 +30,7 @@ export default function SeoHead({
   type = 'website',
   product,
   breadcrumbs,
+  itemList,
 }: SeoHeadProps) {
   const fullTitle = title ? `${title} - ${SITE_NAME}` : `${SITE_NAME} - 专业音视频解决方案`;
   const fullUrl = url ? `${SITE_URL}${url}` : SITE_URL;
@@ -85,6 +87,24 @@ export default function SeoHead({
               position: index + 1,
               name: crumb.name,
               item: `${SITE_URL}${crumb.url}`,
+            })),
+          })}
+        </script>
+      )}
+
+      {/* ItemList Schema - 产品列表，帮助Google理解站点结构 */}
+      {itemList && itemList.length > 0 && (
+        <script type="application/ld+json">
+          {JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'ItemList',
+            name: '恒迪视讯 - 思必驰AISPEECH智能会议产品',
+            numberOfItems: itemList.length,
+            itemListElement: itemList.map((item, index) => ({
+              '@type': 'ListItem',
+              position: index + 1,
+              name: item.name,
+              url: `${SITE_URL}${item.url}`,
             })),
           })}
         </script>

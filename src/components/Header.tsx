@@ -3,12 +3,13 @@ import aispeechLogo from '../assets/images/aispeech-logo.webp';
 interface HeaderProps {
   showAiSpeechLogo?: boolean;
   isProductDetailPage?: boolean;
+  isNotHomePage?: boolean;
 }
-export function Header({ showAiSpeechLogo = true, isProductDetailPage = false }: HeaderProps) {
+export function Header({ showAiSpeechLogo = true, isProductDetailPage = false, isNotHomePage = false }: HeaderProps) {
   const navigate = useNavigate();
   const handleLogoClick = (target: string) => {
-    if (isProductDetailPage) {
-      // 在产品详情页面，点击商标跳转到首页
+    if (isProductDetailPage || isNotHomePage) {
+      // 在非首页页面，点击商标跳转到首页
       navigate('/');
     } else {
       // 在首页，点击商标滚动到对应产品系列

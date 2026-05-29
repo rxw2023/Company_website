@@ -24,4 +24,12 @@ export default defineConfig({
       },
     },
   },
+  build: {
+    // 构建完成后自动执行预渲染脚本
+    rollupOptions: {
+      output: {
+        manualChunks: undefined,
+      },
+    },
+  },
 });

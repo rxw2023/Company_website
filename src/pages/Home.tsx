@@ -199,10 +199,14 @@ export default function Home() {
   return (
     <div className="min-h-screen text-gray-900">
       <SeoHead
-        title="恒迪视讯 - 专业音视频解决方案"
-        description="恒迪视讯（杭州）科技有限公司，专注于专业音视频解决方案，代理思必驰AISPEECH智能会议产品，涵盖吸顶麦克风、矩阵麦克风、会议摄像机、AI追踪设备等，服务高校、企业、政府、酒店等场景。"
+        title="恒迪视讯 - 专业音视频解决方案 | MC10 MA600D MCS06 C40T MT100 MC08 M12 C60 AIMIC-B100"
+        description="恒迪视讯代理思必驰AISPEECH智能会议产品：MC10吸顶麦克风、MA600D矩阵麦克风、MCS06拾扩一体吸顶麦、C40T视频会议室摄像机、MT100声像追踪主机、DC20PoE吸顶音箱、MC08教学吸顶麦、M12会议麦克风音箱、C60 AI追踪摄像头、AIMIC-B100桌面控制器。服务高校、企业、政府、酒店。"
         url="/"
         breadcrumbs={[{ name: '首页', url: '/' }]}
+        itemList={aispeechProducts.filter(p => p.id !== 'a11').map(p => ({
+          name: p.name,
+          url: `/product/${p.id}`,
+        }))}
       />
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
         {/* Header section with company name and logos */}
