@@ -1,6 +1,7 @@
 /**
- * 构建后脚本：为每个产品页面生成静态 HTML 预渲染文件
- * 生成到 dist/product/{id}/index.html，Nginx 可直接回退到这些文件
+ * 构建后脚本：为每个产品/案例页面生成静态 HTML 预渲染文件
+ * 输出扁平文件：dist/product/a1.html（而非 dist/product/a1/index.html）
+ * 避免 Nginx 301 重定向加尾部斜杠导致 URL 与 React Router 不一致
  *
  * 注意：这是纯静态 HTML 壳（不含 JS 渲染的完整内容），
  * 但包含完整的 SEO meta 标签和结构化数据，
@@ -220,20 +221,20 @@ function prerender() {
   // 从 dist/index.html 提取编译后的 JS/CSS 资源路径
   const assets = extractBuiltAssets();
 
-  // 生成产品页面
+  // 生成产品页面（扁平文件：dist/product/a1.html）
   for (const product of products) {
-    const dir = path.join(distDir, 'product', product.id);
-    fs.mkdirSync(dir, { recursive: true });
-    fs.writeFileSync(path.join(dir, 'index.html'), generateProductHTML(product, assets));
-    console.log(`  [Prerender] /product/${product.id}/index.html -> ${product.name}`);
+    const productDir = path.join(distDir, 'product');
+    fs.mkdirSync(productDir, { recursive: true });
+    fs.writeFileSync(path.join(productDir, `${product.id}.html`), generateProductHTML(product, assets));
+    console.log(`  [Prerender] /product/${product.id}.html -> ${product.name}`);
   }
 
-  // 生成案例页面
+  // 生成案例页面（扁平文件：dist/case/e1.html）
   for (const caseItem of cases) {
-    const dir = path.join(distDir, 'case', caseItem.id);
-    fs.mkdirSync(dir, { recursive: true });
-    fs.writeFileSync(path.join(dir, 'index.html'), generateCaseHTML(caseItem, assets));
-    console.log(`  [Prerender] /case/${caseItem.id}/index.html -> ${caseItem.name}`);
+    const caseDir = path.join(distDir, 'case');
+    fs.mkdirSync(caseDir, { recursive: true });
+    fs.writeFileSync(path.join(caseDir, `${caseItem.id}.html`), generateCaseHTML(caseItem, assets));
+    console.log(`  [Prerender] /case/${caseItem.id}.html -> ${caseItem.name}`);
   }
 
   console.log(`[Prerender] Generated ${products.length + cases.length} static HTML pages`);
