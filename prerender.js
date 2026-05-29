@@ -5,6 +5,9 @@
  * 注意：这是纯静态 HTML 壳（不含 JS 渲染的完整内容），
  * 但包含完整的 SEO meta 标签和结构化数据，
  * 确保搜索引擎爬虫能直接获取产品的 title、description、Product Schema。
+ *
+ * 修复：从 dist/index.html 提取编译后的 JS/CSS 资源路径，
+ * 避免引用开发路径 /src/main.tsx 导致生产环境页面空白。
  */
 import fs from 'fs';
 import path from 'path';
@@ -30,9 +33,51 @@ const products = [
 const SITE_URL = 'https://www.techhdi.com';
 const SITE_NAME = '恒迪视讯';
 
-function generateProductHTML(product) {
-  const imageUrl = `${SITE_URL}/src/assets/images/${product.id === 'a8' ? 'a8-2' : product.id}-1.webp`;
+/**
+ * 从 dist/index.html 提取编译后的 JS/CSS 资源路径
+ * 确保预渲染页面加载的是生产构建产物而非开发路径
+ */
+function extractBuiltAssets() {
+  const indexPath = path.join(distDir, 'index.html');
+  if (!fs.existsSync(indexPath)) {
+    console.error('[Prerender] ERROR: dist/index.html not found. Run `pnpm build:client` first.');
+    process.exit(1);
+  }
+  const indexHtml = fs.readFileSync(indexPath, 'utf-8');
+
+  // 提取 <script type="module" crossorigin src="..."></script>
+  const jsMatch = indexHtml.match(/<script[^>]*\bsrc="([^"]+)"[^>]*>/);
+  // 提取 <link rel="stylesheet" crossorigin href="..."> （Vite编译产物的CSS带crossorigin属性）
+  const cssMatch = indexHtml.match(/<link[^>]*\brel="stylesheet"[^>]*\bcrossorigin[^>]*\bhref="([^"]+)"[^>]*>/)
+    || indexHtml.match(/<link[^>]*\bhref="([^"]*\/assets\/index[^"]*\.css)"[^>]*>/);
+  // 提取 favicon
+  const iconMatch = indexHtml.match(/<link[^>]*\brel="icon"[^>]*\bhref="([^"]+)"[^>]*>/);
+
+  if (!jsMatch) {
+    console.error('[Prerender] ERROR: Could not find JS bundle in dist/index.html');
+    process.exit(1);
+  }
+
+  const assets = {
+    js: jsMatch[1],
+    css: cssMatch ? cssMatch[1] : '',
+    icon: iconMatch ? iconMatch[1] : '',
+  };
+  console.log(`[Prerender] Built assets: JS=${assets.js}, CSS=${assets.css || '(none)'}`);
+  return assets;
+}
+
+function generateProductHTML(product, assets) {
+  const imageUrl = `${SITE_URL}/assets/${product.id === 'a8' ? 'a8-2' : product.id}-1.webp`;
   const productUrl = `${SITE_URL}/product/${product.id}`;
+
+  // 构建资源引用标签
+  const iconTag = assets.icon
+    ? `  <link rel="icon" href="${assets.icon}" type="image/webp" />`
+    : '';
+  const cssTag = assets.css
+    ? `  <link rel="stylesheet" crossorigin href="${assets.css}">`
+    : '';
 
   return `<!DOCTYPE html>
 <html lang="zh-CN">
@@ -50,6 +95,7 @@ function generateProductHTML(product) {
   <meta property="og:image" content="${imageUrl}" />
   <meta property="og:locale" content="zh_CN" />
   <meta name="robots" content="index, follow" />
+${iconTag}
   <!-- Product Schema -->
   <script type="application/ld+json">
   {
@@ -107,49 +153,49 @@ function generateProductHTML(product) {
     <p>如需了解更多产品信息，请联系我们：guo@techhdi.com | 18814845538</p>
     <p>请启用JavaScript以获得最佳浏览体验。</p>
   </noscript>
+${cssTag}
 </head>
 <body>
-  <!-- SPA 应用入口：搜索引擎爬到本页面后，用户访问时加载完整SPA -->
-  <script>
-    // 如果是用户直接访问（非爬虫），跳转到SPA入口由JS接管
-    // 搜索引擎爬虫会直接读取上面的 meta 和 schema 数据
-    if (!navigator.userAgent.includes('bot') && !navigator.userAgent.includes('spider') && !navigator.userAgent.includes('crawl')) {
-      // 重定向到根路径，由 React Router 处理
-      // Nginx 配置 try_files 会优先匹配到此静态文件，用户访问正常加载 SPA
-    }
-  </script>
   <div id="root"></div>
-  <script type="module" src="/src/main.tsx"></script>
+  <script type="module" crossorigin src="${assets.js}"></script>
 </body>
 </html>`;
 }
 
-function generateCaseHTML(cases) {
-  return cases.map(c => {
-    const caseUrl = `${SITE_URL}/case/${c.id}`;
-    return `<!DOCTYPE html>
+function generateCaseHTML(caseItem, assets) {
+  const caseUrl = `${SITE_URL}/case/${caseItem.id}`;
+
+  const iconTag = assets.icon
+    ? `  <link rel="icon" href="${assets.icon}" type="image/webp" />`
+    : '';
+  const cssTag = assets.css
+    ? `  <link rel="stylesheet" crossorigin href="${assets.css}">`
+    : '';
+
+  return `<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>${c.name} - ${SITE_NAME}</title>
-  <meta name="description" content="${c.name} - 恒迪视讯音视频解决方案案例分享，思必驰AISPEECH智能会议产品实际应用。" />
+  <title>${caseItem.name} - ${SITE_NAME}</title>
+  <meta name="description" content="${caseItem.name} - 恒迪视讯音视频解决方案案例分享，思必驰AISPEECH智能会议产品实际应用。" />
   <link rel="canonical" href="${caseUrl}" />
-  <meta property="og:title" content="${c.name} - ${SITE_NAME}" />
+  <meta property="og:title" content="${caseItem.name} - ${SITE_NAME}" />
   <meta property="og:url" content="${caseUrl}" />
   <meta property="og:type" content="article" />
   <meta name="robots" content="index, follow" />
+${iconTag}
   <noscript>
-    <h1>${c.name}</h1>
+    <h1>${caseItem.name}</h1>
     <p>恒迪视讯音视频解决方案案例分享。请启用JavaScript以获得最佳浏览体验。</p>
   </noscript>
+${cssTag}
 </head>
 <body>
   <div id="root"></div>
-  <script type="module" src="/src/main.tsx"></script>
+  <script type="module" crossorigin src="${assets.js}"></script>
 </body>
 </html>`;
-  });
 }
 
 // 案例数据
@@ -171,11 +217,14 @@ const cases = [
 function prerender() {
   console.log('\n[Prerender] Generating static HTML for product and case pages...');
 
+  // 从 dist/index.html 提取编译后的 JS/CSS 资源路径
+  const assets = extractBuiltAssets();
+
   // 生成产品页面
   for (const product of products) {
     const dir = path.join(distDir, 'product', product.id);
     fs.mkdirSync(dir, { recursive: true });
-    fs.writeFileSync(path.join(dir, 'index.html'), generateProductHTML(product));
+    fs.writeFileSync(path.join(dir, 'index.html'), generateProductHTML(product, assets));
     console.log(`  [Prerender] /product/${product.id}/index.html -> ${product.name}`);
   }
 
@@ -183,7 +232,7 @@ function prerender() {
   for (const caseItem of cases) {
     const dir = path.join(distDir, 'case', caseItem.id);
     fs.mkdirSync(dir, { recursive: true });
-    fs.writeFileSync(path.join(dir, 'index.html'), generateCaseHTML([caseItem])[0]);
+    fs.writeFileSync(path.join(dir, 'index.html'), generateCaseHTML(caseItem, assets));
     console.log(`  [Prerender] /case/${caseItem.id}/index.html -> ${caseItem.name}`);
   }
 
