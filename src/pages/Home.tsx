@@ -90,7 +90,7 @@ export default function Home() {
           --hd-text-secondary: rgba(0,0,0,0.42);
           --hd-dark-card:    #f0f0f2;
           --hd-dark-card2:   #f5f5f7;
-          --hd-nav-h: 48px;
+          --hd-nav-h: 64px;
         }
         .hd-page {
           font-family: -apple-system, "SF Pro Display", "SF Pro Text", "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -110,18 +110,22 @@ export default function Home() {
           padding: 0 24px;
         }
         .hd-nav .nav-logo {
-          font-size: 17px; font-weight: 600; color: var(--hd-near-black);
+          font-size: 20px; font-weight: 600; color: var(--hd-near-black);
           letter-spacing: -0.3px; text-decoration: none; cursor: pointer;
+          display: flex; align-items: center; gap: 8px;
+        }
+        .hd-nav .nav-logo-icon {
+          height: 36px; width: auto; display: block;
         }
         .hd-nav .nav-links { display: flex; gap: 28px; list-style: none; }
         .hd-nav .nav-links span {
-          font-size: 12px; font-weight: 400; color: rgba(0,0,0,0.72);
+          font-size: 14px; font-weight: 400; color: rgba(0,0,0,0.72);
           text-decoration: none; letter-spacing: -0.1px; cursor: pointer;
           transition: color 0.15s;
         }
         .hd-nav .nav-links span:hover { color: var(--hd-near-black); }
         .hd-nav .nav-cta {
-          font-size: 12px; color: var(--hd-link-light);
+          font-size: 14px; color: var(--hd-link-light);
           text-decoration: none; letter-spacing: -0.1px; cursor: pointer;
         }
         .hd-nav .nav-cta:hover { text-decoration: underline; }
@@ -444,7 +448,10 @@ export default function Home() {
 
         {/* NAV */}
         <nav className="hd-nav">
-          <span className="nav-logo" onClick={() => scrollTo('about')} style={{ cursor: 'pointer' }}>恒迪视讯</span>
+          <span className="nav-logo" onClick={() => scrollTo('about')} style={{ cursor: 'pointer' }}>
+            <img src="/hd-logo.webp" alt="" className="nav-logo-icon" />
+            恒迪视讯
+          </span>
           <ul className="nav-links">
             <li><span onClick={() => scrollTo('products')}>产品</span></li>
             <li><span onClick={() => scrollTo('cases')}>案例</span></li>

@@ -953,8 +953,9 @@ export default function ProductDetailPage() {
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [showLightbox, setShowLightbox] = useState(false);
   const [currentLightboxIndex, setCurrentLightboxIndex] = useState(0);
-  // 确保始终选择第一张图片作为预览图
+  // 进入页面滚动到顶部 + 重置图片索引
   useEffect(() => {
+    window.scrollTo(0, 0);
     setSelectedImageIndex(0);
   }, [id]);
   // 添加ESC键关闭图片查看器的功能
@@ -1043,7 +1044,7 @@ export default function ProductDetailPage() {
         onPrev={goToPrevImage}
         onNext={goToNextImage}
       />
-      <div className="min-h-screen text-gray-900">
+      <div className="min-h-screen bg-gray-50 text-gray-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
           {/* 返回按钮 - 调整样式以适应触摸屏幕 */}
           <button
@@ -1062,11 +1063,11 @@ export default function ProductDetailPage() {
           <div className="mt-6 sm:mt-8 grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8">
             {/* 产品图片区域 */}
             <div>
-              <h3 className="text-lg font-semibold mb-3 text-gray-900 dark:text-white flex items-center gap-2">
+              <h3 className="text-lg font-semibold mb-3 text-gray-700 flex items-center gap-2">
                 <i className="fa-solid fa-images text-blue-600"></i>
                 产品图片
               </h3>
-              <div className="aspect-video bg-white rounded-md overflow-hidden cursor-pointer relative"
+              <div className="aspect-video bg-gray-100 rounded-md overflow-hidden cursor-pointer relative"
                    onClick={() => openLightbox(selectedImageIndex)}>
                      <img 
                        src={product.images[selectedImageIndex]} 
@@ -1108,19 +1109,19 @@ export default function ProductDetailPage() {
               </div>
               {/* 产品问答 - 可选部分 */}
               {(product as any).faq && ((product as any).faq as { question: string; answer: string }[]).length > 0 && (
-                <div className="mt-6 bg-gray-50 dark:bg-gray-800 rounded-lg p-4">
-                  <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
+                <div className="mt-6 bg-gray-200/60 rounded-lg p-4">
+                  <h3 className="text-lg font-semibold mb-4 flex items-center gap-2 text-gray-700">
                     <i className="fa-solid fa-circle-question text-blue-600"></i>
                     关于{product.name}的常见问题
                   </h3>
                   <div className="space-y-4">
                     {((product as any).faq as { question: string; answer: string }[]).map((item: { question: string; answer: string }, index: number) => (
-                      <div key={index} className="border-b border-gray-200 dark:border-gray-700 last:border-0 pb-3 last:pb-0">
-                        <p className="font-medium text-gray-900 dark:text-white mb-1">
+                      <div key={index} className="border-b border-gray-300 last:border-0 pb-3 last:pb-0">
+                        <p className="font-medium text-gray-800 mb-1">
                           <span className="text-blue-600 mr-1">问{index + 1}、</span>
                           {item.question}
                         </p>
-                        <p className="text-gray-600 dark:text-gray-300 pl-5">
+                        <p className="text-gray-600 pl-5">
                           <span className="text-green-600 font-medium">答：</span>
                           {item.answer}
                         </p>
@@ -1137,7 +1138,7 @@ export default function ProductDetailPage() {
                 <h2 className={`text-base sm:text-lg ${product.id.startsWith('h') ? 'text-red-600' : 'text-blue-600'} mb-4`}>{(product as any).subtitle}</h2>
               )}
               {product.description && (
-                <p className="text-gray-600 dark:text-gray-300 mb-4 sm:mb-6 text-sm sm:text-base whitespace-pre-line">{product.description}</p>
+                <p className="text-gray-500 mb-4 sm:mb-6 text-sm sm:text-base whitespace-pre-line">{product.description}</p>
               )}
                 {/* 产品规格列表 */}
                 <div className="mb-6">
@@ -1147,13 +1148,13 @@ export default function ProductDetailPage() {
                       <div className="space-y-6">
                         {(product as any).specs?.map((category: any, categoryIndex: number) => (
                           <div key={categoryIndex} className="overflow-x-auto">
-                            <h3 className="font-medium mb-2">{category.category}</h3>
-                            <table className="min-w-full bg-white dark:bg-gray-800 rounded-lg overflow-hidden">
-                              <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
+                            <h3 className="font-medium mb-2 text-gray-500">{category.category}</h3>
+                            <table className="min-w-full bg-gray-100 rounded-lg overflow-hidden">
+                              <tbody className="divide-y divide-gray-200">
                                 {category.items.map((item: any, index: number) => (
-                                  <tr key={index} className={index % 2 === 0 ? 'bg-white dark:bg-gray-800' : 'bg-gray-50 dark:bg-gray-750'}>
-                                    <td className="px-4 py-2 text-sm font-medium">{item.name}</td>
-                                    <td className="px-4 py-2 text-sm" dangerouslySetInnerHTML={{ __html: item.value }}></td>
+                                  <tr key={index} className={index % 2 === 0 ? 'bg-gray-50' : 'bg-gray-100'}>
+                                    <td className="px-4 py-2 text-sm font-medium text-gray-600">{item.name}</td>
+                                    <td className="px-4 py-2 text-sm text-gray-700" dangerouslySetInnerHTML={{ __html: item.value }}></td>
                                   </tr>
                                 ))}
                               </tbody>
