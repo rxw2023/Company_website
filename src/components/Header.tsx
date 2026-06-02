@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import aispeechLogo from '../assets/images/aispeech-logo.webp';
+import aispeechLogo from '../assets/images/aispeech-logo.png';
 interface HeaderProps {
   showAiSpeechLogo?: boolean;
   isProductDetailPage?: boolean;
@@ -38,7 +38,7 @@ export function Header({ showAiSpeechLogo = true, isProductDetailPage = false, i
               <img 
                 src={aispeechLogo} 
                 alt="AISPEECH Logo" 
-                className="w-[150px] sm:w-[200px] h-auto object-contain opacity-70 hover:opacity-30 transition-opacity"
+                className="w-[220px] sm:w-[320px] h-auto object-contain opacity-70 hover:opacity-30 transition-opacity"
                 loading="lazy"
               />
             </div>

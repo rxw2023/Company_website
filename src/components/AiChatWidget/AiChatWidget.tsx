@@ -184,6 +184,7 @@ export default function AiChatWidget() {
                   <ul className="mt-1.5 space-y-1 text-gray-600">
                     <li>• MC10 吸顶麦克风有什么特点？</li>
                     <li>• MA600D矩阵麦克风用在哪些场景？</li>
+                    <li>• 介绍一下MC04新产品</li>
                     <li>• 哪款产品适合大型会议室？</li>
                     <li>• 思必驰有哪些产品系列？</li>
                   </ul>

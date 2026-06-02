@@ -56,7 +56,12 @@ import a10Image2 from '../assets/images/a10-3.webp';
 import a10Image3 from '../assets/images/a10-4.webp';
 import a10Image4 from '../assets/images/a10-5.webp';
 
-import quickImage from '../assets/images/aispeech-logo.webp';
+import a11Image1 from '../assets/images/a11-1.webp';
+import a11Image2 from '../assets/images/a11-2.webp';
+import a11Image3 from '../assets/images/a11-3.webp';
+import a11Image4 from '../assets/images/a11-4.webp';
+
+import quickImage from '../assets/images/aispeech-logo.png';
 
 import a1Pdf from '../assets/pdf/MC10吸顶麦克风.pdf';
 import a2Pdf from '../assets/pdf/MA600D矩阵麦克风.pdf';
@@ -68,6 +73,7 @@ import a7Pdf from '../assets/pdf/高端吸顶麦克风-MC08.pdf';
 import a8Pdf from '../assets/pdf/企业级会议麦克风音箱M12.pdf';
 import a9Pdf from '../assets/pdf/AI追踪双目语音摄像头C60.pdf';
 import a10Pdf from '../assets/pdf/B100_DM0403.pdf';
+import a11Pdf from '../assets/pdf/MC04.pdf';
 // 图片查看器组件
 function ImageLightbox({ 
   isOpen, 
@@ -938,6 +944,89 @@ const productData: Record<string, Product> = {
   },
   'a11':{
       id: 'a11',
+      name: '思必驰MC04高端吸顶麦克风-教育款',
+      description: 'MC04是思必驰面向教室教学场景推出的一款高端吸顶麦克风，专为常态化教室、紧凑型讲台及预算敏感型录播教室设计。产品搭载24单元全向MEMS麦克风阵列，具备2米精准扩声覆盖半径，可实现对讲台核心区域的精细化拾音。无论教师面向学生讲解还是背身板书，均能稳定捕捉饱满人声，确保教学信息无损传达。MC04内置专为教育场景训练的ClearSpeakAI专利算法，可有效抑制板书声、翻书声、风扇声等典型教学噪声，同时提供混响抑制、啸叫抑制（AFC）和自动增益（AGC）功能，为师生创造纯净清晰的教学声场。MC04 采用模拟音频接口，可兼容已有音频系统方案，也可搭配思必驰壁挂音频处理器及有源音箱，实现简单部署及便捷操控。',
+      images: [
+        a11Image1,
+        a11Image2,
+        a11Image3,
+        a11Image4
+      ],
+      brochureUrl: a11Pdf,
+      specs: [
+        {
+          category: '基本规格',
+          items: [
+            { name: '产品颜色', value: '淡雅白' },
+            { name: '产品尺寸', value: '250mm x 250mm x 54mm' },
+            { name: '产品净重', value: '<2kg' },
+            { name: '供电方式', value: 'PoE+ 供电' },
+            { name: '安装方式', value: '吊装' }
+          ]
+        },
+        {
+          category: '麦克风规格',
+          items: [
+            { name: '麦克风类型', value: '24单元 MEMS麦克风阵列' },
+            { name: '麦克风灵敏度', value: '-38dBv/94dB SPL@1KHz' },
+            { name: '麦克风频响', value: '20Hz~20000Hz' },
+            { name: '动态范围', value: '84dB(A)' },
+            { name: '最大声压级', value: '104dB SPL' },
+            { name: '信噪比', value: '73.9dBA' },
+            { name: '设备灵敏度', value: '-10.22dBFS/Pa' },
+            { name: '设备频响', value: '100Hz to 15,000Hz' }
+          ]
+        },
+        {
+          category: '音频特性',
+          items: [
+            { name: '拾音区', value: '4个（形状、大小可调，位置可拖拽）' },
+            { name: '扩声拾音半径', value: '2m（推荐）' },
+            { name: '远程拾音半径', value: '3.5m（推荐）' },
+            { name: '采样率', value: '48kHz' },
+            { name: '最大背景噪声抑制', value: '35dB' },
+            { name: 'AI降噪抑制', value: '支持' },
+            { name: 'AI混响抑制', value: '支持' },
+            { name: 'AI啸叫抑制', value: '支持' },
+            { name: 'AI回声消除', value: '支持' },
+            { name: '智能混音', value: '支持' }
+          ]
+        },
+        {
+          category: '音频通道',
+          items: [
+            { name: '远程会议通道', value: '1个' },
+            { name: '本地扩声通道', value: '1个' }
+          ]
+        },
+        {
+          category: '级联功能',
+          items: [
+            { name: '级联限制', value: '2台' }
+          ]
+        },
+        {
+          category: '接口',
+          items: [
+            { name: '网口', value: '1个 1x10/100/1000M RJ-45 PoE' },
+            { name: '凤凰端子输入', value: '4个' },
+            { name: '凤凰端子输出', value: '2个' },
+            { name: 'RESET按键', value: '1个' }
+          ]
+        },
+        {
+          category: '其他规格',
+          items: [
+            { name: '工作温度', value: '0°C~40°C' },
+            { name: '存放温度', value: '-20°C~+70°C' },
+            { name: '工作/存储湿度', value: '20 to 95%RH' },
+            { name: '整机功耗', value: '12W' }
+          ]
+        }
+      ],
+  },
+  'a11-old':{
+      id: 'a11-old',
       name: '思必驰后续产品尽情期待',
       description: '敬请期待我们的后续产品发布!',
       images: [
@@ -1128,6 +1217,22 @@ export default function ProductDetailPage() {
                       </div>
                     ))}
                   </div>
+                </div>
+              )}
+              {/* 可选控制器 - 仅 a2 页面显示 */}
+              {product.id === 'a2' && (
+                <div className="mt-6 bg-gray-200/60 rounded-lg p-4">
+                  <a
+                    href="/product/a10"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      navigate('/product/a10');
+                    }}
+                    className="text-blue-600 hover:text-blue-800 font-medium flex items-center gap-2 transition-colors"
+                  >
+                    可选控制器
+                    <i className="fa-solid fa-arrow-right"></i>
+                  </a>
                 </div>
               )}
             </div>
