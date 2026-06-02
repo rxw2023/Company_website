@@ -40,7 +40,7 @@ const products = [
   { id: 'a7',  name: 'MC08 高端吸顶麦克风',        desc: '32 单元阵列，8 个独立配置拾音区，专为教学场景精心设计。', img: a7Image },
   { id: 'a8',  name: 'M12 企业级会议麦克风音箱',    desc: '集拾音、扩音、语音转写、字幕同传于一体，多台级联，覆盖大中小型会议室。', img: a8Image },
   { id: 'a9',  name: 'C60 AI 追踪双目摄像头',      desc: '多种 AI 追踪模式，实时字幕，音视频融合，适配会议讨论、演讲、板书。', img: a9Image },
-  { id: 'a11-old', name: '后续产品尽情期待',       desc: '', img: quickImage },
+  { id: 'a99', name: '后续产品尽情期待',       desc: '', img: quickImage },
 ];
 
 const cases = [

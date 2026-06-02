@@ -26,8 +26,8 @@ function sitemapPlugin() {
       // 提取案例 ID：id: 'e1', id: 'e2', ...
       const caseIds = [...homeSource.matchAll(/id:\s*'(e\d+)'/g)].map(m => m[1]);
 
-      // 过滤掉占位产品（如 a11）
-      const realProductIds = productIds.filter(id => id !== 'a11');
+      // 过滤掉占位产品（如 a99）
+      const realProductIds = productIds.filter(id => id !== 'a99');
 
       const urls = [
         { loc: '/', priority: '1.0', changefreq: 'weekly' },
