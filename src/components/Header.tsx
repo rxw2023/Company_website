@@ -1,49 +1,21 @@
 import { useNavigate } from 'react-router-dom';
 import aispeechLogo from '../assets/images/aispeech-logo.png';
-interface HeaderProps {
-  showAiSpeechLogo?: boolean;
-  isProductDetailPage?: boolean;
-  isNotHomePage?: boolean;
-}
-export function Header({ showAiSpeechLogo = true, isProductDetailPage = false, isNotHomePage = false }: HeaderProps) {
+export function Header({ showAiSpeechLogo = true }: { showAiSpeechLogo?: boolean }) {
   const navigate = useNavigate();
-  const handleLogoClick = (target: string) => {
-    if (isProductDetailPage || isNotHomePage) {
-      // 在非首页页面，点击商标跳转到首页
-      navigate('/');
-    } else {
-      // 在首页，点击商标滚动到对应产品系列
-      const element = document.getElementById(target);
-      if (element) {
-        element.scrollIntoView({ behavior: 'smooth' });
-      }
-    }
-  };
   return (
     <div className="mb-6 sm:mb-10">
       <div className="max-w-4xl mx-auto px-4">
-        {/* Company Name - 点击公司名称也跳转到首页 */}
-        <div className="text-center mb-6">
-          <h1 
-            className="text-lg sm:text-2xl md:text-3xl font-bold cursor-pointer hover:opacity-80 transition-opacity"
-            onClick={() => navigate('/')}
-          >
-            杭州恒迪视讯技术有限公司
-          </h1>
-        </div>       
-        {/* Company Logos */}
-        <div className="flex flex-col sm:flex-row justify-center items-center gap-8 sm:gap-16">
-          {showAiSpeechLogo && (
-            <div className="flex items-center justify-center cursor-pointer" onClick={() => handleLogoClick('aispeech-products')}>
-              <img 
-                src={aispeechLogo} 
-                alt="AISPEECH Logo" 
-                className="w-[220px] sm:w-[320px] h-auto object-contain opacity-70 hover:opacity-30 transition-opacity"
-                loading="lazy"
-              />
-            </div>
-          )}
-        </div>
+        {/* AISPEECH Logo - 放大 */}
+        {showAiSpeechLogo && (
+          <div className="flex justify-center cursor-pointer" onClick={() => navigate('/')}>
+            <img 
+              src={aispeechLogo} 
+              alt="AISPEECH" 
+              className="w-[360px] sm:w-[480px] h-auto object-contain opacity-80 hover:opacity-30 transition-opacity"
+              loading="lazy"
+            />
+          </div>
+        )}
       </div>
     </div>
   );

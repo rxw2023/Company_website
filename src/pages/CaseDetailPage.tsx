@@ -2,6 +2,7 @@ import * as React from 'react';
 const { useState, useEffect } = React;
 import { useParams, useNavigate } from 'react-router-dom';
 import { Header } from '../components/Header';
+import Navigation from '../components/Navigation';
 import { motion } from 'framer-motion';
 import SeoHead from '../components/SeoHead';
 import e1Image from '../assets/images/e1.webp';
@@ -555,7 +556,8 @@ export default function CaseDetailPage() {
         onPrev={goToPrevImage}
         onNext={goToNextImage}
       />
-      <div className="min-h-screen text-gray-900">
+      <Navigation />
+      <div className="min-h-screen text-gray-900 pt-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
           {/* 返回按钮 */}
           <button

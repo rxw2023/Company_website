@@ -3,7 +3,7 @@ import SeoHead from '../components/SeoHead';
 // 产品图片
 import a1Image from '../assets/images/a1-1.webp';
 import a2Image from '../assets/images/a2-1.webp';
-import a3Image from '../assets/images/a3-1.webp';
+import a3Image from '../assets/images/a3-3.webp';
 import a4Image from '../assets/images/a4-1.webp';
 import a5Image from '../assets/images/a5-1.webp';
 import a6Image from '../assets/images/a6-1.webp';
@@ -266,7 +266,7 @@ export default function Home() {
           box-shadow: rgba(0,0,0,0.10) 0 6px 24px 0;
         }
         .hd-product-img-wrap {
-          background: #fafafa;
+          background: #fff;
           aspect-ratio: 16/10;
           display: flex; align-items: center; justify-content: center;
           overflow: hidden;

@@ -1,13 +1,13 @@
 import { useNavigate } from 'react-router-dom';
-import { Header } from '../components/Header';
+import Navigation from '../components/Navigation';
 
 export default function NotFoundPage() {
   const navigate = useNavigate();
 
   return (
     <>
-      <Header />
-      <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50 px-4">
+      <Navigation />
+      <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50 px-4 pt-16">
         <div className="text-center">
           <h1 className="text-8xl font-bold text-gray-300 mb-4">404</h1>
           <p className="text-xl text-gray-600 mb-8">页面不存在</p>

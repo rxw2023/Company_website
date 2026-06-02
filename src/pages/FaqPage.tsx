@@ -1,6 +1,7 @@
 import * as React from 'react';
 const { useState } = React;
 import { Header } from '../components/Header';
+import Navigation from '../components/Navigation';
 import SeoHead from '../components/SeoHead';
 
 interface FaqItem {
@@ -106,7 +107,9 @@ export default function FaqPage() {
   };
 
   return (
-    <div className="min-h-screen text-gray-900">
+    <>
+    <Navigation />
+    <div className="min-h-screen text-gray-900 pt-16">
       <SeoHead
         title="常见问题 FAQ"
         description="恒迪视讯常见问题解答，涵盖公司服务、思必驰AISPEECH产品特点、安装技术、应用场景等，快速了解专业音视频解决方案。"
@@ -182,5 +185,6 @@ export default function FaqPage() {
         </div>
       </div>
     </div>
+    </>
   );
 }

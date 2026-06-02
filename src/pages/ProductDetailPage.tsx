@@ -1,7 +1,8 @@
 import * as React from 'react';
-const { useState, useEffect } = React;
+const { useState, useEffect, useRef, useCallback } = React;
 import { useParams, useNavigate } from 'react-router-dom';
 import { Header } from '../components/Header';
+import Navigation from '../components/Navigation';
 import { toast } from 'sonner';
 import SeoHead from '../components/SeoHead';
 import { motion } from 'framer-motion';
@@ -60,8 +61,6 @@ import a11Image1 from '../assets/images/a11-1.webp';
 import a11Image2 from '../assets/images/a11-2.webp';
 import a11Image3 from '../assets/images/a11-3.webp';
 import a11Image4 from '../assets/images/a11-4.webp';
-
-import quickImage from '../assets/images/aispeech-logo.png';
 
 import a1Pdf from '../assets/pdf/MC10吸顶麦克风.pdf';
 import a2Pdf from '../assets/pdf/MA600D矩阵麦克风.pdf';
@@ -1027,6 +1026,91 @@ const productData: Record<string, Product> = {
   },
 
 };
+
+// 相关产品轮播组件（独立组件，hooks 在顶层合法调用）
+function RelatedProducts({ products }: { products: { id: string; model: string; name: string; desc: string; image: string }[] }) {
+  const navigate = useNavigate();
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(true);
+
+  const updateArrows = useCallback(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+    setCanScrollLeft(el.scrollLeft > 4);
+    setCanScrollRight(el.scrollLeft < el.scrollWidth - el.clientWidth - 4);
+  }, []);
+
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+    updateArrows();
+    el.addEventListener('scroll', updateArrows, { passive: true });
+    return () => el.removeEventListener('scroll', updateArrows);
+  }, [updateArrows]);
+
+  const scroll = (dir: 'left' | 'right') => {
+    const el = scrollRef.current;
+    if (!el) return;
+    el.scrollBy({ left: dir === 'left' ? -280 : 280, behavior: 'smooth' });
+  };
+
+  return (
+    <div className="mt-6 bg-gray-200/60 rounded-lg p-4">
+      <div className="flex items-center justify-between mb-3">
+        <h3 className="text-lg font-semibold flex items-center gap-2 text-gray-700">
+          <i className="fa-solid fa-cubes text-blue-600"></i>
+          相关产品
+        </h3>
+        <div className="flex gap-1">
+          <button
+            onClick={() => scroll('left')}
+            disabled={!canScrollLeft}
+            className="w-8 h-8 rounded-full bg-white border border-gray-300 flex items-center justify-center text-gray-500 hover:bg-blue-50 hover:border-blue-300 hover:text-blue-600 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+          >
+            <i className="fa-solid fa-chevron-left text-xs"></i>
+          </button>
+          <button
+            onClick={() => scroll('right')}
+            disabled={!canScrollRight}
+            className="w-8 h-8 rounded-full bg-white border border-gray-300 flex items-center justify-center text-gray-500 hover:bg-blue-50 hover:border-blue-300 hover:text-blue-600 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+          >
+            <i className="fa-solid fa-chevron-right text-xs"></i>
+          </button>
+        </div>
+      </div>
+      <div
+        ref={scrollRef}
+        className="flex gap-3 overflow-x-auto pb-1"
+        style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+      >
+        {products.map((rp) => (
+          <div
+            key={rp.id}
+            className="bg-white rounded-lg border border-gray-200 hover:border-blue-400 hover:shadow-md transition-all duration-300 cursor-pointer overflow-hidden flex-shrink-0"
+            style={{ width: '260px' }}
+            onClick={() => navigate(`/product/${rp.id}`)}
+          >
+            <div className="aspect-video bg-white flex items-center justify-center">
+              <img
+                src={rp.image}
+                alt={rp.name}
+                className="w-full h-full object-contain p-2"
+                loading="lazy"
+              />
+            </div>
+            <div className="p-3">
+              <p className="text-xs text-gray-400 uppercase tracking-wider mb-0.5">{rp.model}</p>
+              <p className="text-sm font-semibold text-gray-800 mb-1">{rp.name}</p>
+              <p className="text-xs text-gray-500 line-clamp-2">{rp.desc}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 export default function ProductDetailPage() {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -1125,7 +1209,8 @@ export default function ProductDetailPage() {
         onPrev={goToPrevImage}
         onNext={goToNextImage}
       />
-      <div className="min-h-screen bg-gray-50 text-gray-800">
+      <Navigation />
+      <div className="min-h-screen bg-white text-gray-800 pt-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
           {/* 返回按钮 - 调整样式以适应触摸屏幕 */}
           <button
@@ -1148,7 +1233,7 @@ export default function ProductDetailPage() {
                 <i className="fa-solid fa-images text-blue-600"></i>
                 产品图片
               </h3>
-              <div className="aspect-video bg-gray-100 rounded-md overflow-hidden cursor-pointer relative"
+              <div className="aspect-video bg-white rounded-md overflow-hidden cursor-pointer relative"
                    onClick={() => openLightbox(selectedImageIndex)}>
                      <img 
                        src={product.images[selectedImageIndex]} 
@@ -1211,21 +1296,14 @@ export default function ProductDetailPage() {
                   </div>
                 </div>
               )}
-              {/* 可选控制器 - 仅 a2 页面显示 */}
+              {/* 相关产品 - 仅 a2 页面显示 */}
               {product.id === 'a2' && (
-                <div className="mt-6 bg-gray-200/60 rounded-lg p-4">
-                  <a
-                    href="/product/a10"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      navigate('/product/a10');
-                    }}
-                    className="text-blue-600 hover:text-blue-800 font-medium flex items-center gap-2 transition-colors"
-                  >
-                    可选控制器
-                    <i className="fa-solid fa-arrow-right"></i>
-                  </a>
-                </div>
+                <RelatedProducts
+                  products={[
+                    { id: 'a10', model: 'AIMIC-B100', name: '桌面控制器', desc: '集智能控制、精准拾音与便捷部署于一身，一键掌控全场。', image: a10Image1 },
+            
+                  ]}
+                />
               )}
             </div>
              {/* 产品信息区域 */}
