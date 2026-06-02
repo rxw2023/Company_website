@@ -1025,15 +1025,7 @@ const productData: Record<string, Product> = {
         }
       ],
   },
-  'a99':{
-      id: 'a99',
-      name: '思必驰后续产品尽情期待',
-      description: '敬请期待我们的后续产品发布!',
-      images: [
-        quickImage
-      ],
-      brochureUrl: "#",
-  },
+
 };
 export default function ProductDetailPage() {
   const { id } = useParams();
