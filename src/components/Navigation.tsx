@@ -10,7 +10,7 @@ export default function Navigation() {
       const el = document.getElementById(id);
       if (el) el.scrollIntoView({ behavior: 'smooth' });
     } else {
-      navigate(`/#${id}`);
+      navigate('/', { state: { scrollTo: id } });
     }
   };
 

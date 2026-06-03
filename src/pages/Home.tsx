@@ -1,4 +1,5 @@
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
+import { useEffect } from 'react';
 import Navigation from '../components/Navigation';
 import SeoHead from '../components/SeoHead';
 // 产品图片
@@ -67,6 +68,24 @@ function scrollTo(id: string) {
 }
 
 export default function Home() {
+  const location = useLocation();
+
+  // 从其他页面导航过来时，滚动到指定区块
+  useEffect(() => {
+    const state = location.state as { scrollTo?: string } | null;
+    if (state?.scrollTo) {
+      // 等待 DOM 渲染
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          const el = document.getElementById(state.scrollTo!);
+          if (el) el.scrollIntoView({ behavior: 'smooth' });
+        });
+      });
+      // 清除 state 避免重复滚动
+      window.history.replaceState({}, document.title);
+    }
+  }, [location]);
+
   return (
     <>
       <SeoHead
@@ -529,7 +548,7 @@ export default function Home() {
         </div>
 
         {/* PRODUCTS */}
-        <section className="hd-section-gray" id="products">
+        <section className="hd-section-gray scroll-mt-16" id="products">
           <div className="hd-section-inner">
              <p className="hd-section-eyebrow">思必驰</p>
             <h2 className="hd-section-title">产品系列</h2>
@@ -556,7 +575,7 @@ export default function Home() {
         </section>
 
         {/* CASES */}
-        <section className="hd-section-light" id="cases">
+        <section className="hd-section-light scroll-mt-16" id="cases">
           <div className="hd-section-inner">
              <p className="hd-section-eyebrow">思必驰</p>
             <h2 className="hd-section-title">案例集锦</h2>
@@ -578,7 +597,7 @@ export default function Home() {
         </section>
 
         {/* ABOUT */}
-        <section className="hd-section-gray" id="about">
+        <section className="hd-section-gray scroll-mt-16" id="about">
           <div className="hd-section-inner">
             <p className="hd-section-eyebrow">关于恒迪视讯</p>
             <h2 className="hd-section-title">专注音视频<br />企业级系统集成</h2>
@@ -602,7 +621,7 @@ export default function Home() {
         </div>
 
         {/* FOOTER */}
-        <footer className="hd-footer" id="footer">
+        <footer className="hd-footer scroll-mt-16" id="footer">
           <div className="hd-footer-inner">
             <div>
               <div className="hd-footer-brand">恒迪视讯</div>
