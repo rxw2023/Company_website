@@ -261,7 +261,6 @@ interface Product {
   specs?: ProductSpec[];
   brochureUrl?: string;
   faq?: { question: string; answer: string }[];
-  features?: { icon: string; title: string; desc: string }[];
 }
 
 const productData: Record<string, Product> = {
@@ -1177,12 +1176,6 @@ const productData: Record<string, Product> = {
         ]
       },
     ],
-    features: [
-      { icon: 'fa-solid fa-paintbrush', title: '安装更美观', desc: '定制化结构与设备外观贴合，提升整体视感' },
-      { icon: 'fa-solid fa-table', title: '部署更整洁', desc: '优化桌面形态，让会议桌面更简洁有序' },
-      { icon: 'fa-solid fa-puzzle-piece', title: '结构更贴合', desc: '专为矩阵麦克风设计，安装配合度更高' },
-      { icon: 'fa-solid fa-location-dot', title: '场景更适配', desc: '适用于会议桌、接待桌、报告桌等多种桌面部署' },
-    ],
   },
 
   a13: {
@@ -1230,11 +1223,6 @@ const productData: Record<string, Product> = {
         ]
       },
     ],
-    features: [
-      { icon: 'fa-solid fa-eye-slash', title: '隐蔽安装', desc: '设备嵌入天花板，表面与天花齐平，视觉更干净' },
-      { icon: 'fa-solid fa-building', title: '嵌入式设计', desc: '专为天花板嵌入式安装设计，结构稳固可靠' },
-      { icon: 'fa-solid fa-star', title: '适配MC08', desc: '专为MC08高端吸顶麦克风定制，完美匹配设备尺寸' },
-    ],
   },
 
   a14: {
@@ -1281,11 +1269,6 @@ const productData: Record<string, Product> = {
           { name: '④ 完成部署', value: '检查设备安装稳固性，通电测试，完成部署' },
         ]
       },
-    ],
-    features: [
-      { icon: 'fa-solid fa-screwdriver-wrench', title: '便捷安装', desc: '表面安装无需开孔，安装操作简单，降低施工难度' },
-      { icon: 'fa-solid fa-shield-halved', title: '结构稳固', desc: '专为MC08定制设计，确保设备安装牢固稳定' },
-      { icon: 'fa-solid fa-wrench', title: '易于维护', desc: '表面安装便于设备日常检修与维护，省时省力' },
     ],
   },
 
@@ -1348,11 +1331,6 @@ const productData: Record<string, Product> = {
           { name: '工作温度', value: '0℃ ~ 40℃' },
         ]
       },
-    ],
-    features: [
-      { icon: 'fa-solid fa-graduation-cap', title: '高校专用', desc: '面向高校教室、阶梯教室等基础教学场景优化设计' },
-      { icon: 'fa-solid fa-plug', title: '模拟音频', desc: '凤凰端子模拟接口，兼容传统音频系统，部署简单' },
-      { icon: 'fa-solid fa-microphone', title: '4 拾音区', desc: '4 个独立扩声拾音区，精准覆盖讲台区域' },
     ],
   },
 
@@ -1431,11 +1409,6 @@ const productData: Record<string, Product> = {
           { name: '工作温度', value: '0℃ ~ 40℃' },
         ]
       },
-    ],
-    features: [
-      { icon: 'fa-solid fa-language', title: 'AI 语音转写', desc: '内置语音转写功能，实时将课堂语音转文字，助力教学记录' },
-      { icon: 'fa-solid fa-layer-group', title: '8 台级联', desc: '最大支持 8 台设备 Dante 级联，覆盖超大型教学空间' },
-      { icon: 'fa-solid fa-arrows-left-right', title: 'Dante + 模拟', desc: '双音频架构，同时兼容数字 Dante 和传统模拟音频系统' },
     ],
   },
    a17: {
@@ -1521,11 +1494,6 @@ const productData: Record<string, Product> = {
           { name: '认证', value: 'CQC 认证、SRRC 认证' },
         ]
       },
-    ],
-    features: [
-      { icon: 'fa-solid fa-language', title: 'AI 实时转写翻译', desc: '一键启动"麦耳会记"，实时语音转文字，支持中英互译与屏幕同步' },
-      { icon: 'fa-solid fa-bluetooth', title: '蓝牙 5.3 无线', desc: '稳定低延迟蓝牙连接，NFC 一触配对，摆脱线缆束缚' },
-      { icon: 'fa-solid fa-battery-full', title: '25h 超长续航', desc: '5000mAh 大电池，满足全天会议需求，告别电量焦虑' },
     ],
   },
 };
