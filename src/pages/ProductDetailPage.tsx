@@ -73,6 +73,10 @@ import a14Image1 from '../assets/images/a14-1.webp';
 import a14Image2 from '../assets/images/a14-2.webp';
 import a14Image3 from '../assets/images/a14-3.webp';
 
+import a15Image1 from '../assets/images/a15-1.webp';
+
+import a16Image1 from '../assets/images/a16-1.webp';
+
 import a1Pdf from '../assets/pdf/MC10吸顶麦克风.pdf';
 import a2Pdf from '../assets/pdf/MA600D矩阵麦克风.pdf';
 import a3Pdf from '../assets/pdf/MCS06拾扩一体吸顶麦克风.pdf';
@@ -87,6 +91,8 @@ import a11Pdf from '../assets/pdf/MC04.pdf';
 import a12Pdf from '../assets/pdf/MK300-结构尺寸六视图.pdf';
 import a13Pdf from '../assets/pdf/MK102_结构图.pdf';
 import a14Pdf from '../assets/pdf/MK200-结构图.pdf';
+import a15Pdf from '../assets/pdf/MC08-A说明书.pdf';
+import a16Pdf from '../assets/pdf/MC08-U产品规格书.pdf';
 // 图片查看器组件 - 支持缩放拖拽
 function ImageLightbox({ 
   isOpen, 
@@ -1277,6 +1283,156 @@ const productData: Record<string, Product> = {
     ],
   },
 
+  a15: {
+    id: 'a15',
+    name: '思必驰高端吸顶麦克风 MC08-A（高校款）',
+    shortDesc: 'MC08 高校款，4 拾音区，模拟音频，专为基础教学空间打造',
+    description: 'MC08-A 是思必驰推出的面向高校基础教学场景的高端吸顶麦克风，集成 32 单元全向麦克风阵列，提供 4 个独立扩声拾音区，通过模拟音频接口兼容传统音频系统。单台 MC08-A 可覆盖整个讲台区域，满足教室本地扩声需求，内置 AI 降噪、混响抑制、啸叫抑制、回声消除等算法，有效提升教学效果。',
+    images: [
+      a15Image1,
+    ],
+    brochureUrl: a15Pdf,
+    specs: [
+      {
+        category: '基本规格',
+        items: [
+          { name: '产品颜色', value: '淡雅白' },
+          { name: '产品尺寸', value: '445mm × 445mm × 57.5mm' },
+          { name: '产品净重', value: '< 3KG' },
+          { name: '供电方式', value: 'PoE+ 供电' },
+          { name: '安装方式', value: '吊装' },
+        ]
+      },
+      {
+        category: '音频特性',
+        items: [
+          { name: '可配拾音区', value: '4 个扩声拾音区' },
+          { name: '采样率', value: '48kHz' },
+          { name: '拾音区类型', value: '可配' },
+          { name: '最大背景噪声抑制', value: '35dB' },
+          { name: 'AI 降噪抑制', value: '支持' },
+          { name: 'AI 混响抑制', value: '支持' },
+          { name: 'AI 啸叫抑制', value: '支持' },
+          { name: 'AI 回声消除', value: '支持' },
+          { name: '混音通道', value: '支持' },
+          { name: '智能混音', value: '支持' },
+        ]
+      },
+      {
+        category: '麦克风规格',
+        items: [
+          { name: '麦克风类型', value: '32 单元 MEMS 麦克风阵列' },
+          { name: '灵敏度', value: '-38dBv / 94dB SPL @1KHz' },
+          { name: '信噪比', value: '73.9dBA' },
+        ]
+      },
+      {
+        category: '接口',
+        items: [
+          { name: 'PoE 网口', value: '1 个' },
+          { name: '凤凰端子输出', value: '1 个' },
+          { name: '凤凰端子输入', value: '1 个' },
+          { name: 'RESET 按键', value: '1 个' },
+        ]
+      },
+      {
+        category: '整机规格',
+        items: [
+          { name: '整机功耗', value: '12W' },
+          { name: '工作温度', value: '0℃ ~ 40℃' },
+        ]
+      },
+    ],
+    features: [
+      { icon: 'fa-solid fa-graduation-cap', title: '高校专用', desc: '面向高校教室、阶梯教室等基础教学场景优化设计' },
+      { icon: 'fa-solid fa-plug', title: '模拟音频', desc: '凤凰端子模拟接口，兼容传统音频系统，部署简单' },
+      { icon: 'fa-solid fa-microphone', title: '4 拾音区', desc: '4 个独立扩声拾音区，精准覆盖讲台区域' },
+    ],
+  },
+
+  a16: {
+    id: 'a16',
+    name: '思必驰高端吸顶麦克风 MC08-U（教育款）',
+    shortDesc: 'MC08 教育款，8 拾音区，Dante+模拟双接口，AI 语音转写，8 台级联',
+    description: 'MC08-U 是思必驰推出的面向教育教学场景的高端吸顶麦克风，集成 32 单元全向麦克风阵列，提供 8 个独立可配置拾音区（4 扩声 + 4 通话）。MC08-U 采用 Dante + 模拟双音频架构，兼容数字与模拟音频生态；支持 8 台级联覆盖超大型空间；配备 AI 实时语音转写功能，实现教室扩声、远程教学和课程录播三合一。',
+    images: [
+      a16Image1,
+    ],
+    brochureUrl: a16Pdf,
+    specs: [
+      {
+        category: '基本规格',
+        items: [
+          { name: '产品颜色', value: '淡雅白' },
+          { name: '产品尺寸', value: '445mm × 445mm × 57.5mm' },
+          { name: '产品净重', value: '< 3KG' },
+          { name: '供电方式', value: 'PoE+ 供电' },
+          { name: '安装方式', value: '吊装' },
+        ]
+      },
+      {
+        category: '音频特性',
+        items: [
+          { name: '可配拾音区', value: '8 个（4 扩声 + 4 通话）' },
+          { name: '采样率', value: '48kHz' },
+          { name: '拾音区类型', value: '可配' },
+          { name: '最大背景噪声抑制', value: '35dB' },
+          { name: 'AI 降噪抑制', value: '支持' },
+          { name: 'AI 混响抑制', value: '支持' },
+          { name: 'AI 啸叫抑制', value: '支持' },
+          { name: 'AI 回声消除', value: '支持' },
+          { name: 'AI 全双工', value: '支持' },
+          { name: '混音通道', value: '支持' },
+          { name: '智能混音', value: '支持' },
+        ]
+      },
+      {
+        category: '麦克风规格',
+        items: [
+          { name: '麦克风类型', value: '32 单元 MEMS 麦克风阵列' },
+          { name: '灵敏度', value: '-38dBv / 94dB SPL @1KHz' },
+          { name: '信噪比', value: '73.9dBA' },
+        ]
+      },
+      {
+        category: 'Dante 音频',
+        items: [
+          { name: 'Dante I/O', value: '2×2' },
+          { name: '远程会议通道', value: '1 个' },
+          { name: '本地扩声通道', value: '1 个' },
+        ]
+      },
+      {
+        category: '级联功能',
+        items: [
+          { name: '最大级联台数', value: '8 台' },
+          { name: '级联方式', value: 'Dante 音频 / 网线级联' },
+        ]
+      },
+      {
+        category: '接口',
+        items: [
+          { name: 'Dante/PoE 网口', value: '1 个' },
+          { name: '凤凰端子输入', value: '4 个' },
+          { name: '凤凰端子输出', value: '2 个' },
+          { name: 'RESET 按键', value: '1 个' },
+        ]
+      },
+      {
+        category: '整机规格',
+        items: [
+          { name: '整机功耗', value: '12W' },
+          { name: '工作温度', value: '0℃ ~ 40℃' },
+        ]
+      },
+    ],
+    features: [
+      { icon: 'fa-solid fa-language', title: 'AI 语音转写', desc: '内置语音转写功能，实时将课堂语音转文字，助力教学记录' },
+      { icon: 'fa-solid fa-layer-group', title: '8 台级联', desc: '最大支持 8 台设备 Dante 级联，覆盖超大型教学空间' },
+      { icon: 'fa-solid fa-arrows-left-right', title: 'Dante + 模拟', desc: '双音频架构，同时兼容数字 Dante 和传统模拟音频系统' },
+    ],
+  },
+
 };
 
 // 相关产品轮播组件（独立组件，hooks 在顶层合法调用）
@@ -1555,6 +1711,8 @@ export default function ProductDetailPage() {
                   products={[
                     { id: 'a13', model: 'MK102', name: '嵌入式安装配件', desc: '专为MC08定制，嵌入式安装与天花板齐平，美观隐蔽。', image: a13Image1 },
                     { id: 'a14', model: 'MK200', name: '表面安装配件', desc: '专为MC08定制，表面安装便捷，结构稳固可靠。', image: a14Image1 },
+                    { id: 'a15', model: 'MC08-A', name: '高校款吸顶麦克风', desc: '4拾音区，模拟音频，专为基础教学空间打造。', image: a15Image1 },
+                    { id: 'a16', model: 'MC08-U', name: '教育款吸顶麦克风', desc: '8拾音区，Dante双接口，AI转写，8台级联。', image: a16Image1 },
                   ]}
                 />
               )}
