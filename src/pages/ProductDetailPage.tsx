@@ -813,7 +813,7 @@ const productData: Record<string, Product> = {
   },
   'a8': {
     id: 'a8',
-    name: '思必驰企业级会议麦克风音箱M12',
+    name: '思必驰企业级会议麦克风音箱AIMIC-M12',
     description: 'M12是一款集拾音、扩音、语音转写、字幕同传于一体的企业级会议麦克风音箱，可通过多台级联，满足大中小型多类会议室需求。',
     images: [
       a8Image1,
@@ -886,96 +886,6 @@ const productData: Record<string, Product> = {
       }
     ],
     brochureUrl: a8Pdf,
-  },
-  a17: {
-    id: 'a17',
-    name: '思必驰AI转录麦克风音箱 AIMIC-M6',
-    shortDesc: '6麦阵列蓝牙音箱，AI实时转写翻译，5000mAh超长续航，便携会议利器',
-    description: 'AIMIC-M6 是思必驰推出的 AI 转录麦克风音箱，集 6 单元全向麦克风阵列、高保真扬声器、AI 实时语音转写与翻译于一体。蓝牙 V5.3 无线连接，5000mAh 大电池支持 25 小时以上连续通话，轻巧便携（仅 300g），是移动办公和中小型会议的理想选择。配套"麦耳会记"软件实现实时转写、屏幕同步、中英互译等 AI 功能。',
-    images: [
-      a17Image1,
-      a17Image2,
-      a17Image3,
-      a17Image4,
-    ],
-    brochureUrl: a17Pdf,
-    specs: [
-      {
-        category: '基本规格',
-        items: [
-          { name: '产品名', value: 'AI转录麦克风音箱' },
-          { name: '型号', value: 'AIMIC-M6' },
-          { name: '尺寸', value: '125mm × 125mm × 35.5mm' },
-          { name: '重量', value: '约 300g' },
-          { name: '材质', value: 'ABS' },
-          { name: '颜色', value: '深空灰' },
-        ]
-      },
-      {
-        category: '按键',
-        items: [
-          { name: '音量+/-键', value: '触摸按键' },
-          { name: '麦克风Mute键', value: '触摸按键，开关麦克风' },
-          { name: 'AI转写键', value: '触摸按键，一键拉起/关闭"麦耳会记"软件' },
-          { name: '电源键', value: '支持' },
-        ]
-      },
-      {
-        category: '声学',
-        items: [
-          { name: '麦克风', value: '6 模拟全向麦克风' },
-          { name: '麦克风频响', value: '100Hz - 10kHz' },
-          { name: '有效拾音半径', value: '4m（最大 6m）' },
-          { name: '拾音角度', value: '360° 全向拾音' },
-          { name: '扬声器', value: '1×5W 全频 + 1×5W 高音' },
-          { name: '扬声器频响-音乐', value: '100Hz - 20kHz' },
-          { name: '扬声器频响-通话', value: '150Hz - 7.5kHz' },
-        ]
-      },
-      {
-        category: 'AI 功能',
-        items: [
-          { name: '实时转写', value: '配套"麦耳会记"实现实时语音转文字' },
-          { name: '屏幕同步', value: '实时屏幕投屏显示转写内容' },
-          { name: '中英互译', value: '支持中英文实时互译' },
-          { name: 'AI 降噪', value: '支持' },
-          { name: '回声消除 AEC', value: '支持' },
-          { name: '自动增益 AGC', value: '支持' },
-          { name: '全双工通话', value: '支持（带时延补偿）' },
-        ]
-      },
-      {
-        category: '连接',
-        items: [
-          { name: '蓝牙', value: 'Bluetooth V5.3' },
-          { name: 'NFC', value: 'NFC 标签，支持快速连接配对' },
-          { name: 'USB 连接', value: 'USB 连接 PC（自带 USB 线）' },
-          { name: '兼容系统', value: 'Windows / macOS / iOS / Android' },
-          { name: '会议软件', value: '腾讯会议、钉钉、飞书、企业微信、Zoom、Teams 等' },
-        ]
-      },
-      {
-        category: '电池',
-        items: [
-          { name: '电池容量', value: '5000mAh' },
-          { name: '通话时间', value: '25 小时以上' },
-          { name: '充电方式', value: 'USB 5V/2A' },
-        ]
-      },
-      {
-        category: '其他',
-        items: [
-          { name: '工作温度', value: '0℃ ~ 40℃' },
-          { name: '存储温度', value: '-20℃ ~ +70℃' },
-          { name: '认证', value: 'CQC 认证、SRRC 认证' },
-        ]
-      },
-    ],
-    features: [
-      { icon: 'fa-solid fa-language', title: 'AI 实时转写翻译', desc: '一键启动"麦耳会记"，实时语音转文字，支持中英互译与屏幕同步' },
-      { icon: 'fa-solid fa-bluetooth', title: '蓝牙 5.3 无线', desc: '稳定低延迟蓝牙连接，NFC 一触配对，摆脱线缆束缚' },
-      { icon: 'fa-solid fa-battery-full', title: '25h 超长续航', desc: '5000mAh 大电池，满足全天会议需求，告别电量焦虑' },
-    ],
   },
   'a9': {
     id: 'a9',
@@ -1528,7 +1438,96 @@ const productData: Record<string, Product> = {
       { icon: 'fa-solid fa-arrows-left-right', title: 'Dante + 模拟', desc: '双音频架构，同时兼容数字 Dante 和传统模拟音频系统' },
     ],
   },
-
+   a17: {
+    id: 'a17',
+    name: '思必驰AI转录麦克风音箱 AIMIC-M6',
+    shortDesc: '6麦阵列蓝牙音箱，AI实时转写翻译，5000mAh超长续航，便携会议利器',
+    description: 'AIMIC-M6 是思必驰推出的 AI 转录麦克风音箱，集 6 单元全向麦克风阵列、高保真扬声器、AI 实时语音转写与翻译于一体。蓝牙 V5.3 无线连接，5000mAh 大电池支持 25 小时以上连续通话，轻巧便携（仅 300g），是移动办公和中小型会议的理想选择。配套"麦耳会记"软件实现实时转写、屏幕同步、中英互译等 AI 功能。',
+    images: [
+      a17Image1,
+      a17Image2,
+      a17Image3,
+      a17Image4,
+    ],
+    brochureUrl: a17Pdf,
+    specs: [
+      {
+        category: '基本规格',
+        items: [
+          { name: '产品名', value: 'AI转录麦克风音箱' },
+          { name: '型号', value: 'AIMIC-M6' },
+          { name: '尺寸', value: '125mm × 125mm × 35.5mm' },
+          { name: '重量', value: '约 300g' },
+          { name: '材质', value: 'ABS' },
+          { name: '颜色', value: '深空灰' },
+        ]
+      },
+      {
+        category: '按键',
+        items: [
+          { name: '音量+/-键', value: '触摸按键' },
+          { name: '麦克风Mute键', value: '触摸按键，开关麦克风' },
+          { name: 'AI转写键', value: '触摸按键，一键拉起/关闭"麦耳会记"软件' },
+          { name: '电源键', value: '支持' },
+        ]
+      },
+      {
+        category: '声学',
+        items: [
+          { name: '麦克风', value: '6 模拟全向麦克风' },
+          { name: '麦克风频响', value: '100Hz - 10kHz' },
+          { name: '有效拾音半径', value: '4m（最大 6m）' },
+          { name: '拾音角度', value: '360° 全向拾音' },
+          { name: '扬声器', value: '1×5W 全频 + 1×5W 高音' },
+          { name: '扬声器频响-音乐', value: '100Hz - 20kHz' },
+          { name: '扬声器频响-通话', value: '150Hz - 7.5kHz' },
+        ]
+      },
+      {
+        category: 'AI 功能',
+        items: [
+          { name: '实时转写', value: '配套"麦耳会记"实现实时语音转文字' },
+          { name: '屏幕同步', value: '实时屏幕投屏显示转写内容' },
+          { name: '中英互译', value: '支持中英文实时互译' },
+          { name: 'AI 降噪', value: '支持' },
+          { name: '回声消除 AEC', value: '支持' },
+          { name: '自动增益 AGC', value: '支持' },
+          { name: '全双工通话', value: '支持（带时延补偿）' },
+        ]
+      },
+      {
+        category: '连接',
+        items: [
+          { name: '蓝牙', value: 'Bluetooth V5.3' },
+          { name: 'NFC', value: 'NFC 标签，支持快速连接配对' },
+          { name: 'USB 连接', value: 'USB 连接 PC（自带 USB 线）' },
+          { name: '兼容系统', value: 'Windows / macOS / iOS / Android' },
+          { name: '会议软件', value: '腾讯会议、钉钉、飞书、企业微信、Zoom、Teams 等' },
+        ]
+      },
+      {
+        category: '电池',
+        items: [
+          { name: '电池容量', value: '5000mAh' },
+          { name: '通话时间', value: '25 小时以上' },
+          { name: '充电方式', value: 'USB 5V/2A' },
+        ]
+      },
+      {
+        category: '其他',
+        items: [
+          { name: '工作温度', value: '0℃ ~ 40℃' },
+          { name: '存储温度', value: '-20℃ ~ +70℃' },
+          { name: '认证', value: 'CQC 认证、SRRC 认证' },
+        ]
+      },
+    ],
+    features: [
+      { icon: 'fa-solid fa-language', title: 'AI 实时转写翻译', desc: '一键启动"麦耳会记"，实时语音转文字，支持中英互译与屏幕同步' },
+      { icon: 'fa-solid fa-bluetooth', title: '蓝牙 5.3 无线', desc: '稳定低延迟蓝牙连接，NFC 一触配对，摆脱线缆束缚' },
+      { icon: 'fa-solid fa-battery-full', title: '25h 超长续航', desc: '5000mAh 大电池，满足全天会议需求，告别电量焦虑' },
+    ],
+  },
 };
 
 // 相关产品轮播组件（独立组件，hooks 在顶层合法调用）
@@ -1820,6 +1819,26 @@ export default function ProductDetailPage() {
               )}
               {product.description && (
                 <p className="text-gray-500 mb-4 sm:mb-6 text-sm sm:text-base whitespace-pre-line">{product.description}</p>
+              )}
+              {/* 核心亮点 features 卡片 */}
+              {(product as any).features && ((product as any).features as { icon: string; title: string; desc: string }[]).length > 0 && (
+                <div className="mb-6">
+                  <h3 className="text-base font-semibold mb-3 text-gray-700 flex items-center gap-2">
+                    <i className="fa-solid fa-star text-blue-600"></i>
+                    核心亮点
+                  </h3>
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                    {((product as any).features as { icon: string; title: string; desc: string }[]).map((feature, idx) => (
+                      <div key={idx} className="bg-gradient-to-br from-blue-50 to-white border border-blue-100 rounded-lg p-4">
+                        <div className="flex items-center gap-2 mb-2">
+                          <i className={`${feature.icon} text-blue-600 text-lg`}></i>
+                          <span className="font-medium text-sm text-gray-800">{feature.title}</span>
+                        </div>
+                        <p className="text-xs text-gray-500">{feature.desc}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
               )}
                 {/* 产品规格列表 */}
                 <div className="mb-6">

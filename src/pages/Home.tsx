@@ -19,7 +19,7 @@ import a13Image from '../assets/images/a13-2.webp';
 import a14Image from '../assets/images/a14-2.webp';
 import a15Image from '../assets/images/a15-1.webp';
 import a16Image from '../assets/images/a16-1.webp';
-import a17Image from '../assets/images/a17-1.webp';
+import a17Image from '../assets/images/a17-2.webp';
 import quickImage from '../assets/images/aispeech-logo.png';
 import aispeechLogo from '../assets/images/aispeech-logo.png';
 // 案例图片
@@ -50,7 +50,7 @@ const products = [
   { id:'a11',  name: 'MC04 高端吸顶麦克风-教育款',      desc: '24单元MEMS阵列，2m精准扩声覆盖，ClearSpeakAI算法，专为教室教学打造。', img: a11Image },
   { id: 'a3',  name: 'MCS06 拾扩一体吸顶麦克风',      desc: '32 单元全向阵列，4 个拾音区，支持 Dante，集拾音扩声于一体。', img: a3Image },
   { id: 'a6',  name: 'AISPK-DC20 PoE 吸顶音箱',   desc: '全频同轴天花扬声器，PoE 供电，适用商店、会议室、酒店多场景。', img: a6Image },
-  { id: 'a8',  name: 'M12 企业级会议麦克风音箱',    desc: '集拾音、扩音、语音转写、字幕同传于一体，多台级联，覆盖大中小型会议室。', img: a8Image },
+  { id: 'a8',  name: 'AIMIC-M12 企业级会议麦克风音箱',    desc: '集拾音、扩音、语音转写、字幕同传于一体，多台级联，覆盖大中小型会议室。', img: a8Image },
   { id: 'a17', name: 'AIMIC-M6 AI转录麦克风音箱',   desc: '6麦阵列，AI实时转写翻译，5000mAh超长续航，便携会议利器。', img: a17Image },
   { id: 'a9',  name: 'C60 AI 追踪双目摄像头',      desc: '多种 AI 追踪模式，实时字幕，音视频融合，适配会议讨论、演讲、板书。', img: a9Image },
   { id: 'a4',  name: 'C40T 视频会议摄像机',        desc: '4K 超高清，12 倍光学 + 16 倍数字变焦，适配各类企业会议室。', img: a4Image },
