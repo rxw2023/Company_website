@@ -488,14 +488,14 @@ export default function Home() {
             <img src={aispeechLogo} alt="AISPEECH" className="hero-logo" />
           </div>
           <h1>智能音视频<br />重新定义会议体验</h1>
-          <p className="hero-sub">专业吸顶麦克风、AI 追踪摄像机、声像主机<br />服务高校、企业、政府与酒店</p>
+          <p className="hero-sub">专业吸顶麦克风、音箱、AI 追踪摄像机、声像主机<br />服务高校、企业、政府与酒店</p>
           <div className="hero-actions">
             <span className="btn-primary" onClick={() => scrollTo('products')}>探索产品</span>
             <span className="btn-outline" onClick={() => scrollTo('footer')}>样品 / 预约体验</span>
           </div>
           <div className="hero-stats">
             <div className="stat">
-              <div className="stat-num">16+</div>
+              <div className="stat-num">17+</div>
               <div className="stat-label">核心产品线</div>
             </div>
             <div className="stat">
