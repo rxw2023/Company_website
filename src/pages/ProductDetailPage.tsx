@@ -1820,26 +1820,6 @@ export default function ProductDetailPage() {
               {product.description && (
                 <p className="text-gray-500 mb-4 sm:mb-6 text-sm sm:text-base whitespace-pre-line">{product.description}</p>
               )}
-              {/* 核心亮点 features 卡片 */}
-              {(product as any).features && ((product as any).features as { icon: string; title: string; desc: string }[]).length > 0 && (
-                <div className="mb-6">
-                  <h3 className="text-base font-semibold mb-3 text-gray-700 flex items-center gap-2">
-                    <i className="fa-solid fa-star text-blue-600"></i>
-                    核心亮点
-                  </h3>
-                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                    {((product as any).features as { icon: string; title: string; desc: string }[]).map((feature, idx) => (
-                      <div key={idx} className="bg-gradient-to-br from-blue-50 to-white border border-blue-100 rounded-lg p-4">
-                        <div className="flex items-center gap-2 mb-2">
-                          <i className={`${feature.icon} text-blue-600 text-lg`}></i>
-                          <span className="font-medium text-sm text-gray-800">{feature.title}</span>
-                        </div>
-                        <p className="text-xs text-gray-500">{feature.desc}</p>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
                 {/* 产品规格列表 */}
                 <div className="mb-6">
                    <h2 className="text-base sm:text-lg font-semibold mb-3"></h2>
