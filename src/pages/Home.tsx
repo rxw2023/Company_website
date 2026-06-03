@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import Navigation from '../components/Navigation';
 import SeoHead from '../components/SeoHead';
 // 产品图片
 import a1Image from '../assets/images/a1-1.webp';
@@ -12,6 +13,7 @@ import a8Image from '../assets/images/a8-2.webp';
 import a9Image from '../assets/images/a9-1.webp';
 import a10Image from '../assets/images/a10-1.webp';
 import a11Image from '../assets/images/a11-3.webp'
+import a12Image from '../assets/images/a12-2.webp';
 import quickImage from '../assets/images/aispeech-logo.png';
 import aispeechLogo from '../assets/images/aispeech-logo.png';
 // 案例图片
@@ -31,6 +33,7 @@ import e12Image from '../assets/images/e12-1.webp';
 const products = [
   { id: 'a1',  name: 'MC10 吸顶麦克风',         desc: '128 单元全向麦克风阵列，16 个独立可配拾音区，精细化拾音配置。', img: a1Image },
   { id: 'a2',  name: 'MA600D 矩阵麦克风',        desc: '无感扩声新标杆，3m 拾音半径，>18dB 增益，AI 降噪 + 反馈抑制双算法。', img: a2Image },
+   { id: 'a12', name: 'MK300 桌面安装套件',          desc: '专为MA600D矩阵麦克风桌面部署定制，安装更美观整洁，适配高端会议空间。', img: a12Image },
   { id: 'a3',  name: 'MCS06 拾扩一体吸顶麦',      desc: '32 单元全向阵列，4 个拾音区，支持 Dante，集拾音扩声于一体。', img: a3Image },
   { id: 'a11',  name: 'MC04 高端吸顶麦克风-教育款',      desc: '24单元MEMS阵列，2m精准扩声覆盖，ClearSpeakAI算法，专为教室教学打造。', img: a11Image },
   { id: 'a10', name: 'AIMIC-B100 桌面控制器',      desc: '智能控制 + 精准拾音 + 便捷部署，现代高效会议的得力助手。', img: a10Image },
@@ -447,18 +450,7 @@ export default function Home() {
       <div className="hd-page">
 
         {/* NAV */}
-        <nav className="hd-nav">
-          <span className="nav-logo" onClick={() => scrollTo('about')} style={{ cursor: 'pointer' }}>
-            <img src="/hd-logo.webp" alt="" className="nav-logo-icon" />
-            恒迪视讯
-          </span>
-          <ul className="nav-links">
-            <li><span onClick={() => scrollTo('products')}>产品</span></li>
-            <li><span onClick={() => scrollTo('cases')}>案例</span></li>
-            <li><span onClick={() => scrollTo('about')}>关于我们</span></li>
-          </ul>
-          <span className="nav-cta" onClick={() => scrollTo('footer')}>咨询热线</span>
-        </nav>
+        <Navigation />
 
         {/* HERO */}
         <section className="hd-hero">
@@ -624,6 +616,7 @@ export default function Home() {
                 <li><Link to="/product/a3">MCS06 拾扩一体吸顶麦</Link></li>
                 <li><Link to="/product/a10">AIMIC-B100 桌面控制器</Link></li>
                 <li><Link to="/product/a11">MC04 高端吸顶麦克风-教育款</Link></li>
+                <li><Link to="/product/a12">MK300 桌面安装套件</Link></li>
               </ul>
             </div>
             <div className="hd-footer-contact">

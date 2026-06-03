@@ -62,6 +62,9 @@ import a11Image2 from '../assets/images/a11-2.webp';
 import a11Image3 from '../assets/images/a11-3.webp';
 import a11Image4 from '../assets/images/a11-4.webp';
 
+import a12Image1 from '../assets/images/a12-1.webp';
+import a12Image2 from '../assets/images/a12-2.webp';
+
 import a1Pdf from '../assets/pdf/MC10吸顶麦克风.pdf';
 import a2Pdf from '../assets/pdf/MA600D矩阵麦克风.pdf';
 import a3Pdf from '../assets/pdf/MCS06拾扩一体吸顶麦克风.pdf';
@@ -73,6 +76,7 @@ import a8Pdf from '../assets/pdf/企业级会议麦克风音箱M12.pdf';
 import a9Pdf from '../assets/pdf/AI追踪双目语音摄像头C60.pdf';
 import a10Pdf from '../assets/pdf/B100_DM0403.pdf';
 import a11Pdf from '../assets/pdf/MC04.pdf';
+// a12 暂无PDF
 // 图片查看器组件
 function ImageLightbox({ 
   isOpen, 
@@ -149,11 +153,13 @@ interface ProductSpec {
 interface Product {
   id: string;
   name: string;
+  shortDesc?: string;
   description?: string;
   images: string[];
   specs?: ProductSpec[];
   brochureUrl?: string;
   faq?: { question: string; answer: string }[];
+  features?: { icon: string; title: string; desc: string }[];
 }
 
 const productData: Record<string, Product> = {
@@ -1025,6 +1031,58 @@ const productData: Record<string, Product> = {
       ],
   },
 
+  a12: {
+    id: 'a12',
+    name: '思必驰MK300桌面安装套件',
+    shortDesc: '专为矩阵麦克风桌面部署定制，让安装更美观、更整洁',
+    description: 'MK300 是一款面向矩阵麦克风桌面安装场景开发的定制配件。通过与设备结构贴合的外观设计，可优化桌面安装效果，使设备部署更整洁、更美观，更适合高端会议空间。',
+    images: [
+      a12Image1,
+      a12Image2,
+    ],
+    brochureUrl: undefined,
+    specs: [
+      {
+        category: '产品信息',
+        items: [
+          { name: '产品型号', value: 'MK300' },
+          { name: '产品颜色', value: '深空灰' },
+          { name: '适配设备', value: '矩阵麦克风（MA600D 系列）' },
+          { name: '安装方式', value: '桌面固定安装' },
+        ]
+      },
+      {
+        category: '核心价值',
+        items: [
+          { name: '安装更美观', value: '定制化结构设计，与设备外观更协调，提升整体视感' },
+          { name: '部署更整洁', value: '优化桌面安装形态，让会议桌面更简洁有序' },
+          { name: '结构更贴合', value: '与矩阵麦克风匹配配设计，安装配合度更高' },
+          { name: '场景更适配', value: '适用于会议桌、接待桌、报告桌等桌面部署场景' },
+        ]
+      },
+      {
+        category: '适用场景',
+        items: [
+          { name: '推荐场景', value: '高端会议室 / 会客室 / 报告空间 / 指挥中心' },
+        ]
+      },
+      {
+        category: '安装步骤',
+        items: [
+          { name: '① 固定底座', value: '将底座安装至桌面预定位置' },
+          { name: '② 放置设备', value: '将矩阵麦克风与配件配合安装' },
+          { name: '③ 完成部署', value: '完成安装后，桌面呈现更简洁美观' },
+        ]
+      },
+    ],
+    features: [
+      { icon: 'fa-solid fa-paintbrush', title: '安装更美观', desc: '定制化结构与设备外观贴合，提升整体视感' },
+      { icon: 'fa-solid fa-table', title: '部署更整洁', desc: '优化桌面形态，让会议桌面更简洁有序' },
+      { icon: 'fa-solid fa-puzzle-piece', title: '结构更贴合', desc: '专为矩阵麦克风设计，安装配合度更高' },
+      { icon: 'fa-solid fa-location-dot', title: '场景更适配', desc: '适用于会议桌、接待桌、报告桌等多种桌面部署' },
+    ],
+  },
+
 };
 
 // 相关产品轮播组件（独立组件，hooks 在顶层合法调用）
@@ -1212,18 +1270,9 @@ export default function ProductDetailPage() {
       <Navigation />
       <div className="min-h-screen bg-white text-gray-800 pt-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
-          {/* 返回按钮 - 调整样式以适应触摸屏幕 */}
-          <button
-            onClick={() => navigate('/')}
-            className="mb-4 flex items-center text-sm text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 p-2 -ml-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-            aria-label="返回上一页"
-          >
-            <i className="fa-solid fa-arrow-left mr-1"></i> 返回
-          </button>
           {/* 头部信息 - 只显示AISPEECH的logo */}
           <Header 
             showAiSpeechLogo={true}
-            isProductDetailPage={true}
           />
           {/* 产品详情内容 - 在移动设备上调整为单列布局 */}
           <div className="mt-6 sm:mt-8 grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8">
@@ -1301,7 +1350,8 @@ export default function ProductDetailPage() {
                 <RelatedProducts
                   products={[
                     { id: 'a10', model: 'AIMIC-B100', name: '桌面控制器', desc: '集智能控制、精准拾音与便捷部署于一身，一键掌控全场。', image: a10Image1 },
-            
+                    { id: 'a12', model: 'MK300', name: '桌面安装套件', desc: '专为MA600D桌面控制器设计，稳固安装，简洁美观。', image: a12Image1 },
+                    
                   ]}
                 />
               )}

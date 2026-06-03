@@ -69,6 +69,24 @@ export default function Navigation() {
       >
         <li>
           <span
+            onClick={goHome}
+            style={{
+              fontSize: 14,
+              fontWeight: 400,
+              color: 'rgba(0,0,0,0.72)',
+              textDecoration: 'none',
+              letterSpacing: -0.1,
+              cursor: 'pointer',
+              transition: 'color 0.15s',
+            }}
+            onMouseEnter={(e) => (e.currentTarget.style.color = '#1d1d1f')}
+            onMouseLeave={(e) => (e.currentTarget.style.color = 'rgba(0,0,0,0.72)')}
+          >
+            首页
+          </span>
+        </li>
+        <li>
+          <span
             onClick={() => scrollTo('products')}
             style={{
               fontSize: 14,
