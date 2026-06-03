@@ -77,6 +77,11 @@ import a15Image1 from '../assets/images/a15-1.webp';
 
 import a16Image1 from '../assets/images/a16-1.webp';
 
+import a17Image1 from '../assets/images/a17-1.webp';
+import a17Image2 from '../assets/images/a17-2.webp';
+import a17Image3 from '../assets/images/a17-3.webp';
+import a17Image4 from '../assets/images/a17-4.webp';
+
 import a1Pdf from '../assets/pdf/MC10吸顶麦克风.pdf';
 import a2Pdf from '../assets/pdf/MA600D矩阵麦克风.pdf';
 import a3Pdf from '../assets/pdf/MCS06拾扩一体吸顶麦克风.pdf';
@@ -93,6 +98,7 @@ import a13Pdf from '../assets/pdf/MK102_结构图.pdf';
 import a14Pdf from '../assets/pdf/MK200-结构图.pdf';
 import a15Pdf from '../assets/pdf/MC08-A说明书.pdf';
 import a16Pdf from '../assets/pdf/MC08-U产品规格书.pdf';
+import a17Pdf from '../assets/pdf/AIMIC-M6说明书.pdf';
 // 图片查看器组件 - 支持缩放拖拽
 function ImageLightbox({ 
   isOpen, 
@@ -880,6 +886,96 @@ const productData: Record<string, Product> = {
       }
     ],
     brochureUrl: a8Pdf,
+  },
+  a17: {
+    id: 'a17',
+    name: '思必驰AI转录麦克风音箱 AIMIC-M6',
+    shortDesc: '6麦阵列蓝牙音箱，AI实时转写翻译，5000mAh超长续航，便携会议利器',
+    description: 'AIMIC-M6 是思必驰推出的 AI 转录麦克风音箱，集 6 单元全向麦克风阵列、高保真扬声器、AI 实时语音转写与翻译于一体。蓝牙 V5.3 无线连接，5000mAh 大电池支持 25 小时以上连续通话，轻巧便携（仅 300g），是移动办公和中小型会议的理想选择。配套"麦耳会记"软件实现实时转写、屏幕同步、中英互译等 AI 功能。',
+    images: [
+      a17Image1,
+      a17Image2,
+      a17Image3,
+      a17Image4,
+    ],
+    brochureUrl: a17Pdf,
+    specs: [
+      {
+        category: '基本规格',
+        items: [
+          { name: '产品名', value: 'AI转录麦克风音箱' },
+          { name: '型号', value: 'AIMIC-M6' },
+          { name: '尺寸', value: '125mm × 125mm × 35.5mm' },
+          { name: '重量', value: '约 300g' },
+          { name: '材质', value: 'ABS' },
+          { name: '颜色', value: '深空灰' },
+        ]
+      },
+      {
+        category: '按键',
+        items: [
+          { name: '音量+/-键', value: '触摸按键' },
+          { name: '麦克风Mute键', value: '触摸按键，开关麦克风' },
+          { name: 'AI转写键', value: '触摸按键，一键拉起/关闭"麦耳会记"软件' },
+          { name: '电源键', value: '支持' },
+        ]
+      },
+      {
+        category: '声学',
+        items: [
+          { name: '麦克风', value: '6 模拟全向麦克风' },
+          { name: '麦克风频响', value: '100Hz - 10kHz' },
+          { name: '有效拾音半径', value: '4m（最大 6m）' },
+          { name: '拾音角度', value: '360° 全向拾音' },
+          { name: '扬声器', value: '1×5W 全频 + 1×5W 高音' },
+          { name: '扬声器频响-音乐', value: '100Hz - 20kHz' },
+          { name: '扬声器频响-通话', value: '150Hz - 7.5kHz' },
+        ]
+      },
+      {
+        category: 'AI 功能',
+        items: [
+          { name: '实时转写', value: '配套"麦耳会记"实现实时语音转文字' },
+          { name: '屏幕同步', value: '实时屏幕投屏显示转写内容' },
+          { name: '中英互译', value: '支持中英文实时互译' },
+          { name: 'AI 降噪', value: '支持' },
+          { name: '回声消除 AEC', value: '支持' },
+          { name: '自动增益 AGC', value: '支持' },
+          { name: '全双工通话', value: '支持（带时延补偿）' },
+        ]
+      },
+      {
+        category: '连接',
+        items: [
+          { name: '蓝牙', value: 'Bluetooth V5.3' },
+          { name: 'NFC', value: 'NFC 标签，支持快速连接配对' },
+          { name: 'USB 连接', value: 'USB 连接 PC（自带 USB 线）' },
+          { name: '兼容系统', value: 'Windows / macOS / iOS / Android' },
+          { name: '会议软件', value: '腾讯会议、钉钉、飞书、企业微信、Zoom、Teams 等' },
+        ]
+      },
+      {
+        category: '电池',
+        items: [
+          { name: '电池容量', value: '5000mAh' },
+          { name: '通话时间', value: '25 小时以上' },
+          { name: '充电方式', value: 'USB 5V/2A' },
+        ]
+      },
+      {
+        category: '其他',
+        items: [
+          { name: '工作温度', value: '0℃ ~ 40℃' },
+          { name: '存储温度', value: '-20℃ ~ +70℃' },
+          { name: '认证', value: 'CQC 认证、SRRC 认证' },
+        ]
+      },
+    ],
+    features: [
+      { icon: 'fa-solid fa-language', title: 'AI 实时转写翻译', desc: '一键启动"麦耳会记"，实时语音转文字，支持中英互译与屏幕同步' },
+      { icon: 'fa-solid fa-bluetooth', title: '蓝牙 5.3 无线', desc: '稳定低延迟蓝牙连接，NFC 一触配对，摆脱线缆束缚' },
+      { icon: 'fa-solid fa-battery-full', title: '25h 超长续航', desc: '5000mAh 大电池，满足全天会议需求，告别电量焦虑' },
+    ],
   },
   'a9': {
     id: 'a9',
@@ -1699,9 +1795,8 @@ export default function ProductDetailPage() {
               {product.id === 'a2' && (
                 <RelatedProducts
                   products={[
-                    { id: 'a10', model: 'AIMIC-B100', name: '桌面控制器', desc: '集智能控制、精准拾音与便捷部署于一身，一键掌控全场。', image: a10Image1 },
                     { id: 'a12', model: 'MK300', name: '桌面安装套件', desc: '专为MA600D桌面控制器设计，稳固安装，简洁美观。', image: a12Image1 },
-                    
+                    { id: 'a10', model: 'AIMIC-B100', name: '桌面控制器', desc: '集智能控制、精准拾音与便捷部署于一身，一键掌控全场。', image: a10Image1 },
                   ]}
                 />
               )}
@@ -1709,10 +1804,10 @@ export default function ProductDetailPage() {
               {product.id === 'a7' && (
                 <RelatedProducts
                   products={[
-                    { id: 'a13', model: 'MK102', name: '嵌入式安装配件', desc: '专为MC08定制，嵌入式安装与天花板齐平，美观隐蔽。', image: a13Image1 },
-                    { id: 'a14', model: 'MK200', name: '表面安装配件', desc: '专为MC08定制，表面安装便捷，结构稳固可靠。', image: a14Image1 },
                     { id: 'a15', model: 'MC08-A', name: '高校款吸顶麦克风', desc: '4拾音区，模拟音频，专为基础教学空间打造。', image: a15Image1 },
                     { id: 'a16', model: 'MC08-U', name: '教育款吸顶麦克风', desc: '8拾音区，Dante双接口，AI转写，8台级联。', image: a16Image1 },
+                    { id: 'a13', model: 'MK102', name: '嵌入式安装配件', desc: '专为MC08定制，嵌入式安装与天花板齐平，美观隐蔽。', image: a13Image1 },
+                    { id: 'a14', model: 'MK200', name: '表面安装配件', desc: '专为MC08定制，表面安装便捷，结构稳固可靠。', image: a14Image1 },
                   ]}
                 />
               )}
