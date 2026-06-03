@@ -65,6 +65,14 @@ import a11Image4 from '../assets/images/a11-4.webp';
 import a12Image1 from '../assets/images/a12-1.webp';
 import a12Image2 from '../assets/images/a12-2.webp';
 
+import a13Image1 from '../assets/images/a13-1.webp';
+import a13Image2 from '../assets/images/a13-2.webp';
+import a13Image3 from '../assets/images/a13-3.webp';
+
+import a14Image1 from '../assets/images/a14-1.webp';
+import a14Image2 from '../assets/images/a14-2.webp';
+import a14Image3 from '../assets/images/a14-3.webp';
+
 import a1Pdf from '../assets/pdf/MC10吸顶麦克风.pdf';
 import a2Pdf from '../assets/pdf/MA600D矩阵麦克风.pdf';
 import a3Pdf from '../assets/pdf/MCS06拾扩一体吸顶麦克风.pdf';
@@ -77,6 +85,8 @@ import a9Pdf from '../assets/pdf/AI追踪双目语音摄像头C60.pdf';
 import a10Pdf from '../assets/pdf/B100_DM0403.pdf';
 import a11Pdf from '../assets/pdf/MC04.pdf';
 import a12Pdf from '../assets/pdf/MK300-结构尺寸六视图.pdf';
+import a13Pdf from '../assets/pdf/MK102_结构图.pdf';
+import a14Pdf from '../assets/pdf/MK200-结构图.pdf';
 // 图片查看器组件 - 支持缩放拖拽
 function ImageLightbox({ 
   isOpen, 
@@ -1163,6 +1173,92 @@ const productData: Record<string, Product> = {
     ],
   },
 
+  a13: {
+    id: 'a13',
+    name: '思必驰MK102 嵌入式安装配件',
+    shortDesc: '专为MC08吸顶麦克风嵌入式安装定制，与天花板齐平，美观隐蔽',
+    description: 'MK102 是一款面向 MC08 高端吸顶麦克风嵌入式安装场景开发的定制配件。通过嵌入天花板的结构设计，使设备安装后与天花板表面齐平，实现美观隐蔽的安装效果，适配高端教学与会议空间。',
+    images: [
+      a13Image1,
+      a13Image2,
+      a13Image3,
+    ],
+    brochureUrl: a13Pdf,
+    specs: [
+      {
+        category: '产品信息',
+        items: [
+          { name: '产品型号', value: 'MK102' },
+          { name: '产品名称', value: '嵌入式安装配件' },
+          { name: '适配设备', value: 'MC08 高端吸顶麦克风' },
+          { name: '安装方式', value: '嵌入式（天花板内）' },
+        ]
+      },
+      {
+        category: '核心价值',
+        items: [
+          { name: '安装更美观', value: '嵌入天花板安装，设备与天花齐平，视觉更整洁' },
+          { name: '结构更隐蔽', value: '将设备藏入天花板内，减少外露，提升空间整体感' },
+          { name: '场景更适配', value: '适用于报告厅、阶梯教室、高端会议室等对美观要求高的空间' },
+        ]
+      },
+      {
+        category: '适用场景',
+        items: [
+          { name: '推荐场景', value: '报告厅 / 阶梯教室 / 高端会议室 / 多功能厅' },
+        ]
+      },
+    ],
+    features: [
+      { icon: 'fa-solid fa-eye-slash', title: '隐蔽安装', desc: '设备嵌入天花板，表面与天花齐平，视觉更干净' },
+      { icon: 'fa-solid fa-building', title: '嵌入式设计', desc: '专为天花板嵌入式安装设计，结构稳固可靠' },
+      { icon: 'fa-solid fa-star', title: '适配MC08', desc: '专为MC08高端吸顶麦克风定制，完美匹配设备尺寸' },
+    ],
+  },
+
+  a14: {
+    id: 'a14',
+    name: '思必驰MK200 表面安装配件',
+    shortDesc: '专为MC08吸顶麦克风表面安装定制，安装便捷，稳固可靠',
+    description: 'MK200 是一款面向 MC08 高端吸顶麦克风表面安装场景开发的定制配件。采用表面安装结构设计，安装操作简单快捷，适用于常规天花板表面安装，稳固可靠。',
+    images: [
+      a14Image1,
+      a14Image2,
+      a14Image3,
+    ],
+    brochureUrl: a14Pdf,
+    specs: [
+      {
+        category: '产品信息',
+        items: [
+          { name: '产品型号', value: 'MK200' },
+          { name: '产品名称', value: '表面安装配件' },
+          { name: '适配设备', value: 'MC08 高端吸顶麦克风' },
+          { name: '安装方式', value: '表面安装（天花板下）' },
+        ]
+      },
+      {
+        category: '核心价值',
+        items: [
+          { name: '安装更便捷', value: '表面安装操作简单，无需天花板开孔，快速部署' },
+          { name: '结构更稳固', value: '专为MC08定制，安装配合度高，设备固定牢固可靠' },
+          { name: '维护更轻松', value: '表面安装便于设备检修与维护，降低运维成本' },
+        ]
+      },
+      {
+        category: '适用场景',
+        items: [
+          { name: '推荐场景', value: '教室 / 培训室 / 常规会议室 / 多功能厅' },
+        ]
+      },
+    ],
+    features: [
+      { icon: 'fa-solid fa-screwdriver-wrench', title: '便捷安装', desc: '表面安装无需开孔，安装操作简单，降低施工难度' },
+      { icon: 'fa-solid fa-shield-halved', title: '结构稳固', desc: '专为MC08定制设计，确保设备安装牢固稳定' },
+      { icon: 'fa-solid fa-wrench', title: '易于维护', desc: '表面安装便于设备日常检修与维护，省时省力' },
+    ],
+  },
+
 };
 
 // 相关产品轮播组件（独立组件，hooks 在顶层合法调用）
@@ -1432,6 +1528,15 @@ export default function ProductDetailPage() {
                     { id: 'a10', model: 'AIMIC-B100', name: '桌面控制器', desc: '集智能控制、精准拾音与便捷部署于一身，一键掌控全场。', image: a10Image1 },
                     { id: 'a12', model: 'MK300', name: '桌面安装套件', desc: '专为MA600D桌面控制器设计，稳固安装，简洁美观。', image: a12Image1 },
                     
+                  ]}
+                />
+              )}
+              {/* 相关产品 - 仅 a7 页面显示 */}
+              {product.id === 'a7' && (
+                <RelatedProducts
+                  products={[
+                    { id: 'a13', model: 'MK102', name: '嵌入式安装配件', desc: '专为MC08定制，嵌入式安装与天花板齐平，美观隐蔽。', image: a13Image1 },
+                    { id: 'a14', model: 'MK200', name: '表面安装配件', desc: '专为MC08定制，表面安装便捷，结构稳固可靠。', image: a14Image1 },
                   ]}
                 />
               )}
