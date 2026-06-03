@@ -15,8 +15,8 @@ import a9Image from '../assets/images/a9-1.webp';
 import a10Image from '../assets/images/a10-1.webp';
 import a11Image from '../assets/images/a11-3.webp'
 import a12Image from '../assets/images/a12-2.webp';
-import a13Image from '../assets/images/a13-1.webp';
-import a14Image from '../assets/images/a14-1.webp';
+import a13Image from '../assets/images/a13-2.webp';
+import a14Image from '../assets/images/a14-2.webp';
 import quickImage from '../assets/images/aispeech-logo.png';
 import aispeechLogo from '../assets/images/aispeech-logo.png';
 // 案例图片

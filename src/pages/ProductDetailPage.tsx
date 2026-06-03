@@ -1208,6 +1208,15 @@ const productData: Record<string, Product> = {
           { name: '推荐场景', value: '报告厅 / 阶梯教室 / 高端会议室 / 多功能厅' },
         ]
       },
+      {
+        category: '安装步骤',
+        items: [
+          { name: '① 开孔定位', value: '在天花板上按安装模板标记开孔位置' },
+          { name: '② 安装固定架', value: '将嵌入式固定框架安装至天花板开孔处并锁紧' },
+          { name: '③ 嵌入设备', value: '将MC08放入固定架，接入PoE网线和音频线缆' },
+          { name: '④ 完成安装', value: '调整位置使设备与天花板齐平，检查稳固性' },
+        ]
+      },
     ],
     features: [
       { icon: 'fa-solid fa-eye-slash', title: '隐蔽安装', desc: '设备嵌入天花板，表面与天花齐平，视觉更干净' },
@@ -1249,6 +1258,15 @@ const productData: Record<string, Product> = {
         category: '适用场景',
         items: [
           { name: '推荐场景', value: '教室 / 培训室 / 常规会议室 / 多功能厅' },
+        ]
+      },
+      {
+        category: '安装步骤',
+        items: [
+          { name: '① 固定底座', value: '将表面安装底座固定至天花板预定位置' },
+          { name: '② 连接设备', value: '将MC08与安装底座配合固定，确保卡扣锁紧' },
+          { name: '③ 接入线缆', value: '连接PoE网线和音频线缆至设备接口' },
+          { name: '④ 完成部署', value: '检查设备安装稳固性，通电测试，完成部署' },
         ]
       },
     ],
