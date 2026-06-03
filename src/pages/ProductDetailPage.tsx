@@ -76,8 +76,8 @@ import a8Pdf from '../assets/pdf/企业级会议麦克风音箱M12.pdf';
 import a9Pdf from '../assets/pdf/AI追踪双目语音摄像头C60.pdf';
 import a10Pdf from '../assets/pdf/B100_DM0403.pdf';
 import a11Pdf from '../assets/pdf/MC04.pdf';
-// a12 暂无PDF
-// 图片查看器组件
+import a12Pdf from '../assets/pdf/MK300-结构尺寸六视图.pdf';
+// 图片查看器组件 - 支持缩放拖拽
 function ImageLightbox({ 
   isOpen, 
   images, 
@@ -93,29 +93,109 @@ function ImageLightbox({
   onPrev: () => void;
   onNext: () => void;
 }) {
+  const [scale, setScale] = useState(1);
+  const [position, setPosition] = useState({ x: 0, y: 0 });
+  const [isDragging, setIsDragging] = useState(false);
+  const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
+  const imgRef = useRef<HTMLImageElement>(null);
+
+  // 切换图片时重置
+  useEffect(() => {
+    setScale(1);
+    setPosition({ x: 0, y: 0 });
+  }, [currentIndex]);
+
+  // 关闭时重置
+  useEffect(() => {
+    if (!isOpen) {
+      setScale(1);
+      setPosition({ x: 0, y: 0 });
+    }
+  }, [isOpen]);
+
+  const handleWheel = (e: React.WheelEvent) => {
+    e.preventDefault();
+    const delta = e.deltaY > 0 ? -0.2 : 0.2;
+    setScale(prev => Math.min(Math.max(0.5, prev + delta), 5));
+  };
+
+  const handleMouseDown = (e: React.MouseEvent) => {
+    if (scale > 1) {
+      setIsDragging(true);
+      setDragStart({ x: e.clientX - position.x, y: e.clientY - position.y });
+    }
+  };
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (isDragging) {
+      setPosition({
+        x: e.clientX - dragStart.x,
+        y: e.clientY - dragStart.y,
+      });
+    }
+  };
+
+  const handleMouseUp = () => {
+    setIsDragging(false);
+  };
+
+  const handleDoubleClick = () => {
+    if (scale > 1) {
+      setScale(1);
+      setPosition({ x: 0, y: 0 });
+    } else {
+      setScale(2.5);
+    }
+  };
+
   if (!isOpen) return null;
   return (
     <motion.div 
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4"
-      onClick={onClose}
+      className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4 overflow-hidden"
+      onMouseMove={handleMouseMove}
+      onMouseUp={handleMouseUp}
+      onMouseLeave={handleMouseUp}
     >
       <motion.div
         initial={{ scale: 0.8, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
         exit={{ scale: 0.8, opacity: 0 }}
         transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-        className="relative max-w-5xl max-h-[90vh] w-full"
+        className="relative max-w-5xl max-h-[90vh] w-full flex items-center justify-center"
         onClick={(e) => e.stopPropagation()}
+        onWheel={handleWheel}
       >
-        <img 
-          src={images[currentIndex]} 
-          alt="放大查看" 
-          className="w-full h-full object-contain"
-          loading="lazy"
-        />
+        <div 
+          className="flex items-center justify-center overflow-hidden"
+          style={{ cursor: scale > 1 ? (isDragging ? 'grabbing' : 'grab') : 'default' }}
+        >
+          <img 
+            ref={imgRef}
+            src={images[currentIndex]} 
+            alt="放大查看" 
+            className="select-none"
+            style={{
+              transform: `scale(${scale}) translate(${position.x / scale}px, ${position.y / scale}px)`,
+              transition: isDragging ? 'none' : 'transform 0.15s ease-out',
+              maxWidth: '90vw',
+              maxHeight: '85vh',
+              objectFit: 'contain',
+            }}
+            onMouseDown={handleMouseDown}
+            onDoubleClick={handleDoubleClick}
+            draggable={false}
+            loading="lazy"
+          />
+        </div>
+        {/* 缩放提示 */}
+        {scale === 1 && (
+          <div className="absolute bottom-16 left-1/2 -translate-x-1/2 bg-black/40 text-white/60 px-3 py-1 rounded-full text-xs">
+            滚轮缩放 · 双击切换
+          </div>
+        )}
         {/* 左右箭头按钮 */}
         <button
           className="absolute left-4 top-1/2 -translate-y-1/2 bg-black/50 text-white p-3 rounded-full hover:bg-black/70 transition-colors"
@@ -1040,7 +1120,7 @@ const productData: Record<string, Product> = {
       a12Image1,
       a12Image2,
     ],
-    brochureUrl: undefined,
+    brochureUrl: a12Pdf,
     specs: [
       {
         category: '产品信息',
