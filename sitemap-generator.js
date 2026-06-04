@@ -20,8 +20,8 @@ function sitemapPlugin() {
       const homePath = path.resolve(__dirname, 'src/pages/Home.tsx');
       const homeSource = fs.readFileSync(homePath, 'utf-8');
 
-      // 提取产品 ID：id: 'a1', id: 'a2', ...
-      const productIds = [...homeSource.matchAll(/id:\s*'(a\d+)'/g)].map(m => m[1]);
+      // 提取产品 ID：id: 'a1', id: 'a2', ...（跳过被注释掉的行）
+      const productIds = [...homeSource.matchAll(/^\s*(?!\/\/)\s*\{?\s*id:\s*'(a\d+)'/gm)].map(m => m[1]);
 
       // 提取案例 ID：id: 'e1', id: 'e2', ...
       const caseIds = [...homeSource.matchAll(/id:\s*'(e\d+)'/g)].map(m => m[1]);

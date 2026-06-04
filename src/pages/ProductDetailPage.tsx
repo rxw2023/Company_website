@@ -7,10 +7,10 @@ import { toast } from 'sonner';
 import SeoHead from '../components/SeoHead';
 import { motion } from 'framer-motion';
 
-import a1Image1 from '../assets/images/a1-1.webp';
-import a1Image2 from '../assets/images/a1-2.webp';
-import a1Image3 from '../assets/images/a1-3.webp';
-import a1Image4 from '../assets/images/a1-4.webp';
+// import a1Image1 from '../assets/images/a1-1.webp';
+// import a1Image2 from '../assets/images/a1-2.webp';
+// import a1Image3 from '../assets/images/a1-3.webp';
+// import a1Image4 from '../assets/images/a1-4.webp';
 
 import a2Image1 from '../assets/images/a2-1.webp';
 import a2Image2 from '../assets/images/a2-2.webp';
@@ -65,24 +65,24 @@ import a11Image4 from '../assets/images/a11-4.webp';
 import a12Image1 from '../assets/images/a12-1.webp';
 import a12Image2 from '../assets/images/a12-2.webp';
 
-import a13Image1 from '../assets/images/a13-1.webp';
-import a13Image2 from '../assets/images/a13-2.webp';
-import a13Image3 from '../assets/images/a13-3.webp';
+// import a13Image1 from '../assets/images/a13-1.webp';
+// import a13Image2 from '../assets/images/a13-2.webp';
+// import a13Image3 from '../assets/images/a13-3.webp';
 
-import a14Image1 from '../assets/images/a14-1.webp';
-import a14Image2 from '../assets/images/a14-2.webp';
-import a14Image3 from '../assets/images/a14-3.webp';
+// import a14Image1 from '../assets/images/a14-1.webp';
+// import a14Image2 from '../assets/images/a14-2.webp';
+// import a14Image3 from '../assets/images/a14-3.webp';
 
-import a15Image1 from '../assets/images/a15-1.webp';
+// import a15Image1 from '../assets/images/a15-1.webp';
 
-import a16Image1 from '../assets/images/a16-1.webp';
+// import a16Image1 from '../assets/images/a16-1.webp';
 
 import a17Image1 from '../assets/images/a17-1.webp';
 import a17Image2 from '../assets/images/a17-2.webp';
 import a17Image3 from '../assets/images/a17-3.webp';
 import a17Image4 from '../assets/images/a17-4.webp';
 
-import a1Pdf from '../assets/pdf/MC10吸顶麦克风.pdf';
+// import a1Pdf from '../assets/pdf/MC10吸顶麦克风.pdf';
 import a2Pdf from '../assets/pdf/MA600D矩阵麦克风.pdf';
 import a3Pdf from '../assets/pdf/MCS06拾扩一体吸顶麦克风.pdf';
 import a4Pdf from '../assets/pdf/C40T视频会议室摄像机.pdf';
@@ -94,10 +94,10 @@ import a9Pdf from '../assets/pdf/AI追踪双目语音摄像头C60.pdf';
 import a10Pdf from '../assets/pdf/B100_DM0403.pdf';
 import a11Pdf from '../assets/pdf/MC04.pdf';
 import a12Pdf from '../assets/pdf/MK300-结构尺寸六视图.pdf';
-import a13Pdf from '../assets/pdf/MK102_结构图.pdf';
-import a14Pdf from '../assets/pdf/MK200-结构图.pdf';
-import a15Pdf from '../assets/pdf/MC08-A说明书.pdf';
-import a16Pdf from '../assets/pdf/MC08-U产品规格书.pdf';
+// import a13Pdf from '../assets/pdf/MK102_结构图.pdf';
+// import a14Pdf from '../assets/pdf/MK200-结构图.pdf';
+// import a15Pdf from '../assets/pdf/MC08-A说明书.pdf';
+// import a16Pdf from '../assets/pdf/MC08-U产品规格书.pdf';
 import a17Pdf from '../assets/pdf/AIMIC-M6说明书.pdf';
 // 图片查看器组件 - 支持缩放拖拽
 function ImageLightbox({ 
@@ -265,6 +265,7 @@ interface Product {
 
 const productData: Record<string, Product> = {
     // AISPEECH品牌产品
+/*
   'a1': {
     id: 'a1',
     name: '思必驰MC10吸顶麦克风',
@@ -338,6 +339,7 @@ const productData: Record<string, Product> = {
     ],
      brochureUrl: a1Pdf, // PDF链接
   },
+*/
   'a2': {
     id: 'a2',
     name: '思必驰MA600D矩阵麦克风',
@@ -1178,6 +1180,7 @@ const productData: Record<string, Product> = {
     ],
   },
 
+/*
   a13: {
     id: 'a13',
     name: '思必驰MK102 嵌入式安装配件',
@@ -1411,6 +1414,7 @@ const productData: Record<string, Product> = {
       },
     ],
   },
+*/
    a17: {
     id: 'a17',
     name: '思必驰AI转录麦克风音箱 AIMIC-M6',
@@ -1767,8 +1771,8 @@ export default function ProductDetailPage() {
                   ]}
                 />
               )}
-              {/* 相关产品 - 仅 a7 页面显示 */}
-              {product.id === 'a7' && (
+              {/* 相关产品 - 仅 a7 页面显示（a13/a14/a15/a16 暂隐藏）* /}
+              {/* {product.id === 'a7' && (
                 <RelatedProducts
                   products={[
                     { id: 'a15', model: 'MC08-A', name: '高校款吸顶麦克风', desc: '4拾音区，模拟音频，专为基础教学空间打造。', image: a15Image1 },
@@ -1777,7 +1781,7 @@ export default function ProductDetailPage() {
                     { id: 'a14', model: 'MK200', name: '表面安装配件', desc: '专为MC08定制，表面安装便捷，结构稳固可靠。', image: a14Image1 },
                   ]}
                 />
-              )}
+              )} */}
             </div>
              {/* 产品信息区域 */}
             <div>
