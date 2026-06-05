@@ -62,7 +62,8 @@ pnpm build
 ```
 .
 ├── public/                          # 静态资源
-│   └── favicon.webp
+│   ├── favicon.webp
+│   └── robots.txt
 ├── src/
 │   ├── assets/
 │   │   ├── images/                  # 产品图 + 案例图 (WebP)
