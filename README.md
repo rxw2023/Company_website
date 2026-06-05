@@ -85,12 +85,21 @@ pnpm build
 │   ├── main.tsx                     # 应用入口
 │   ├── index.css                    # Tailwind 指令 + 全局样式
 │   └── vite-env.d.ts                # Vite 类型声明
-├── prerender.js                     # 构建后预渲染脚本
-├── sitemap-generator.js             # Vite 插件：自动生成 sitemap
+├── .env.example                     # 环境变量模板
+├── .env.local                       # 本地环境变量（gitignore，不提交）
+├── .gitignore
+├── index.html                       # HTML 入口
+├── package.json
+├── pnpm-lock.yaml
+├── tsconfig.json                    # TypeScript 配置
 ├── vite.config.ts                   # Vite 配置（含 API 代理）
 ├── tailwind.config.js               # Tailwind 配置
 ├── postcss.config.js                # PostCSS 配置
-└── tsconfig.json                    # TypeScript 配置
+├── prerender.js                     # 构建后预渲染脚本
+├── sitemap-generator.js             # Vite 插件：自动生成 sitemap
+├── DEPLOYMENT_GUIDE.md              # 部署指南
+├── LICENSE
+└── README.md
 ```
 
 ## AI 客服配置
