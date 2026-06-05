@@ -1,6 +1,6 @@
-# 恒迪视讯官网
+# Company Website
 
-杭州恒迪视讯技术有限公司官方网站，基于 React + Vite + TypeScript + Tailwind CSS 构建的现代化企业官网，主营思必驰（AISPEECH）全系列音视频产品。
+企业官网模板，使用 React + Vite + TypeScript + Tailwind CSS 构建，适用于产品展示型企业网站。
 
 ## 特性
 
@@ -108,7 +108,12 @@ AI 客服使用 [SiliconFlow](https://siliconflow.cn) 提供的 DeepSeek-V3 模�
 
 ### 环境变量
 
-创建 `.env.local` 文件（请勿提交到 Git）：
+```bash
+# 复制 .env.example 为 .env.local 并填入实际值
+cp .env.example .env.local
+```
+
+`.env.local` 内容：
 
 ```bash
 VITE_AI_API_KEY=sk-xxxxxxxxxxxxxxxx
