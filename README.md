@@ -2,15 +2,15 @@
 
 杭州恒迪视讯技术有限公司官方网站，基于 React + Vite + TypeScript + Tailwind CSS 构建的现代化企业官网，主营思必驰（AISPEECH）全系列音视频产品。
 
-## ✨ 特性
+## 特性
 
-- **响应式设计** — 完美适配桌面、平板、移动端
-- **SEO 优化** — 预渲染静态 HTML + 结构化数据 + 自动生成 Sitemap
-- **AI 智能客服** — 接入 SiliconFlow / DeepSeek API，实时流式回答产品咨询
-- **产品展示** — 图片灯箱、规格参数表、PDF 彩页下载
+- **响应式设计** — 适配桌面、平板、移动端
+- **SEO 优化** — 预渲染静态 HTML + 结构化数据 + Sitemap 自动生成
+- **AI 智能客服** — 接入 SiliconFlow / DeepSeek API，流式输出回答产品咨询
+- **产品全景展示** — 图片灯箱浏览、规格参数表、PDF 彩页下载
 - **工程案例** — 分类筛选展示，图文并茂
 
-## 🛠 技术栈
+## 技术栈
 
 | 层次 | 技术 |
 |------|------|
@@ -20,14 +20,15 @@
 | 路由 | [React Router 7](https://reactrouter.com) |
 | 动画 | [Framer Motion](https://www.framer.com/motion) |
 | SEO | [React Helmet Async](https://github.com/staylor/react-helmet-async) |
+| Toast | [Sonner](https://sonner.emilkowal.ski) |
 | 包管理 | [pnpm](https://pnpm.io) |
 
-## 📦 快速开始
+## 快速开始
 
 ### 环境要求
 
-- Node.js ≥ 18
-- pnpm ≥ 8
+- Node.js >= 18
+- pnpm >= 8
 
 ### 安装依赖
 
@@ -41,7 +42,7 @@ pnpm install
 pnpm dev
 ```
 
-浏览器访问 [http://localhost:3000](http://localhost:3000)
+访问 http://localhost:3000
 
 ### 构建生产版本
 
@@ -50,38 +51,64 @@ pnpm build
 ```
 
 构建流程：
-1. Vite 打包所有资源
-2. 自动生成 `sitemap.xml`
-3. `prerender.js` 为每个路由生成静态 HTML（SEO 预渲染）
+
+1. Vite 打包并自动生成 `sitemap.xml`
+2. `prerender.js` 为每个路由生成静态 HTML
 
 构建产物输出至 `dist/` 目录。
 
-## 📁 目录结构
+## 项目结构
 
 ```
-├── public/              # 静态资源（favicon 等）
+.
+├── public/                          # 静态资源
+│   └── favicon.webp
 ├── src/
-│   ├── assets/          # 图片、PDF 等媒体文件
-│   │   ├── images/      # 产品图片（WebP 格式）
-│   │   └── pdf/         # 产品彩页 PDF
-│   ├── components/      # 公共组件
-│   │   └── AiChatWidget/  # AI 客服悬浮窗
-│   ├── pages/           # 页面组件
-│   │   ├── Home.tsx     # 首页（产品 + 案例）
-│   │   ├── ProductDetailPage.tsx  # 产品详情页
-│   │   └── EngineeringCasePage.tsx # 案例详情页
-│   └── main.tsx         # 应用入口
-├── prerender.js         # SSG 预渲染脚本
-├── sitemap-generator.js # Sitemap 自动生成插件
-├── vite.config.ts       # Vite 配置
-└── tailwind.config.js   # Tailwind 配置
+│   ├── assets/
+│   │   ├── images/                  # 产品图 + 案例图 (WebP)
+│   │   ├── pdf/                     # 产品彩页 / 说明书 (PDF)
+│   │   └── videos/                  # 案例视频 (MP4)
+│   ├── components/
+│   │   ├── AiChatWidget/            # AI 悬浮聊天窗
+│   │   │   ├── AiChatWidget.tsx     # 聊天 UI 组件
+│   │   │   └── aiService.ts         # API 调用 + System Prompt
+│   │   ├── Header.tsx               # 面包屑头部
+│   │   ├── Navigation.tsx           # 全局导航栏
+│   │   └── SeoHead.tsx              # SEO 结构化数据
+│   ├── pages/
+│   │   ├── Home.tsx                 # 首页（产品卡片 + 案例网格）
+│   │   ├── ProductDetailPage.tsx    # 产品详情页（图集 + 规格 + 下载）
+│   │   ├── CaseDetailPage.tsx       # 案例详情页
+│   │   ├── FaqPage.tsx              # FAQ 常见问题
+│   │   └── NotFoundPage.tsx         # 404 页面
+│   ├── App.tsx                      # 路由定义
+│   ├── main.tsx                     # 应用入口
+│   ├── index.css                    # Tailwind 指令 + 全局样式
+│   └── vite-env.d.ts                # Vite 类型声明
+├── prerender.js                     # 构建后预渲染脚本
+├── sitemap-generator.js             # Vite 插件：自动生成 sitemap
+├── vite.config.ts                   # Vite 配置（含 API 代理）
+├── tailwind.config.js               # Tailwind 配置
+├── postcss.config.js                # PostCSS 配置
+└── tsconfig.json                    # TypeScript 配置
 ```
 
-## 🤖 AI 客服配置
+## AI 客服配置
 
-AI 客服使用 [SiliconFlow](https://siliconflow.cn) 提供的 DeepSeek-V3 模型。需在 `src/components/AiChatWidget/` 中配置 API Key。
+AI 客服使用 [SiliconFlow](https://siliconflow.cn) 提供的 DeepSeek-V3 模型。
 
-开发环境通过 Vite 代理转发请求，生产环境需配置 Nginx 反向代理：
+### 环境变量
+
+创建 `.env.local` 文件（请勿提交到 Git）：
+
+```bash
+VITE_AI_API_KEY=sk-xxxxxxxxxxxxxxxx
+VITE_AI_MODEL=deepseek-ai/DeepSeek-V3
+```
+
+### 生产部署
+
+生产环境需配置 Nginx 反向代理：
 
 ```nginx
 location /api-ai/ {
@@ -89,6 +116,6 @@ location /api-ai/ {
 }
 ```
 
-## 📄 License
+## License
 
 [MIT](./LICENSE)
