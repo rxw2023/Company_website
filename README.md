@@ -7,21 +7,22 @@
 - **响应式设计** — 适配桌面、平板、移动端
 - **SEO 优化** — 预渲染静态 HTML + 结构化数据 + Sitemap 自动生成
 - **AI 智能客服** — 接入 SiliconFlow / DeepSeek API，流式输出回答产品咨询
+- **全站搜索** — Cmd/Ctrl + K 呼出搜索弹窗，覆盖产品、案例、FAQ，支持多词加权匹配和高亮
 - **产品全景展示** — 图片灯箱浏览、规格参数表、PDF 彩页下载
 - **工程案例** — 分类筛选展示，图文并茂
 
 ## 技术栈
 
-| 层次 | 技术 |
-|------|------|
-| 框架 | [React 18](https://react.dev) + [TypeScript](https://www.typescriptlang.org) |
-| 构建 | [Vite 6](https://vitejs.dev) |
-| 样式 | [Tailwind CSS 3](https://tailwindcss.com) |
-| 路由 | [React Router 7](https://reactrouter.com) |
-| 动画 | [Framer Motion](https://www.framer.com/motion) |
-| SEO | [React Helmet Async](https://github.com/staylor/react-helmet-async) |
-| Toast | [Sonner](https://sonner.emilkowal.ski) |
-| 包管理 | [pnpm](https://pnpm.io) |
+| 层次    | 技术                                                                           |
+| ----- | ---------------------------------------------------------------------------- |
+| 框架    | [React 18](https://react.dev) + [TypeScript](https://www.typescriptlang.org) |
+| 构建    | [Vite 6](https://vitejs.dev)                                                 |
+| 样式    | [Tailwind CSS 3](https://tailwindcss.com)                                    |
+| 路由    | [React Router 7](https://reactrouter.com)                                    |
+| 动画    | [Framer Motion](https://www.framer.com/motion)                               |
+| SEO   | [React Helmet Async](https://github.com/staylor/react-helmet-async)          |
+| Toast | [Sonner](https://sonner.emilkowal.ski)                                       |
+| 包管理   | [pnpm](https://pnpm.io)                                                      |
 
 ## 快速开始
 
@@ -74,8 +75,10 @@ pnpm build
 │   │   │   ├── AiChatWidget.tsx     # 聊天 UI 组件
 │   │   │   └── aiService.ts         # API 调用 + System Prompt
 │   │   ├── Header.tsx               # 面包屑头部
-│   │   ├── Navigation.tsx           # 全局导航栏
+│   │   ├── Navigation.tsx           # 全局导航栏 + 全站搜索弹窗
 │   │   └── SeoHead.tsx              # SEO 结构化数据
+│   ├── data/
+│   │   └── siteData.ts              # 产品/案例共享数据源
 │   ├── pages/
 │   │   ├── Home.tsx                 # 首页（产品卡片 + 案例网格）
 │   │   ├── ProductDetailPage.tsx    # 产品详情页（图集 + 规格 + 下载）
@@ -105,7 +108,7 @@ pnpm build
 
 ## AI 客服配置
 
-AI 客服使用 [SiliconFlow](https://siliconflow.cn) 提供的 DeepSeek-V3 模型。
+AI 客服使用 [SiliconFlow](https://siliconflow.cn) 提供的DeepSeek-V4-Flash 模型。
 
 ### 环境变量
 
@@ -118,7 +121,7 @@ cp .env.example .env.local
 
 ```bash
 VITE_AI_API_KEY=sk-xxxxxxxxxxxxxxxx
-VITE_AI_MODEL=deepseek-ai/DeepSeek-V3
+VITE_AI_MODEL=deepseek-ai/DeepSeek-V4-Flash
 ```
 
 ### 生产部署
