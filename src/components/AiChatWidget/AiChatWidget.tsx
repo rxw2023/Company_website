@@ -5,8 +5,8 @@ import { sendMessageToSiliconFlow } from './aiService';
 // ============ 配置 ============
 const CONFIG = {
   /** SiliconFlow API Key */
-  apiKey: import.meta.env.VITE_AI_API_KEY || '',
-  model: import.meta.env.VITE_AI_MODEL || 'deepseek-ai/DeepSeek-V3',
+  apiKey: import.meta.env.VITE_AI_API_KEY,
+  model: import.meta.env.VITE_AI_MODEL,
 };
 
 // ============ 组件 ============
