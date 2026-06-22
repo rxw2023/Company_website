@@ -15,6 +15,8 @@ import a9Image from '../assets/images/a9-1.webp';
 import a10Image from '../assets/images/a10-1.webp';
 import a11Image from '../assets/images/a11-3.webp'
 import a12Image from '../assets/images/a12-2.webp';
+import a18Image from '../assets/images/a18-2.webp';
+import a19Image from '../assets/images/a19-1.webp';
 // import a13Image from '../assets/images/a13-2.webp';
 // import a14Image from '../assets/images/a14-2.webp';
 // import a15Image from '../assets/images/a15-1.webp';
@@ -55,6 +57,8 @@ const products = [
   { id: 'a9',  name: 'C60 AI 追踪双目摄像头',      desc: '多种 AI 追踪模式，实时字幕，音视频融合，适配会议讨论、演讲、板书。', img: a9Image },
   { id: 'a4',  name: 'C40T 视频会议摄像机',        desc: '4K 超高清，12 倍光学 + 16 倍数字变焦，适配各类企业会议室。', img: a4Image },
   { id: 'a5',  name: 'MT100 AI 声像追踪主机',      desc: '音视频融合追踪引擎，多种追踪模式，适配企业与教育演讲场景。', img: a5Image },
+  { id: 'a18', name: '会议办公大模型信创一体机D1',      desc: 'AI 语音记录、AI要点总结、AI一键纪要、AI待办生成', img: a18Image },
+  { id: 'a19', name: 'BYOM 投屏套装',                desc: '无线投屏、BYOM会议、HDMI矩阵切换、中控四合一，4K@60Hz，双网隔离', img: a19Image },
   { id: 'a99', name: '后续产品尽情期待',       desc: '', img: quickImage },
 ];
 

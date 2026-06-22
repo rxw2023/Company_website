@@ -1,6 +1,5 @@
 import { useNavigate, useLocation } from 'react-router-dom';
-import { useState, useRef, useEffect, useCallback, useMemo } from 'react';
-import { products, cases } from '../data/siteData';
+import { useState, useRef, useEffect, useCallback } from 'react';
 
 // ── 产品详情数据（摘要搜索用） ──
 interface ProductDetail {
@@ -36,7 +35,10 @@ const productDetails: ProductDetail[] = [
     fullText: 'MC04高端吸顶麦克风教育款 24单元全向MEMS麦克风阵列 2米精准扩声覆盖半径 远程拾音3.5米 ClearSpeakAI专利算法 抑制板书声翻书声风扇声 混响抑制 啸叫抑制AFC 自动增益AGC 模拟音频接口 凤凰端子 基本规格: 颜色淡雅白 尺寸250mm*250mm*54mm 净重<2kg 供电PoE+ 安装吊装 麦克风规格: 24单元MEMS麦克风阵列 灵敏度-38dBv 频响20Hz~20000Hz 动态范围84dB 最大声压级104dB SPL 信噪比73.9dBA 音频特性: 拾音区4个形状大小可调位置可拖拽 扩声拾音半径2m推荐 远程拾音半径3.5m推荐 采样率48kHz 最大背景噪声抑制35dB AI降噪支持 AI混响支持 AI啸叫支持 AI回声消除支持 智能混音支持 音频通道: 远程会议通道1个 本地扩声通道1个 级联功能: 级联限制2台 接口: 网口1个10/100/1000M RJ-45 PoE 凤凰端子输入4个 凤凰端子输出2个 RESET按键1个 其他: 工作温度0~40℃ 存放温度-20~70℃ 湿度20-95%RH 整机功耗12W' },
   { id: 'a12', name: '思必驰MK300 桌面安装套件', description: '专为MA600D矩阵麦克风桌面部署定制，安装更美观整洁，适配高端会议空间。',
     fullText: 'MK300桌面安装套件 专为MA600D矩阵麦克风桌面部署定制 深空灰 安装更美观 部署更整洁 结构更贴合 产品信息: 产品型号MK300 颜色深空灰 适配设备矩阵麦克风MA600D系列 安装方式桌面固定安装 核心价值: 定制化结构设计与设备外观更协调 优化桌面安装形态让会议桌面更简洁有序 与矩阵麦克风匹配设计安装配合度更高 适用于会议桌接待桌报告桌等桌面部署场景 适用场景: 高端会议室 会客室 报告空间 指挥中心 安装步骤: 固定底座将底座安装至桌面预定位置 放置设备将矩阵麦克风与配件配合安装 完成部署完成安装后桌面呈现更简洁美观' },
-];
+  { id: 'a18', name: '思必驰会议办公大模型信创一体机D1', description: 'D1是思必驰基于自主创新技术推出的一款专为党政企客户会议办公效率提升的大模型信创一体机，内置"DFM+DeepSeek"双大语言模型加持，采用从底层芯片到上层应用的全国产化技术架构，基于自研的全链路智能语音语言技术，提供离线语音识别、声纹区分发言人、AI纪要生成等多种功能，可满足对数据安全性要求较高的政企客户会议研讨、演讲培训、知识库搭建等多场景会议纪要整理及结构化知识管理需求，帮助解决会议记录难、会议纪要整理费时费力等问题。'},
+  { id: 'a19', name: '思必驰BYOM投屏套装（SW10+SD10）', description: '集无线投屏、BYOM会议、HDMI矩阵切换、会议室中控于一体，4K@60Hz超清画质，双网物理隔离，USB-C一线通60W供电，支持四画面同屏。',
+    fullText: 'BYOM投屏套装 无线投屏 BYOM会议 HDMI矩阵切换 会议室中控 AIMATE-SW10投屏会议主机 AIMATE-SD10无线投屏器 4K@60Hz AirPlay Miracast 四画面同屏 双网物理隔离 USB-C 60W供电 10-100㎡会议室 政企会议室 教育研讨室 报告厅 音视频协作中枢 无需安装驱动 即连即投 无线BYOM双流传输 音频矩阵切换 双屏异显 RS232中控 CEC控制 2个千兆网口 Web UI Telnet API 集中运维 多会议室统一管理 批量配置 远程升级 自动休眠 唤醒 基本规格: 主机尺寸277.6×142×29.1mm 净重1.0kg 供电DC 20V 6A 最大功耗93W 视频输入1×HDMI 1路+1×USB-C 视频输出HDMI Out1最高4K@60Hz HDMI Out2最高4K@30Hz 音频输出2×HDMI+1×3.5mm模拟音频 USB接口1×USB 3.0 Type-B 3×USB 3.0 Type-A 1×USB-C 网络2×RJ45千兆 WiFi5双频 控制RS232+LAN+CEC 工作温度0~45℃ 无线投屏器SD10 USB-C接口 最高4K@30fps 5GHz/2.4GHz频段 触控回传 支持Windows/Mac' },
+  ];
 
 // ── 案例摘要数据 ──
 interface CaseSummary {
@@ -142,7 +144,7 @@ function search(query: string): SearchResult[] {
     })
     .filter((i) => i.score > 0)
     .sort((a, b) => b.score - a.score)
-    .slice(0, 10);
+    .slice(0, 30);
   return scored.map((s) => s.result);
 }
 

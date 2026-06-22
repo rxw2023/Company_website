@@ -65,6 +65,14 @@ import a11Image4 from '../assets/images/a11-4.webp';
 import a12Image1 from '../assets/images/a12-1.webp';
 import a12Image2 from '../assets/images/a12-2.webp';
 
+import a18Image1 from '../assets/images/a18-1.webp';
+import a18Image2 from '../assets/images/a18-2.webp';
+
+import a19Image1 from '../assets/images/a19-1.webp';
+import a19Image2 from '../assets/images/a19-2.webp';
+import a19Image3 from '../assets/images/a19-3.webp';
+import a19Image4 from '../assets/images/a19-4.webp';
+
 // import a13Image1 from '../assets/images/a13-1.webp';
 // import a13Image2 from '../assets/images/a13-2.webp';
 // import a13Image3 from '../assets/images/a13-3.webp';
@@ -94,11 +102,14 @@ import a9Pdf from '../assets/pdf/AI追踪双目语音摄像头C60.pdf';
 import a10Pdf from '../assets/pdf/B100_DM0403.pdf';
 import a11Pdf from '../assets/pdf/MC04.pdf';
 import a12Pdf from '../assets/pdf/MK300-结构尺寸六视图.pdf';
+import a18Pdf from '../assets/pdf/AI智能声像追踪主机MT100.pdf';
+import a19Pdf from '../assets/pdf/BYOM投屏套装.pdf';
 // import a13Pdf from '../assets/pdf/MK102_结构图.pdf';
 // import a14Pdf from '../assets/pdf/MK200-结构图.pdf';
 // import a15Pdf from '../assets/pdf/MC08-A说明书.pdf';
 // import a16Pdf from '../assets/pdf/MC08-U产品规格书.pdf';
 // import a17Pdf from '../assets/pdf/AIMIC-M6说明书.pdf';
+
 // 图片查看器组件 - 支持缩放拖拽
 function ImageLightbox({ 
   isOpen, 
@@ -1135,7 +1146,6 @@ const productData: Record<string, Product> = {
   a12: {
     id: 'a12',
     name: '思必驰MK300桌面安装套件',
-    shortDesc: '专为矩阵麦克风桌面部署定制，让安装更美观、更整洁',
     description: 'MK300 是一款面向矩阵麦克风桌面安装场景开发的定制配件。通过与设备结构贴合的外观设计，可优化桌面安装效果，使设备部署更整洁、更美观，更适合高端会议空间。',
     images: [
       a12Image1,
@@ -1177,7 +1187,161 @@ const productData: Record<string, Product> = {
       },
     ],
   },
-
+a18:{
+    id: 'a18',
+    name: '思必驰会议办公大模型信创一体机D1',
+    description: 'D1是思必驰基于自主创新技术推出的一款专为党政企客户会议办公效率提升的大模型信创一体机，内置“DFM+DeepSeek”双大语言模型加持，采用从底层芯片到上层应用的全国产化技术架构，基于自研的全链路智能语音语言技术，提供离线语音识别、声纹区分发言人、AI纪要生成等多种功能，可满足对数据安全性要求较高的政企客户会议研讨、演讲培训、知识库搭建等多场景会议纪要整理及结构化知识管理需求，帮助解决会议记录难、会议纪要整理费时费力等问题。',
+    images: [
+      a18Image2,
+      a18Image1,
+    ],
+    brochureUrl: a18Pdf,
+    specs: [
+      {
+        category: '产品规格',
+        items: [
+          {name: '产品型号', value: 'D1-S2（塔式一体机）/ D1-S3（4U机架式一体机）'},
+          {name: 'CPU型号', value: '鲲鹏920'},
+          {name: 'CPU核数', value: '64'},
+          {name: '内存', value: '256G DDR4'},
+          {name: '操作系统', value: '银河麒麟V10 SP3 服务器版'},
+          {name: 'GPU型号', value: '昇腾 Atlas 300l Duo*2'},
+          {name: '硬件接口', value: 'USB 2.0 * 2；USB 3.0 * 2；HDMI * 2；RJ45 * 4；BMC管理网络口 * 1。'},
+          {name: '电源', value: '1路ATX单电源，国标220Vdc'},
+          {name: '温度', value: '运行状态：0°C ~ 55°C（不含算力卡或GPU卡）非运行状态：-40°C ~ +85°C（不含算力卡或GPU卡）'},
+          {name: '尺寸', value: 'D1-S2：390 mm×430 mm×188mm；D1-S3：430 mm×462.8 mm×176 mm'},
+        ]
+      },
+    ],
+  },
+  a19: {
+    id: 'a19',
+    name: '思必驰BYOM投屏套装（SW10+SD10）',
+    description: '思必驰BYOM投屏套装专为现代会议协作空间打造，一站式解决方案（30㎡~60㎡）。套装包含AIMATE-SW10投屏会议主机和AIMATE-SD10无线传屏器。支持AirPlay、Miracast、投屏器等多种无线投屏方式，实现无线BYOM会议。SW10具备多路音视频输入/输出，支持矩阵切换功能；SD10配合PC可无线连接USB摄像头、麦克风、扬声器等会议外设，一根USB-C线搞定视频+音频+USB数据+千兆网+60W供电。双千兆网口支持透明/隔离模式，满足政企网络安全需求。智能功耗管理，支持自动待机和远程唤醒，大幅降低运维成本。适用于10-100㎡中高端会议室。',
+    images: [
+      a19Image1,
+      a19Image2,
+      a19Image3,
+      a19Image4,
+    ],
+    brochureUrl: a19Pdf,
+    specs: [
+      {
+        category: '套装方案',
+        items: [
+          { name: '一站式解决方案', value: '30㎡~60㎡' },
+          { name: 'BYOM投屏会议主机', value: 'AIMATE-SW10' },
+          { name: '无线传屏器', value: 'AIMATE-SD10' },
+        ]
+      },
+      {
+        category: '基本规格',
+        items: [
+          { name: '产品名', value: 'BYOM投屏会议主机' },
+          { name: '型号', value: 'AIMATE-SW10' },
+          { name: '尺寸', value: '277.6 x 142 x 29.1 mm' },
+          { name: '产品净重', value: '1.0kg' },
+        ]
+      },
+      {
+        category: '视频输入',
+        items: [
+          { name: 'HDMI In', value: '1 路，HDMI 1.4, HDCP 1.4' },
+          { name: 'USB-C In', value: '1 路，DisplayPort 1.1, HDCP 1.4' },
+          { name: '输入分辨率', value: '最高 4K@30Hz 4:4:4' },
+        ]
+      },
+      {
+        category: '视频输出',
+        items: [
+          { name: 'HDMI Out1', value: '1 路，HDMI 2.0, HDCP 2.2, 最高 4K@60Hz 4:4:4' },
+          { name: 'HDMI Out2', value: '1 路，HDMI 1.4, HDCP 1.4, 最高 4K@30Hz 4:4:4' },
+        ]
+      },
+      {
+        category: '音频接口',
+        items: [
+          { name: '输入音频', value: 'HDMI/USB-C/LAN/WLAN: RAW PCM 2.0, 16-bit, 32/44.1/48KHz' },
+          { name: '输出音频', value: '2×HDMI + 1×模拟音频 (AUDIO OUT), RAW PCM 2.0, 16-bit, 48KHz' },
+        ]
+      },
+      {
+        category: '接口',
+        items: [
+          { name: 'USB Host', value: '1×USB 3.0 Type-B' },
+          { name: 'USB 3.0 Type-A', value: '3 个 (支持 USB 外设扩展，每端口 DC 5V 1A)' },
+          { name: 'USB-C', value: '支持视频输入、60W PD 充电、千兆以太网、USB 3.0 传输' },
+          { name: 'AUDIO OUT', value: '1×3.5mm 模拟音频输出' },
+        ]
+      },
+      {
+        category: '网络',
+        items: [
+          { name: 'Utility LAN', value: '2×RJ45, 10/100/1000Mbps' },
+          { name: 'Secure LAN', value: '2×RJ45, 10/100/1000Mbps' },
+          { name: '无线网络', value: 'WiFi 5 (802.11 a/b/g/n/ac), 双频 2.4GHz/5GHz' },
+          { name: '无线协议', value: 'WEP, TKIP, AES, WPA, WPA2' },
+        ]
+      },
+      {
+        category: '无线功能',
+        items: [
+          { name: 'AirPlay', value: '支持 (最高 1080p60)' },
+          { name: 'Miracast', value: '支持 (最高 1080p60)' },
+          { name: '投屏器', value: '支持 (最高 4K@30Hz)' },
+        ]
+      },
+      {
+        category: '控制',
+        items: [
+          { name: 'RS232', value: '1×3 针 3.5mm 凤凰端子 (com/api 模式)' },
+          { name: 'LAN 控制', value: 'Web UI & Telnet API' },
+          { name: 'CEC', value: '支持' },
+        ]
+      },
+      {
+        category: '按键/指示',
+        items: [
+          { name: '重置按键', value: '1 个 (短按显示 OSD, 长按 5 秒恢复出厂)' },
+          { name: '状态指示灯', value: '快闪 (启动/升级) / 常亮 (正常) / 慢闪 (待机) / 不亮 (未通电)' },
+          { name: 'PAIRING 口', value: '1 个 (投屏器配对/固件升级)' },
+        ]
+      },
+      {
+        category: '电源',
+        items: [
+          { name: 'DC 供电', value: '20V 6A DC' },
+          { name: '最大功耗', value: '93W' },
+          { name: 'PD 充电', value: 'USB-C 端口支持最高 60W 对外充电' },
+        ]
+      },
+      {
+        category: '其他',
+        items: [
+          { name: '工作温度', value: '0℃～+45℃' },
+          { name: '存储温度', value: '-20℃～+70℃' },
+          { name: '工作湿度', value: '10%～90% 无凝结' },
+          { name: '存储湿度', value: '10%～90% 无凝结' },
+          { name: '静电保护', value: '人体模式：±8kV (气隙) / ±4kV (接触)' },
+          { name: '认证', value: 'SRRC认证' },
+        ]
+      },
+      {
+        category: '无线投屏器 SD10',
+        items: [
+          { name: '产品名称', value: '无线投屏器' },
+          { name: '投屏分辨率', value: 'Up to 4K@30fps' },
+          { name: '接口规格', value: 'Type-C (Support DP_Alt mode)' },
+          { name: '频率频带', value: '5G（默认）/ 2.4G' },
+          { name: '无线投屏', value: '支持' },
+          { name: '触控回传', value: '支持（Windows OS）' },
+          { name: '无线会议', value: '支持（包括 USB camera 和 Speakerphone 信号回传）' },
+          { name: '安装驱动', value: 'Wireless Casting 无需安装驱动；Wireless Conferencing 需安装 desktop APP' },
+          { name: '系统支持', value: 'Windows 10/11, Mac OS' },
+        ]
+      },
+    ],
+  },
 /*
   a13: {
     id: 'a13',
