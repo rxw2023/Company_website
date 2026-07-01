@@ -499,7 +499,7 @@ export default function Home() {
           </div>
           <div className="hero-stats">
             <div className="stat">
-              <div className="stat-num">12+</div>
+              <div className="stat-num">14+</div>
               <div className="stat-label">核心产品线</div>
             </div>
             <div className="stat">
