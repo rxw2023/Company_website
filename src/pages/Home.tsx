@@ -24,6 +24,7 @@ import a19Image from '../assets/images/a19-1.webp';
 // import a17Image from '../assets/images/a17-2.webp';
 import quickImage from '../assets/images/aispeech-logo.png';
 import aispeechLogo from '../assets/images/aispeech-logo.png';
+import qrcodeImage from '../assets/images/qrcode.jpg';
 // 案例图片
 import e1Image from '../assets/images/e1.webp';
 import e2Image from '../assets/images/e2.webp';
@@ -641,6 +642,10 @@ export default function Home() {
             <div>
               <div className="hd-footer-brand">恒迪视讯</div>
               <p className="hd-footer-desc">思必驰 AISPEECH 授权代理商<br />杭州余杭 · 专业音视频集成<br />专注为教育、企业、政府、酒店客户提供智能会议系统、音视频集成解决方案及全流程服务。</p>
+              <div className="mt-4 flex flex-col items-start">
+                <span className="text-sm font-medium mb-2" style={{ color: 'var(--hd-text-dim)' }}>公司公众号</span>
+                <img src={qrcodeImage} alt="恒迪视讯公众号二维码" className="w-28 h-28 object-contain rounded-md bg-white p-1" loading="lazy" />
+              </div>
             </div>
             <div>
               <div className="hd-footer-head">主要产品系列</div>
@@ -651,6 +656,7 @@ export default function Home() {
                 <li><Link to="/product/a12">MK300 桌面安装套件</Link></li>
                 <li><Link to="/product/a3">MCS06 拾扩一体吸顶麦克风</Link></li>
                 <li><Link to="/product/a11">MC04 高端吸顶麦克风-教育款</Link></li>
+                <li><Link to="/product/a19">思必驰BYOM投屏套装</Link></li>
               </ul>
             </div>
             <div className="hd-footer-contact">
