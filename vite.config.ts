@@ -25,10 +25,16 @@ export default defineConfig({
     },
   },
   build: {
-    // 构建完成后自动执行预渲染脚本
     rollupOptions: {
       output: {
-        manualChunks: undefined,
+        manualChunks: {
+          // React 核心
+          'vendor-react': ['react', 'react-dom', 'react-router-dom'],
+          // 动画库
+          'vendor-motion': ['framer-motion'],
+          // UI 工具
+          'vendor-ui': ['sonner', 'react-helmet-async'],
+        },
       },
     },
   },
