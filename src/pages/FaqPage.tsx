@@ -134,10 +134,10 @@ export default function FaqPage() {
               <button
                 key={cat}
                 onClick={() => setActiveCategory(cat)}
-                className={`px-4 py-1.5 rounded-full text-sm font-medium transition-colors ${
+                className={`px-4 py-1.5 rounded-full text-sm font-medium transition-all active:scale-95 ${
                   activeCategory === cat
-                    ? 'bg-gray-800 text-white'
-                    : 'bg-white border border-gray-200 text-gray-600 hover:bg-gray-50'
+                    ? 'bg-[#1d1d1f] text-white'
+                    : 'bg-white border border-[#e0e0e0] text-[#1d1d1f] hover:border-[#0066cc]'
                 }`}
               >
                 {cat}
@@ -150,10 +150,10 @@ export default function FaqPage() {
             {filtered.map((item, index) => (
               <div
                 key={index}
-                className="bg-white rounded-xl border border-gray-200 overflow-hidden"
+                className="bg-white rounded-2xl border border-[#e0e0e0] overflow-hidden"
               >
                 <button
-                  className="w-full text-left px-5 py-4 flex justify-between items-start gap-4 hover:bg-gray-50 transition-colors"
+                  className="w-full text-left px-5 py-4 flex justify-between items-start gap-4 hover:bg-[#f5f5f7] transition-colors"
                   onClick={() => setOpenIndex(openIndex === index ? null : index)}
                 >
                   <span className="font-medium text-gray-900">{item.question}</span>
@@ -171,12 +171,12 @@ export default function FaqPage() {
           </div>
 
           {/* 联系引导 */}
-          <div className="mt-12 bg-gray-50 rounded-2xl p-6 text-center border border-gray-100">
-            <h2 className="font-semibold text-lg mb-2">还有其他问题？</h2>
-            <p className="text-gray-500 text-sm mb-4">联系我们的专业顾问，获取个性化解决方案</p>
+          <div className="mt-12 bg-[#f5f5f7] rounded-2xl p-6 text-center">
+            <h2 className="font-semibold text-lg mb-2 text-[#1d1d1f]">还有其他问题？</h2>
+            <p className="text-[#7a7a7a] text-sm mb-4">联系我们的专业顾问，获取个性化解决方案</p>
             <a
               href="tel:18814845538"
-              className="inline-block bg-gray-800 text-white px-6 py-2.5 rounded-lg text-sm font-medium hover:bg-gray-700 transition-colors"
+              className="inline-block bg-[#0066cc] text-white px-6 py-2.5 rounded-full text-sm font-medium hover:bg-[#0071e3] transition-all active:scale-95"
             >
               致电 18814845538
             </a>

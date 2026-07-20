@@ -123,13 +123,13 @@ export default function Home() {
           --hd-gray:         #f5f5f7;
           --hd-gray2:        #e8e8ed;
           --hd-near-black:   #1d1d1f;
-          --hd-blue:         #0071e3;
+          --hd-blue:         #0066cc;
           --hd-link-light:   #0066cc;
-          --hd-link-dark:    #0071e3;
+          --hd-link-dark:    #2997ff;
           --hd-text-dim:     rgba(0,0,0,0.56);
           --hd-text-secondary: rgba(0,0,0,0.42);
-          --hd-dark-card:    #f0f0f2;
-          --hd-dark-card2:   #f5f5f7;
+          --hd-tile-dark-1:  #272729;
+          --hd-tile-dark-2:  #2a2a2c;
           --hd-nav-h: 64px;
         }
         .hd-page {
@@ -212,9 +212,10 @@ export default function Home() {
           display: inline-block;
           background: var(--hd-blue); color: var(--hd-white);
           font-size: 17px; font-weight: 400; text-decoration: none;
-          padding: 10px 22px; border-radius: 8px; cursor: pointer;
-          transition: opacity 0.15s;
+          padding: 11px 22px; border-radius: 980px; cursor: pointer;
+          transition: transform 0.1s, opacity 0.15s;
         }
+        .hd-hero .btn-primary:active { transform: scale(0.95); }
         .hd-hero .btn-primary:hover { opacity: 0.88; }
         .hd-hero .btn-outline {
           display: inline-block;
@@ -223,19 +224,10 @@ export default function Home() {
           padding: 10px 22px; border-radius: 980px;
           border: 1px solid var(--hd-link-light);
           cursor: pointer;
-          transition: background 0.15s;
+          transition: transform 0.1s, background 0.15s;
         }
-        .hd-hero .btn-outline:hover { background: rgba(0,113,227,0.06); }
-        .hd-hero::before {
-          content: '';
-          position: absolute;
-          width: 700px; height: 700px;
-          border-radius: 50%;
-          background: radial-gradient(circle, rgba(0,113,227,0.06) 0%, transparent 70%);
-          top: 50%; left: 50%;
-          transform: translate(-50%, -50%);
-          pointer-events: none;
-        }
+        .hd-hero .btn-outline:active { transform: scale(0.95); }
+        .hd-hero .btn-outline:hover { background: rgba(0,102,204,0.06); }
         .hd-hero .hero-stats {
           display: flex; gap: 48px; flex-wrap: wrap;
           justify-content: center; margin-top: 64px;
@@ -255,12 +247,12 @@ export default function Home() {
         .hd-section-light {
           background: var(--hd-white);
           color: var(--hd-near-black);
-          padding: 96px 24px;
+          padding: 80px 24px;
         }
         .hd-section-gray {
           background: var(--hd-gray);
           color: var(--hd-near-black);
-          padding: 96px 24px;
+          padding: 80px 24px;
         }
         .hd-section-inner { max-width: 1040px; margin: 0 auto; }
 
@@ -293,25 +285,27 @@ export default function Home() {
         }
         .hd-product-card {
           background: var(--hd-white);
-          border-radius: 12px;
+          border-radius: 18px;
           overflow: hidden;
-          box-shadow: rgba(0,0,0,0.06) 0 2px 12px 0;
+          border: 1px solid rgba(0,0,0,0.08);
           display: flex; flex-direction: column;
-          transition: transform 0.2s, box-shadow 0.2s;
+          transition: transform 0.2s, border-color 0.2s;
         }
         .hd-product-card:hover {
-          transform: translateY(-3px);
-          box-shadow: rgba(0,0,0,0.10) 0 6px 24px 0;
+          transform: translateY(-2px);
+          border-color: rgba(0,0,0,0.16);
         }
         .hd-product-img-wrap {
-          background: #fff;
+          background: #fafafc;
           aspect-ratio: 16/10;
           display: flex; align-items: center; justify-content: center;
           overflow: hidden;
+          position: relative;
         }
         .hd-product-img-wrap img {
           width: 100%; height: 100%; object-fit: contain;
           padding: 8px;
+          filter: drop-shadow(rgba(0, 0, 0, 0.12) 2px 4px 20px);
         }
         .hd-product-info { padding: 20px; flex: 1; display: flex; flex-direction: column; }
         .hd-product-name {
@@ -337,7 +331,7 @@ export default function Home() {
         .hd-product-link:hover { text-decoration: underline; }
 
         .hd-feature-strip {
-          background: var(--hd-gray);
+          background: #fafafc;
           padding: 80px 24px;
         }
         .hd-feature-inner {
@@ -374,15 +368,15 @@ export default function Home() {
         }
         .hd-case-card {
           background: var(--hd-white);
-          border-radius: 12px; overflow: hidden;
-          box-shadow: rgba(0,0,0,0.06) 0 2px 12px 0;
-          transition: transform 0.2s, box-shadow 0.2s;
+          border-radius: 18px; overflow: hidden;
+          border: 1px solid rgba(0,0,0,0.08);
+          transition: transform 0.2s, border-color 0.2s;
           text-decoration: none;
           display: block;
         }
         .hd-case-card:hover {
           transform: translateY(-2px);
-          box-shadow: rgba(0,0,0,0.10) 0 6px 24px 0;
+          border-color: rgba(0,0,0,0.16);
         }
         .hd-case-img-wrap {
           aspect-ratio: 16/10;
@@ -424,11 +418,12 @@ export default function Home() {
         .hd-cta-band .btn-white {
           display: inline-block;
           background: var(--hd-white); color: var(--hd-near-black);
-          font-size: 17px; font-weight: 500; text-decoration: none;
+          font-size: 17px; font-weight: 400; text-decoration: none;
           padding: 12px 28px; border-radius: 980px;
           cursor: pointer;
-          transition: opacity 0.15s;
+          transition: transform 0.1s, opacity 0.15s;
         }
+        .hd-cta-band .btn-white:active { transform: scale(0.95); }
         .hd-cta-band .btn-white:hover { opacity: 0.88; }
 
         .hd-footer {
@@ -443,7 +438,7 @@ export default function Home() {
           padding-bottom: 36px; margin-bottom: 28px;
         }
         .hd-footer-brand { font-size: 20px; font-weight: 600; color: var(--hd-near-black); margin-bottom: 8px; }
-        .hd-footer-desc { font-size: 13px; line-height: 1.6; color: var(--hd-text-dim); }
+        .hd-footer-desc { font-size: 13px; line-height: 1.6; color: #333; }
         .hd-footer-head { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.6px; color: rgba(0,0,0,0.36); margin-bottom: 14px; }
         .hd-footer-links { list-style: none; }
         .hd-footer-links li { margin-bottom: 4px; }
@@ -620,10 +615,10 @@ export default function Home() {
             <p className="hd-section-desc">
               恒迪视讯是思必驰 AISPEECH 的授权代理商，总部位于杭州余杭，专注为教育、企业、政府和酒店客户提供专业级音视频集成解决方案。提供样品试用、现场测试、工程设计与售后支持的全流程服务。
             </p>
-            <Link to="/faq" style={{ display: 'inline-block', fontSize: 15, padding: '10px 20px', background: 'var(--hd-blue)', color: '#fff', borderRadius: 8, textDecoration: 'none', marginRight: 16, marginBottom: 12 }}>
+            <Link to="/faq" style={{ display: 'inline-block', fontSize: 17, padding: '11px 22px', background: 'var(--hd-blue)', color: '#fff', borderRadius: 980, textDecoration: 'none', marginRight: 16, marginBottom: 12 }}>
               常见问题 FAQ
             </Link>
-            <span onClick={() => scrollTo('footer')} style={{ display: 'inline-block', fontSize: 15, padding: '10px 20px', border: '1px solid var(--hd-blue)', color: 'var(--hd-blue)', borderRadius: 980, textDecoration: 'none', cursor: 'pointer' }}>
+            <span onClick={() => scrollTo('footer')} style={{ display: 'inline-block', fontSize: 17, padding: '10px 22px', border: '1px solid var(--hd-blue)', color: 'var(--hd-blue)', borderRadius: 980, textDecoration: 'none', cursor: 'pointer' }}>
               预约体验 / 申请样品
             </span>
           </div>

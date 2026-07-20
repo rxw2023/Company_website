@@ -1695,24 +1695,24 @@ function RelatedProducts({ products }: { products: { id: string; model: string; 
   };
 
   return (
-    <div className="mt-6 bg-gray-200/60 rounded-lg p-4">
+    <div className="mt-6 bg-[#f5f5f7] rounded-2xl p-4">
       <div className="flex items-center justify-between mb-3">
-        <h3 className="text-lg font-semibold flex items-center gap-2 text-gray-700">
-          <i className="fa-solid fa-cubes text-blue-600"></i>
+        <h3 className="text-lg font-semibold flex items-center gap-2 text-[#1d1d1f]">
+          <i className="fa-solid fa-cubes text-[#0066cc]"></i>
           相关产品
         </h3>
         <div className="flex gap-1">
           <button
             onClick={() => scroll('left')}
             disabled={!canScrollLeft}
-            className="w-8 h-8 rounded-full bg-white border border-gray-300 flex items-center justify-center text-gray-500 hover:bg-blue-50 hover:border-blue-300 hover:text-blue-600 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+            className="w-8 h-8 rounded-full bg-white border border-gray-200 flex items-center justify-center text-gray-400 hover:border-gray-300 hover:text-gray-600 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
           >
             <i className="fa-solid fa-chevron-left text-xs"></i>
           </button>
           <button
             onClick={() => scroll('right')}
             disabled={!canScrollRight}
-            className="w-8 h-8 rounded-full bg-white border border-gray-300 flex items-center justify-center text-gray-500 hover:bg-blue-50 hover:border-blue-300 hover:text-blue-600 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+            className="w-8 h-8 rounded-full bg-white border border-gray-200 flex items-center justify-center text-gray-400 hover:border-gray-300 hover:text-gray-600 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
           >
             <i className="fa-solid fa-chevron-right text-xs"></i>
           </button>
@@ -1726,7 +1726,7 @@ function RelatedProducts({ products }: { products: { id: string; model: string; 
         {products.map((rp) => (
           <div
             key={rp.id}
-            className="bg-white rounded-lg border border-gray-200 hover:border-blue-400 hover:shadow-md transition-all duration-300 cursor-pointer overflow-hidden flex-shrink-0"
+            className="bg-white rounded-2xl border border-[#e0e0e0] hover:border-[#0066cc] transition-all duration-300 cursor-pointer overflow-hidden flex-shrink-0"
             style={{ width: '260px' }}
             onClick={() => navigate(`/product/${rp.id}`)}
           >
@@ -1905,20 +1905,20 @@ export default function ProductDetailPage() {
               </div>
               {/* 产品问答 - 可选部分 */}
               {(product as any).faq && ((product as any).faq as { question: string; answer: string }[]).length > 0 && (
-                <div className="mt-6 bg-gray-200/60 rounded-lg p-4">
-                  <h3 className="text-lg font-semibold mb-4 flex items-center gap-2 text-gray-700">
-                    <i className="fa-solid fa-circle-question text-blue-600"></i>
+                <div className="mt-6 bg-[#f5f5f7] rounded-2xl p-4">
+                  <h3 className="text-lg font-semibold mb-4 flex items-center gap-2 text-[#1d1d1f]">
+                    <i className="fa-solid fa-circle-question text-[#0066cc]"></i>
                     关于{product.name}的常见问题
                   </h3>
                   <div className="space-y-4">
                     {((product as any).faq as { question: string; answer: string }[]).map((item: { question: string; answer: string }, index: number) => (
-                      <div key={index} className="border-b border-gray-300 last:border-0 pb-3 last:pb-0">
-                        <p className="font-medium text-gray-800 mb-1">
-                          <span className="text-blue-600 mr-1">问{index + 1}、</span>
+                      <div key={index} className="border-b border-[#e0e0e0] last:border-0 pb-3 last:pb-0">
+                        <p className="font-medium text-[#1d1d1f] mb-1">
+                          <span className="text-[#0066cc] mr-1">问{index + 1}、</span>
                           {item.question}
                         </p>
-                        <p className="text-gray-600 pl-5">
-                          <span className="text-green-600 font-medium">答：</span>
+                        <p className="text-[#333] pl-5">
+                          <span className="text-[#0066cc] font-medium">答：</span>
                           {item.answer}
                         </p>
                       </div>
@@ -1964,11 +1964,11 @@ export default function ProductDetailPage() {
                       <div className="space-y-6">
                         {(product as any).specs?.map((category: any, categoryIndex: number) => (
                           <div key={categoryIndex} className="overflow-x-auto">
-                            <h3 className="font-medium mb-2 text-gray-500">{category.category}</h3>
-                            <table className="min-w-full bg-gray-100 rounded-lg overflow-hidden">
+                            <h3 className="font-medium mb-2 text-[#1d1d1f]">{category.category}</h3>
+                            <table className="min-w-full bg-[#f5f5f7] rounded-xl overflow-hidden">
                               <tbody className="divide-y divide-gray-200">
                                 {category.items.map((item: any, index: number) => (
-                                  <tr key={index} className={index % 2 === 0 ? 'bg-gray-50' : 'bg-gray-100'}>
+                                  <tr key={index} className={index % 2 === 0 ? 'bg-white' : 'bg-[#fafafc]'}>
                                     <td className="px-4 py-2 text-sm font-medium text-gray-600">{item.name}</td>
                                     <td className="px-4 py-2 text-sm text-gray-700" dangerouslySetInnerHTML={{ __html: item.value }}></td>
                                   </tr>
@@ -1983,7 +1983,7 @@ export default function ProductDetailPage() {
               {/* 下载按钮 */}
               <button
                 onClick={handleDownloadBrochure}
-                className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-md transition-colors flex items-center justify-center w-full sm:w-auto text-sm sm:text-base"
+                className="bg-[#0066cc] hover:bg-[#0071e3] text-white px-6 py-3 rounded-full transition-all active:scale-95 flex items-center justify-center w-full sm:w-auto text-sm sm:text-base"
                 aria-label="下载产品彩页"
               >
                 <i className="fa-solid fa-download mr-2"></i>

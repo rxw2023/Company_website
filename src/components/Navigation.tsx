@@ -429,7 +429,7 @@ export default function Navigation() {
               fontSize: 13, color: 'rgba(0,0,0,0.45)',
               background: 'rgba(0,0,0,0.04)',
               border: '1px solid rgba(0,0,0,0.10)',
-              borderRadius: 8, cursor: 'pointer',
+              borderRadius: 980, cursor: 'pointer',
               fontFamily: 'inherit',
               transition: 'border-color 0.15s, color 0.15s',
               whiteSpace: 'nowrap',

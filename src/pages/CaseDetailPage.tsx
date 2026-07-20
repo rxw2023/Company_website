@@ -632,7 +632,7 @@ export default function CaseDetailPage() {
                   </span>
                 )}
               </div>
-              <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-6 space-y-6">
+              <div className="bg-[#f5f5f7] rounded-2xl p-6 space-y-6">
                 {caseItem.sections?.map((section, index) => (
                   <div key={index}>
                     <h3 className="text-xl font-bold text-blue-600 dark:text-blue-400 mb-3">{section.label}：</h3>
