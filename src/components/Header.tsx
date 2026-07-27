@@ -12,6 +12,7 @@ export function Header({ showAiSpeechLogo = true }: { showAiSpeechLogo?: boolean
               src={aispeechLogo} 
               alt="AISPEECH" 
               className="w-[360px] sm:w-[480px] h-auto object-contain opacity-80 hover:opacity-30 transition-opacity"
+              style={{ mixBlendMode: 'multiply' }}
               loading="lazy"
             />
           </div>

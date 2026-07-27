@@ -52,6 +52,46 @@ const faqData: FaqItem[] = [
     question: 'AI追踪双目语音摄像头C60有哪些AI功能？',
     answer: 'C60集成了多种AI追踪模式（声源追踪、人脸追踪、区域追踪）、AI会议助理、AI实时字幕、音视频融合等特色能力，适用于会议讨论、演讲、板书等各类视频场景。',
   },
+  {
+    category: '产品相关',
+    question: '思必驰MT100 AI智能声像追踪主机是什么？',
+    answer: 'MT100是一款AI智能声像追踪主机，搭载思必驰PTZ摄像机并与高端吸顶麦克风系统深度集成，能够实时追踪发言人和动作，自动切换摄像头视角，确保画面始终聚焦会议核心内容。适用于大型会议、培训空间等需要多角度追踪的场景。',
+  },
+  {
+    category: '产品相关',
+    question: 'MC08高端吸顶麦克风适合什么场景？',
+    answer: 'MC08专为教学场景设计，搭载32单元全向麦克风阵列，提供8个独立可配置拾音区，实现扩声区、通话区、静音区灵活划分。单台MC08即可覆盖整个讲台区域，同时实现教室扩声、远程教学和课程录播的三合一能力，适用于高校教室、培训室、报告厅等场景。',
+  },
+  {
+    category: '产品相关',
+    question: 'MC04教育款吸顶麦克风与MC08有何区别？',
+    answer: 'MC04是面向常态化教室和紧凑型讲台推出的高性价比款，搭载24单元MEMS麦克风阵列，2米精准扩声覆盖半径，支持模拟音频接口。MC08则为更高端的32单元8分区配置，带Dante数字音频，适合对拾音分区有更高要求的讲台。两者均内置ClearSpeakAI教育专有算法，可有效抑制板书声、翻书声等教学噪声。',
+  },
+  {
+    category: '产品相关',
+    question: 'AISPK-DC20PoE吸顶音箱有哪些特点？',
+    answer: 'DC20PoE是一款全频同轴定阻有源吸顶音箱，支持Dante数字音频协议和PoE+供电，内置功率放大器和DSP数字信号处理，无需独立功放即可输出高保真音质。支持嵌入式安装和吊装两种方式，适用于会议室、酒店、商店等场所的背景音乐和会议扩声。',
+  },
+  {
+    category: '产品相关',
+    question: 'AIMIC-M12企业级会议麦克风音箱支持级联吗？',
+    answer: 'M12是一款集拾音、扩音、语音转写、字幕同传于一体的企业级会议麦克风音箱，支持多台级联满足大中小型会议室需求。通过USB即插即用，无需复杂配置，是中小型会议室"一站式"快速部署的理想选择。',
+  },
+  {
+    category: '产品相关',
+    question: 'AIMIC-B100桌面控制器系列有哪些型号？',
+    answer: 'B100系列共四款型号：有线主席版、有线静音版、无线主席版、无线静音版。主席版支持VIP模式切换和全局静音，静音版支持全局静音和音量调节。有线版通过PoE网线供电和通信，无线版内置1500mAh锂电池，通过蓝牙连接，灵活适配各类会议桌面部署需求。',
+  },
+  {
+    category: '产品相关',
+    question: '思必驰D1大模型信创一体机是什么？',
+    answer: 'D1是思必驰专为党政企客户推出的会议办公大模型信创一体机，内置"DFM+DeepSeek"双大语言模型，采用从鲲鹏CPU、昇腾GPU到银河麒麟操作系统的全国产化技术架构。支持离线语音识别、声纹区分发言人、AI纪要生成等功能，满足政企客户对数据安全的高要求，解决会议记录难、纪要整理费时费力等问题。',
+  },
+  {
+    category: '产品相关',
+    question: 'BYOM投屏套装（SW10+SD10）支持哪些投屏方式？',
+    answer: '该套装支持AirPlay、Miracast和专用投屏器三种无线投屏方式。SD10无线传屏器通过一根USB-C线即可传输视频、音频、USB数据和千兆网络，同时为PC提供60W供电。SW10主机具备多路音视频矩阵切换功能和双千兆网口（支持透明/隔离模式），适合10-100㎡中高端会议室的一站式无线协作。',
+  },
   // 安装与技术
   {
     category: '安装与技术',
@@ -108,7 +148,7 @@ export default function FaqPage() {
   return (
     <>
     <Navigation />
-    <div className="min-h-screen text-gray-900 pt-16">
+    <div className="min-h-screen bg-[#faf9f5] text-[#3d3d3a] pt-16">
       <SeoHead
         title="常见问题 FAQ"
         description="恒迪视讯常见问题解答，涵盖公司服务、思必驰AISPEECH产品特点、安装技术、应用场景等，快速了解专业音视频解决方案。"
@@ -125,8 +165,8 @@ export default function FaqPage() {
         <Header />
 
         <div className="mt-8">
-          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">常见问题</h1>
-          <p className="text-gray-500 mb-8">关于恒迪视讯与思必驰AISPEECH产品的常见问题解答</p>
+          <h1 className="text-2xl sm:text-3xl font-bold text-[#141413] mb-2">常见问题</h1>
+          <p className="text-[#6c6a64] mb-8">关于恒迪视讯与思必驰AISPEECH产品的常见问题解答</p>
 
           {/* 分类筛选 */}
           <div className="flex flex-wrap gap-2 mb-8">
@@ -136,8 +176,8 @@ export default function FaqPage() {
                 onClick={() => setActiveCategory(cat)}
                 className={`px-4 py-1.5 rounded-full text-sm font-medium transition-all active:scale-95 ${
                   activeCategory === cat
-                    ? 'bg-[#1d1d1f] text-white'
-                    : 'bg-white border border-[#e0e0e0] text-[#1d1d1f] hover:border-[#0066cc]'
+                    ? 'bg-[#141413] text-white'
+                    : 'bg-[#faf9f5] border border-[#e6dfd8] text-[#3d3d3a] hover:border-[#cc785c]'
                 }`}
               >
                 {cat}
@@ -150,19 +190,19 @@ export default function FaqPage() {
             {filtered.map((item, index) => (
               <div
                 key={index}
-                className="bg-white rounded-2xl border border-[#e0e0e0] overflow-hidden"
+                className="bg-[#faf9f5] rounded-xl border border-[#e6dfd8] overflow-hidden"
               >
                 <button
-                  className="w-full text-left px-5 py-4 flex justify-between items-start gap-4 hover:bg-[#f5f5f7] transition-colors"
+                  className="w-full text-left px-5 py-4 flex justify-between items-start gap-4 hover:bg-[#f4efe6] transition-colors"
                   onClick={() => setOpenIndex(openIndex === index ? null : index)}
                 >
-                  <span className="font-medium text-gray-900">{item.question}</span>
-                  <span className="text-gray-400 flex-shrink-0 mt-0.5">
+                  <span className="font-medium text-[#141413]">{item.question}</span>
+                  <span className="text-[#6c6a64] flex-shrink-0 mt-0.5">
                     {openIndex === index ? '−' : '+'}
                   </span>
                 </button>
                 {openIndex === index && (
-                  <div className="px-5 pb-5 text-gray-600 text-sm leading-relaxed border-t border-gray-100 pt-4">
+                  <div className="px-5 pb-5 text-[#6c6a64] text-sm leading-relaxed border-t border-[#e6dfd8] pt-4">
                     {item.answer}
                   </div>
                 )}
@@ -171,12 +211,12 @@ export default function FaqPage() {
           </div>
 
           {/* 联系引导 */}
-          <div className="mt-12 bg-[#f5f5f7] rounded-2xl p-6 text-center">
-            <h2 className="font-semibold text-lg mb-2 text-[#1d1d1f]">还有其他问题？</h2>
-            <p className="text-[#7a7a7a] text-sm mb-4">联系我们的专业顾问，获取个性化解决方案</p>
+          <div className="mt-12 bg-[#efe9de] rounded-xl p-6 text-center">
+            <h2 className="font-semibold text-lg mb-2 text-[#141413]">还有其他问题？</h2>
+            <p className="text-[#6c6a64] text-sm mb-4">联系我们的专业顾问，获取个性化解决方案</p>
             <a
               href="tel:18814845538"
-              className="inline-block bg-[#0066cc] text-white px-6 py-2.5 rounded-full text-sm font-medium hover:bg-[#0071e3] transition-all active:scale-95"
+              className="inline-block bg-[#cc785c] text-white px-6 py-2.5 rounded-[8px] text-sm font-medium hover:bg-[#a9583e] transition-all active:scale-[0.97]"
             >
               致电 18814845538
             </a>

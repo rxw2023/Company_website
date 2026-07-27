@@ -556,7 +556,7 @@ export default function CaseDetailPage() {
         onNext={goToNextImage}
       />
       <Navigation />
-      <div className="min-h-screen text-gray-900 pt-16">
+      <div className="min-h-screen text-[#3d3d3a] pt-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
           <Header 
             showAiSpeechLogo={true}
@@ -564,8 +564,8 @@ export default function CaseDetailPage() {
           <div className="mt-6 sm:mt-8 grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8">
             {/* 图片展示区域 */}
             <div className="space-y-4">
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
-                <i className="fa-solid fa-images text-blue-600"></i>
+              <h3 className="text-lg font-semibold text-[#141413] flex items-center gap-2">
+                <i className="fa-solid fa-images text-[#cc785c]"></i>
                 案例图片
               </h3>
               <div 
@@ -607,8 +607,8 @@ export default function CaseDetailPage() {
               {/* 视频展示区域 */}
               {caseItem.videos && caseItem.videos.length > 0 && (
                 <div className="space-y-3">
-                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
-                    <i className="fa-solid fa-video text-blue-600"></i>
+                  <h3 className="text-lg font-semibold text-[#141413] flex items-center gap-2">
+                    <i className="fa-solid fa-video text-[#cc785c]"></i>
                     案例视频
                   </h3>
                   <div className="grid grid-cols-1 gap-4">
@@ -632,21 +632,21 @@ export default function CaseDetailPage() {
                   </span>
                 )}
               </div>
-              <div className="bg-[#f5f5f7] rounded-2xl p-6 space-y-6">
+              <div className="bg-[#efe9de] rounded-xl p-6 space-y-6">
                 {caseItem.sections?.map((section, index) => (
                   <div key={index}>
-                    <h3 className="text-xl font-bold text-blue-600 dark:text-blue-400 mb-3">{section.label}：</h3>
-                    <p className="text-gray-700 dark:text-gray-300 text-base leading-relaxed">{section.content}</p>
+                    <h3 className="text-xl font-bold text-[#cc785c] mb-3">{section.label}：</h3>
+                    <p className="text-[#3d3d3a] text-base leading-relaxed">{section.content}</p>
                   </div>
                 ))}
               </div>
               {/* 联系方式 */}
-              <div className="mt-6 text-sm text-gray-500 dark:text-gray-400">
+              <div className="mt-6 text-sm text-[#6c6a64]">
                 <p>了解更多案例信息，请联系我们：</p>
                 <p className="mt-1">guo@techhdi.com | 18814845538</p>
                 <p className="mt-1">地址：杭州市余杭区七彩汇商业中心2-305室</p>
-                <p className="text-xs mt-2 flex items-center gap-4" style={{color: '#9ca3af'}}>
-                  <a href="https://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener" style={{color: '#9ca3af', textDecoration: 'none'}} className="hover:text-gray-700 dark:hover:text-gray-300">
+                <p className="text-xs mt-2 flex items-center gap-4" style={{color: '#a09d96'}}>
+                  <a href="https://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener" style={{color: '#a09d96', textDecoration: 'none'}} className="hover:text-[#3d3d3a]">
                     ICP备案号：浙ICP备2026007647号-1
                   </a>
                   <a href="https://beian.mps.gov.cn/#/query/webSearch?code=33011002019014" rel="noreferrer" target="_blank" className="flex items-center">

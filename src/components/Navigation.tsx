@@ -158,7 +158,7 @@ function highlightText(text: string, query: string): React.ReactNode {
   const parts = text.split(regex);
   return parts.map((part, i) =>
     regex.test(part) ? (
-      <mark key={i} style={{ background: '#FFE066', color: '#1d1d1f', borderRadius: 2, padding: '0 1px' }}>{part}</mark>
+      <mark key={i} style={{ background: 'rgba(204,120,92,0.18)', color: '#141413', borderRadius: 2, padding: '0 1px' }}>{part}</mark>
     ) : (
       part
     )
@@ -229,7 +229,7 @@ function SearchModal({ isOpen, onClose }: SearchModalProps) {
     <div
       style={{
         position: 'fixed', inset: 0, zIndex: 9999,
-        background: 'rgba(0,0,0,0.40)',
+        background: 'rgba(0,0,0,0.35)',
         backdropFilter: 'blur(4px)',
         display: 'flex', justifyContent: 'center',
         paddingTop: '15vh',
@@ -239,9 +239,9 @@ function SearchModal({ isOpen, onClose }: SearchModalProps) {
       <div
         style={{
           width: 580, maxWidth: '92vw',
-          background: '#fff',
+          background: '#faf9f5',
           borderRadius: 16,
-          boxShadow: '0 16px 64px rgba(0,0,0,0.20), 0 0 0 1px rgba(0,0,0,0.06)',
+          boxShadow: '0 16px 64px rgba(0,0,0,0.18), 0 0 0 1px rgba(0,0,0,0.06)',
           overflow: 'hidden',
           maxHeight: '70vh',
           display: 'flex', flexDirection: 'column',
@@ -249,8 +249,8 @@ function SearchModal({ isOpen, onClose }: SearchModalProps) {
         onClick={(e) => e.stopPropagation()}
       >
         {/* 搜索输入行 */}
-        <div style={{ display: 'flex', alignItems: 'center', padding: '16px 20px', borderBottom: results.length > 0 ? '1px solid rgba(0,0,0,0.08)' : 'none' }}>
-          <svg width="18" height="18" viewBox="0 0 18 18" fill="none" style={{ flexShrink: 0, marginRight: 12, color: 'rgba(0,0,0,0.35)' }}>
+        <div style={{ display: 'flex', alignItems: 'center', padding: '16px 20px', borderBottom: results.length > 0 ? '1px solid #e6dfd8' : 'none' }}>
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none" style={{ flexShrink: 0, marginRight: 12, color: '#6c6a64' }}>
             <circle cx="7.5" cy="7.5" r="5" stroke="currentColor" strokeWidth="1.5"/>
             <path d="M11.5 11.5l4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
           </svg>
@@ -262,7 +262,7 @@ function SearchModal({ isOpen, onClose }: SearchModalProps) {
             placeholder="搜索产品、案例、常见问题…"
             style={{
               flex: 1, border: 'none', outline: 'none',
-              fontSize: 16, color: '#1d1d1f',
+              fontSize: 16, color: '#141413',
               background: 'transparent',
               fontFamily: 'inherit',
               lineHeight: 1.5,
@@ -274,14 +274,14 @@ function SearchModal({ isOpen, onClose }: SearchModalProps) {
               flexShrink: 0, marginLeft: 8,
               width: 28, height: 28,
               display: 'flex', alignItems: 'center', justifyContent: 'center',
-              fontSize: 18, color: 'rgba(0,0,0,0.35)',
+              fontSize: 18, color: '#6c6a64',
               background: 'transparent', border: 'none',
               borderRadius: 6, cursor: 'pointer',
               fontFamily: 'inherit', lineHeight: 1,
               transition: 'background 0.15s, color 0.15s',
             }}
-            onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(0,0,0,0.06)'; e.currentTarget.style.color = 'rgba(0,0,0,0.65)'; }}
-            onMouseLeave={(e) => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = 'rgba(0,0,0,0.35)'; }}
+            onMouseEnter={(e) => { e.currentTarget.style.background = '#efe9de'; e.currentTarget.style.color = '#141413'; }}
+            onMouseLeave={(e) => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = '#6c6a64'; }}
           >
             ×
           </button>
@@ -297,19 +297,19 @@ function SearchModal({ isOpen, onClose }: SearchModalProps) {
                 style={{
                   display: 'flex', gap: 12, padding: '12px 20px',
                   cursor: 'pointer',
-                  background: idx === activeIdx ? 'rgba(0,102,204,0.06)' : 'transparent',
-                  borderBottom: idx < results.length - 1 ? '1px solid rgba(0,0,0,0.04)' : 'none',
+                  background: idx === activeIdx ? 'rgba(204,120,92,0.06)' : 'transparent',
+                  borderBottom: idx < results.length - 1 ? '1px solid #e6dfd8' : 'none',
                   transition: 'background 0.1s',
                 }}
-                onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(0,0,0,0.03)'; }}
-                onMouseLeave={(e) => { e.currentTarget.style.background = idx === activeIdx ? 'rgba(0,102,204,0.06)' : 'transparent'; }}
+                onMouseEnter={(e) => { e.currentTarget.style.background = '#f4efe6'; }}
+                onMouseLeave={(e) => { e.currentTarget.style.background = idx === activeIdx ? 'rgba(204,120,92,0.06)' : 'transparent'; }}
               >
                 {/* 类型标记 */}
                 <span style={{
                   flexShrink: 0, marginTop: 2,
                   fontSize: 10, fontWeight: 600,
-                  color: item.type === 'product' ? '#0071e3' : item.type === 'case' ? '#34c759' : '#ff9500',
-                  background: item.type === 'product' ? 'rgba(0,113,227,0.08)' : item.type === 'case' ? 'rgba(52,199,89,0.10)' : 'rgba(255,149,0,0.10)',
+                  color: item.type === 'product' ? '#cc785c' : item.type === 'case' ? '#6c6a64' : '#a09d96',
+                  background: item.type === 'product' ? 'rgba(204,120,92,0.08)' : item.type === 'case' ? 'rgba(108,106,100,0.08)' : 'rgba(160,157,150,0.08)',
                   borderRadius: 4, padding: '2px 6px',
                   whiteSpace: 'nowrap', height: 'fit-content',
                 }}>
@@ -317,21 +317,21 @@ function SearchModal({ isOpen, onClose }: SearchModalProps) {
                 </span>
 
                 <div style={{ overflow: 'hidden', flex: 1 }}>
-                  <div style={{ fontSize: 14, fontWeight: 500, color: '#1d1d1f', marginBottom: 3, lineHeight: 1.4 }}>
+                  <div style={{ fontSize: 14, fontWeight: 500, color: '#141413', marginBottom: 3, lineHeight: 1.4 }}>
                     {highlightText(item.title, query)}
                   </div>
-                  <div style={{ fontSize: 12, color: 'rgba(0,0,0,0.48)', lineHeight: 1.5, overflow: 'hidden', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical' }}>
+                  <div style={{ fontSize: 12, color: '#6c6a64', lineHeight: 1.5, overflow: 'hidden', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical' }}>
                     {highlightText(item.snippet, query)}
                   </div>
                 </div>
               </div>
             ))
           ) : query.trim() ? (
-            <div style={{ padding: '40px 20px', textAlign: 'center', color: 'rgba(0,0,0,0.40)', fontSize: 14 }}>
+            <div style={{ padding: '40px 20px', textAlign: 'center', color: '#6c6a64', fontSize: 14 }}>
               未找到相关内容
             </div>
           ) : (
-            <div style={{ padding: '40px 20px', textAlign: 'center', color: 'rgba(0,0,0,0.30)', fontSize: 13 }}>
+            <div style={{ padding: '40px 20px', textAlign: 'center', color: '#a09d96', fontSize: 13 }}>
               输入关键词搜索产品、案例和常见问题
             </div>
           )}
@@ -383,17 +383,17 @@ export default function Navigation() {
       <nav
         style={{
           position: 'fixed', top: 0, left: 0, right: 0, zIndex: 100,
-          height: 64, background: 'rgba(255,255,255,0.80)',
+          height: 64, background: 'rgba(250,249,245,0.85)',
           backdropFilter: 'saturate(180%) blur(20px)',
           WebkitBackdropFilter: 'saturate(180%) blur(20px)',
-          borderBottom: '1px solid rgba(0,0,0,0.06)',
+          borderBottom: '1px solid #e6dfd8',
           display: 'flex', alignItems: 'center', justifyContent: 'space-between',
           padding: '0 24px',
         }}
       >
         {/* 左：Logo */}
-        <span onClick={goHome} style={{ fontSize: 20, fontWeight: 600, color: '#1d1d1f', letterSpacing: -0.3, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 8, flexShrink: 0 }}>
-          <img src="/hd-logo.webp" alt="" style={{ height: 36, width: 'auto', display: 'block' }} />
+        <span onClick={goHome} style={{ fontSize: 20, fontWeight: 500, fontFamily: '"Cormorant Garamond", Georgia, serif', color: '#141413', letterSpacing: '-0.02em', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 8, flexShrink: 0 }}>
+          <img src="/hd-logo.webp" alt="" style={{ height: 36, width: 'auto', display: 'block', mixBlendMode: 'multiply' }} />
           恒迪视讯
         </span>
 
@@ -408,9 +408,9 @@ export default function Navigation() {
             <li key={item.label}>
               <span
                 onClick={item.action}
-                style={{ fontSize: 14, fontWeight: 400, color: 'rgba(0,0,0,0.72)', letterSpacing: -0.1, cursor: 'pointer', transition: 'color 0.15s' }}
-                onMouseEnter={(e) => (e.currentTarget.style.color = '#1d1d1f')}
-                onMouseLeave={(e) => (e.currentTarget.style.color = 'rgba(0,0,0,0.72)')}
+                style={{ fontSize: 14, fontWeight: 400, color: '#6c6a64', letterSpacing: -0.1, cursor: 'pointer', transition: 'color 0.15s' }}
+                onMouseEnter={(e) => (e.currentTarget.style.color = '#141413')}
+                onMouseLeave={(e) => (e.currentTarget.style.color = '#6c6a64')}
               >
                 {item.label}
               </span>
@@ -426,16 +426,16 @@ export default function Navigation() {
             style={{
               display: 'flex', alignItems: 'center', gap: 6,
               height: 32, width: 200, padding: '0 12px',
-              fontSize: 13, color: 'rgba(0,0,0,0.45)',
-              background: 'rgba(0,0,0,0.04)',
-              border: '1px solid rgba(0,0,0,0.10)',
-              borderRadius: 980, cursor: 'pointer',
+              fontSize: 13, color: '#6c6a64',
+              background: '#efe9de',
+              border: '1px solid #e6dfd8',
+              borderRadius: 8, cursor: 'pointer',
               fontFamily: 'inherit',
               transition: 'border-color 0.15s, color 0.15s',
               whiteSpace: 'nowrap',
             }}
-            onMouseEnter={(e) => { e.currentTarget.style.borderColor = 'rgba(0,0,0,0.20)'; e.currentTarget.style.color = 'rgba(0,0,0,0.65)'; }}
-            onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'rgba(0,0,0,0.10)'; e.currentTarget.style.color = 'rgba(0,0,0,0.45)'; }}
+            onMouseEnter={(e) => { e.currentTarget.style.borderColor = '#cc785c'; e.currentTarget.style.color = '#3d3d3a'; }}
+            onMouseLeave={(e) => { e.currentTarget.style.borderColor = '#e6dfd8'; e.currentTarget.style.color = '#6c6a64'; }}
           >
             <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
               <circle cx="6.5" cy="6.5" r="4" stroke="currentColor" strokeWidth="1.5"/>
@@ -447,7 +447,7 @@ export default function Navigation() {
           {/* 咨询热线 */}
           <span
             onClick={() => scrollTo('footer')}
-            style={{ fontSize: 14, color: '#0066cc', letterSpacing: -0.1, cursor: 'pointer', whiteSpace: 'nowrap' }}
+            style={{ fontSize: 14, color: '#cc785c', letterSpacing: -0.1, cursor: 'pointer', whiteSpace: 'nowrap' }}
             onMouseEnter={(e) => (e.currentTarget.style.textDecoration = 'underline')}
             onMouseLeave={(e) => (e.currentTarget.style.textDecoration = 'none')}
           >

@@ -1695,24 +1695,24 @@ function RelatedProducts({ products }: { products: { id: string; model: string; 
   };
 
   return (
-    <div className="mt-6 bg-[#f5f5f7] rounded-2xl p-4">
+    <div className="mt-6 bg-[#efe9de] rounded-xl p-4">
       <div className="flex items-center justify-between mb-3">
-        <h3 className="text-lg font-semibold flex items-center gap-2 text-[#1d1d1f]">
-          <i className="fa-solid fa-cubes text-[#0066cc]"></i>
+        <h3 className="text-lg font-semibold flex items-center gap-2 text-[#141413]">
+          <i className="fa-solid fa-cubes text-[#cc785c]"></i>
           相关产品
         </h3>
         <div className="flex gap-1">
           <button
             onClick={() => scroll('left')}
             disabled={!canScrollLeft}
-            className="w-8 h-8 rounded-full bg-white border border-gray-200 flex items-center justify-center text-gray-400 hover:border-gray-300 hover:text-gray-600 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+            className="w-8 h-8 rounded-md bg-[#faf9f5] border border-[#e6dfd8] flex items-center justify-center text-[#6c6a64] hover:border-[#cc785c] hover:text-[#3d3d3a] disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
           >
             <i className="fa-solid fa-chevron-left text-xs"></i>
           </button>
           <button
             onClick={() => scroll('right')}
             disabled={!canScrollRight}
-            className="w-8 h-8 rounded-full bg-white border border-gray-200 flex items-center justify-center text-gray-400 hover:border-gray-300 hover:text-gray-600 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+            className="w-8 h-8 rounded-md bg-[#faf9f5] border border-[#e6dfd8] flex items-center justify-center text-[#6c6a64] hover:border-[#cc785c] hover:text-[#3d3d3a] disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
           >
             <i className="fa-solid fa-chevron-right text-xs"></i>
           </button>
@@ -1726,22 +1726,23 @@ function RelatedProducts({ products }: { products: { id: string; model: string; 
         {products.map((rp) => (
           <div
             key={rp.id}
-            className="bg-white rounded-2xl border border-[#e0e0e0] hover:border-[#0066cc] transition-all duration-300 cursor-pointer overflow-hidden flex-shrink-0"
+            className="bg-[#faf9f5] rounded-xl border border-[#e6dfd8] hover:border-[#cc785c] transition-all duration-300 cursor-pointer overflow-hidden flex-shrink-0"
             style={{ width: '260px' }}
             onClick={() => navigate(`/product/${rp.id}`)}
           >
-            <div className="aspect-video bg-white flex items-center justify-center">
+            <div className="aspect-video bg-[#efe9de] flex items-center justify-center">
               <img
                 src={rp.image}
                 alt={rp.name}
                 className="w-full h-full object-contain p-2"
+                style={{ mixBlendMode: 'multiply' }}
                 loading="lazy"
               />
             </div>
             <div className="p-3">
-              <p className="text-xs text-gray-400 uppercase tracking-wider mb-0.5">{rp.model}</p>
-              <p className="text-sm font-semibold text-gray-800 mb-1">{rp.name}</p>
-              <p className="text-xs text-gray-500 line-clamp-2">{rp.desc}</p>
+              <p className="text-xs text-[#6c6a64] uppercase tracking-wider mb-0.5">{rp.model}</p>
+              <p className="text-sm font-semibold text-[#141413] mb-1">{rp.name}</p>
+              <p className="text-xs text-[#6c6a64] line-clamp-2">{rp.desc}</p>
             </div>
           </div>
         ))}
@@ -1849,7 +1850,7 @@ export default function ProductDetailPage() {
         onNext={goToNextImage}
       />
       <Navigation />
-      <div className="min-h-screen bg-white text-gray-800 pt-16">
+      <div className="min-h-screen bg-[#faf9f5] text-[#3d3d3a] pt-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
           {/* 头部信息 - 只显示AISPEECH的logo */}
           <Header 
@@ -1859,16 +1860,17 @@ export default function ProductDetailPage() {
           <div className="mt-6 sm:mt-8 grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8">
             {/* 产品图片区域 */}
             <div>
-              <h3 className="text-lg font-semibold mb-3 text-gray-700 flex items-center gap-2">
-                <i className="fa-solid fa-images text-blue-600"></i>
+              <h3 className="text-lg font-semibold mb-3 text-[#141413] flex items-center gap-2">
+                <i className="fa-solid fa-images text-[#cc785c]"></i>
                 产品图片
               </h3>
-              <div className="aspect-video bg-white rounded-md overflow-hidden cursor-pointer relative"
+              <div className="aspect-video bg-[#efe9de] rounded-md overflow-hidden cursor-pointer relative"
                    onClick={() => openLightbox(selectedImageIndex)}>
                      <img 
                        src={product.images[selectedImageIndex]} 
                        alt={product.name} 
                        className="w-full h-full object-contain p-4 hover:scale-[1.02] transition-transform duration-300"
+                       style={{ mixBlendMode: 'multiply' }}
                        loading="lazy"
                      />
                     <div className="absolute inset-0 bg-black/10 opacity-0 hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
@@ -1880,7 +1882,7 @@ export default function ProductDetailPage() {
                  {product.images.map((img, index) => (
                        <button
                         key={index}
-                        className={`w-20 h-14 flex-shrink-0 overflow-hidden rounded border-2 ${selectedImageIndex === index ? 'border-blue-500' : 'border-transparent'} hover:opacity-90 transition-opacity focus:outline-none focus:ring-2 focus:ring-blue-300`}
+                        className={`w-20 h-14 flex-shrink-0 overflow-hidden rounded border-2 ${selectedImageIndex === index ? 'border-[#cc785c]' : 'border-[#e6dfd8]'} hover:opacity-90 transition-opacity focus:outline-none focus:ring-2 focus:ring-[#cc785c]/30`}
                         onClick={(e) => {
                           e.stopPropagation(); // 防止触发父级点击事件
                           setSelectedImageIndex(index);
@@ -1894,6 +1896,7 @@ export default function ProductDetailPage() {
                             src={img} 
                             alt={`缩略图 ${index + 1}`} 
                              className="w-full h-full object-contain cursor-pointer"
+                             style={{ mixBlendMode: 'multiply' }}
                              loading="lazy"
                              onClick={(e) => {
                                e.stopPropagation(); // 防止触发按钮的点击事件
@@ -1905,20 +1908,20 @@ export default function ProductDetailPage() {
               </div>
               {/* 产品问答 - 可选部分 */}
               {(product as any).faq && ((product as any).faq as { question: string; answer: string }[]).length > 0 && (
-                <div className="mt-6 bg-[#f5f5f7] rounded-2xl p-4">
-                  <h3 className="text-lg font-semibold mb-4 flex items-center gap-2 text-[#1d1d1f]">
-                    <i className="fa-solid fa-circle-question text-[#0066cc]"></i>
+                <div className="mt-6 bg-[#efe9de] rounded-xl p-4">
+                  <h3 className="text-lg font-semibold mb-4 flex items-center gap-2 text-[#141413]">
+                    <i className="fa-solid fa-circle-question text-[#cc785c]"></i>
                     关于{product.name}的常见问题
                   </h3>
                   <div className="space-y-4">
                     {((product as any).faq as { question: string; answer: string }[]).map((item: { question: string; answer: string }, index: number) => (
-                      <div key={index} className="border-b border-[#e0e0e0] last:border-0 pb-3 last:pb-0">
-                        <p className="font-medium text-[#1d1d1f] mb-1">
-                          <span className="text-[#0066cc] mr-1">问{index + 1}、</span>
+                      <div key={index} className="border-b border-[#e6dfd8] last:border-0 pb-3 last:pb-0">
+                        <p className="font-medium text-[#141413] mb-1">
+                          <span className="text-[#cc785c] mr-1">问{index + 1}、</span>
                           {item.question}
                         </p>
-                        <p className="text-[#333] pl-5">
-                          <span className="text-[#0066cc] font-medium">答：</span>
+                        <p className="text-[#3d3d3a] pl-5">
+                          <span className="text-[#cc785c] font-medium">答：</span>
                           {item.answer}
                         </p>
                       </div>
@@ -1951,10 +1954,10 @@ export default function ProductDetailPage() {
             <div>
               <h1 className="text-xl sm:text-2xl font-bold mb-2">{product.name}</h1>
               {(product as any).subtitle && (
-                <h2 className={`text-base sm:text-lg ${product.id.startsWith('h') ? 'text-red-600' : 'text-blue-600'} mb-4`}>{(product as any).subtitle}</h2>
+                <h2 className={`text-base sm:text-lg ${product.id.startsWith('h') ? 'text-red-600' : 'text-[#cc785c]'} mb-4`}>{(product as any).subtitle}</h2>
               )}
               {product.description && (
-                <p className="text-gray-500 mb-4 sm:mb-6 text-sm sm:text-base whitespace-pre-line">{product.description}</p>
+                <p className="text-[#6c6a64] mb-4 sm:mb-6 text-sm sm:text-base whitespace-pre-line">{product.description}</p>
               )}
                 {/* 产品规格列表 */}
                 <div className="mb-6">
@@ -1964,13 +1967,13 @@ export default function ProductDetailPage() {
                       <div className="space-y-6">
                         {(product as any).specs?.map((category: any, categoryIndex: number) => (
                           <div key={categoryIndex} className="overflow-x-auto">
-                            <h3 className="font-medium mb-2 text-[#1d1d1f]">{category.category}</h3>
-                            <table className="min-w-full bg-[#f5f5f7] rounded-xl overflow-hidden">
-                              <tbody className="divide-y divide-gray-200">
+                            <h3 className="font-medium mb-2 text-[#141413]">{category.category}</h3>
+                            <table className="min-w-full bg-[#efe9de] rounded-xl overflow-hidden">
+                              <tbody className="divide-y divide-[#e6dfd8]">
                                 {category.items.map((item: any, index: number) => (
-                                  <tr key={index} className={index % 2 === 0 ? 'bg-white' : 'bg-[#fafafc]'}>
-                                    <td className="px-4 py-2 text-sm font-medium text-gray-600">{item.name}</td>
-                                    <td className="px-4 py-2 text-sm text-gray-700" dangerouslySetInnerHTML={{ __html: item.value }}></td>
+                                  <tr key={index} className={index % 2 === 0 ? 'bg-[#faf9f5]' : 'bg-[#f4efe6]'}>
+                                    <td className="px-4 py-2 text-sm font-medium text-[#3d3d3a]">{item.name}</td>
+                                    <td className="px-4 py-2 text-sm text-[#3d3d3a]" dangerouslySetInnerHTML={{ __html: item.value }}></td>
                                   </tr>
                                 ))}
                               </tbody>
@@ -1983,19 +1986,19 @@ export default function ProductDetailPage() {
               {/* 下载按钮 */}
               <button
                 onClick={handleDownloadBrochure}
-                className="bg-[#0066cc] hover:bg-[#0071e3] text-white px-6 py-3 rounded-full transition-all active:scale-95 flex items-center justify-center w-full sm:w-auto text-sm sm:text-base"
+                className="bg-[#cc785c] hover:bg-[#a9583e] text-white px-6 py-3 rounded-[8px] transition-all active:scale-[0.97] flex items-center justify-center w-full sm:w-auto text-sm sm:text-base"
                 aria-label="下载产品彩页"
               >
                 <i className="fa-solid fa-download mr-2"></i>
                 下载产品彩页
               </button>
               {/* 联系方式 */}
-              <div className="mt-6 text-sm text-gray-500 dark:text-gray-400">
+              <div className="mt-6 text-sm text-[#6c6a64]">
                 <p>如需了解更多产品信息，请联系我们：</p>
                 <p className="mt-1">guo@techhdi.com | 18814845538</p>
                 <p className="mt-1">地址：杭州市余杭区七彩汇商业中心2-305室</p>
-               <p className="text-xs mt-2 flex items-center gap-4" style={{color: '#9ca3af'}}>
-  	<a href="https://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener" style={{color: '#9ca3af', textDecoration: 'none'}} className="hover:text-gray-700 dark:hover:text-gray-300">
+               <p className="text-xs mt-2 flex items-center gap-4" style={{color: '#a09d96'}}>
+  	<a href="https://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener" style={{color: '#a09d96', textDecoration: 'none'}} className="hover:text-[#3d3d3a]">
      		 ICP备案号：浙ICP备2026007647号-1
     	</a>
     	<a href="https://beian.mps.gov.cn/#/query/webSearch?code=33011002019014" rel="noreferrer" target="_blank" className="flex items-center">
