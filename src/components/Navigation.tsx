@@ -1,5 +1,6 @@
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useState, useRef, useEffect, useCallback } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 // ── 产品详情数据（摘要搜索用） ──
 interface ProductDetail {
@@ -348,6 +349,8 @@ export default function Navigation() {
   const location = useLocation();
   const isHome = location.pathname === '/';
   const [searchOpen, setSearchOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
 
   const scrollTo = (id: string) => {
     if (isHome) {
@@ -366,6 +369,14 @@ export default function Navigation() {
     }
   };
 
+  // 滚动监听：>8px 后切换导航背景
+  useEffect(() => {
+    const onScroll = () => setIsScrolled(window.scrollY > 8);
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+
   // CMD+K / Ctrl+K 打开搜索
   useEffect(() => {
     const handleKey = (e: KeyboardEvent) => {
@@ -378,12 +389,31 @@ export default function Navigation() {
     return () => window.removeEventListener('keydown', handleKey);
   }, []);
 
+  // 移动端菜单项
+  const mobileNavItems = [
+    { label: '首页', action: goHome },
+    { label: '产品', action: () => scrollTo('products') },
+    { label: '案例', action: () => scrollTo('cases') },
+    { label: '关于我们', action: () => scrollTo('about') },
+    { label: '咨询热线', action: () => scrollTo('footer') },
+  ];
+
   return (
     <>
-      <nav
+      <motion.nav
+        initial={false}
+        animate={{
+          backgroundColor: isScrolled
+            ? 'rgba(250,249,245,0.92)'
+            : 'rgba(250,249,245,0.55)',
+          boxShadow: isScrolled
+            ? '0 6px 24px -16px rgba(20,20,19,0.22)'
+            : '0 0 0 0 rgba(0,0,0,0)',
+        }}
+        transition={{ duration: 0.25 }}
         style={{
           position: 'fixed', top: 0, left: 0, right: 0, zIndex: 100,
-          height: 64, background: 'rgba(250,249,245,0.85)',
+          height: 64,
           backdropFilter: 'saturate(180%) blur(20px)',
           WebkitBackdropFilter: 'saturate(180%) blur(20px)',
           borderBottom: '1px solid #e6dfd8',
@@ -397,8 +427,8 @@ export default function Navigation() {
           恒迪视讯
         </span>
 
-        {/* 中：菜单 */}
-        <ul style={{ display: 'flex', gap: 28, listStyle: 'none', margin: 0, padding: 0 }}>
+        {/* 中：菜单（桌面端） */}
+        <ul className="hd-nav-desktop" style={{ display: 'flex', gap: 28, listStyle: 'none', margin: 0, padding: 0 }}>
           {[
             { label: '首页', action: goHome },
             { label: '产品', action: () => scrollTo('products') },
@@ -418,8 +448,8 @@ export default function Navigation() {
           ))}
         </ul>
 
-        {/* 右：搜索按钮 + 咨询热线 */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: 14, flexShrink: 0 }}>
+        {/* 右：搜索按钮 + 咨询热线（桌面端） */}
+        <div className="hd-nav-right" style={{ display: 'flex', alignItems: 'center', gap: 14, flexShrink: 0 }}>
           {/* 搜索按钮 */}
           <button
             onClick={() => setSearchOpen(true)}
@@ -454,7 +484,118 @@ export default function Navigation() {
             咨询热线
           </span>
         </div>
-      </nav>
+
+        {/* 移动端汉堡按钮 */}
+        <button
+          className="hd-nav-burger"
+          onClick={() => setMobileOpen(true)}
+          aria-label="打开菜单"
+          style={{
+            display: 'none',
+            width: 40, height: 40, padding: 0,
+            background: 'transparent', border: 'none', cursor: 'pointer',
+            alignItems: 'center', justifyContent: 'center',
+          }}
+        >
+          <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+            <line x1="3" y1="6" x2="19" y2="6" stroke="#141413" strokeWidth="1.6" strokeLinecap="round"/>
+            <line x1="3" y1="11" x2="19" y2="11" stroke="#141413" strokeWidth="1.6" strokeLinecap="round"/>
+            <line x1="3" y1="16" x2="19" y2="16" stroke="#141413" strokeWidth="1.6" strokeLinecap="round"/>
+          </svg>
+        </button>
+
+        {/* 移动端响应式样式 */}
+        <style>{`
+          @media (max-width: 768px) {
+            .hd-nav-desktop, .hd-nav-right { display: none !important; }
+            .hd-nav-burger { display: flex !important; }
+          }
+        `}</style>
+      </motion.nav>
+
+      {/* 移动端抽屉 */}
+      <AnimatePresence>
+        {mobileOpen && (
+          <>
+            <motion.div
+              key="overlay"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              onClick={() => setMobileOpen(false)}
+              style={{
+                position: 'fixed', inset: 0, zIndex: 200,
+                background: 'rgba(0,0,0,0.35)',
+                backdropFilter: 'blur(2px)',
+              }}
+            />
+            <motion.aside
+              key="drawer"
+              initial={{ x: '100%' }}
+              animate={{ x: 0 }}
+              exit={{ x: '100%' }}
+              transition={{ type: 'tween', duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
+              style={{
+                position: 'fixed', top: 0, right: 0, bottom: 0, zIndex: 201,
+                width: '78vw', maxWidth: 320,
+                background: '#faf9f5',
+                boxShadow: '-16px 0 48px -20px rgba(20,20,19,0.28)',
+                display: 'flex', flexDirection: 'column',
+                padding: '20px 0',
+              }}
+            >
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0 24px 16px', borderBottom: '1px solid #e6dfd8' }}>
+                <span style={{ fontFamily: '"Cormorant Garamond", Georgia, serif', fontSize: 20, fontWeight: 500, color: '#141413', display: 'flex', alignItems: 'center', gap: 8 }}>
+                  <img src="/hd-logo.webp" alt="" style={{ height: 30, width: 'auto', mixBlendMode: 'multiply' }} />
+                  恒迪视讯
+                </span>
+                <button
+                  onClick={() => setMobileOpen(false)}
+                  aria-label="关闭菜单"
+                  style={{ width: 36, height: 36, background: 'transparent', border: 'none', cursor: 'pointer', fontSize: 22, color: '#6c6a64', lineHeight: 1 }}
+                >
+                  ×
+                </button>
+              </div>
+              <nav style={{ display: 'flex', flexDirection: 'column', padding: '8px 0' }}>
+                {mobileNavItems.map((item, i) => (
+                  <motion.span
+                    key={item.label}
+                    initial={{ opacity: 0, x: 24 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.08 + i * 0.05, duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+                    onClick={() => { setMobileOpen(false); item.action(); }}
+                    style={{
+                      padding: '14px 24px', fontSize: 16, color: '#141413',
+                      cursor: 'pointer', borderBottom: '1px solid #efe9de',
+                      fontFamily: '"Inter", -apple-system, sans-serif',
+                    }}
+                  >
+                    {item.label}
+                  </motion.span>
+                ))}
+              </nav>
+              <button
+                onClick={() => { setMobileOpen(false); setSearchOpen(true); }}
+                style={{
+                  margin: '16px 24px 0', height: 40,
+                  display: 'flex', alignItems: 'center', gap: 8,
+                  padding: '0 14px', fontSize: 14, color: '#6c6a64',
+                  background: '#efe9de', border: '1px solid #e6dfd8',
+                  borderRadius: 8, cursor: 'pointer', fontFamily: 'inherit',
+                }}
+              >
+                <svg width="15" height="15" viewBox="0 0 16 16" fill="none">
+                  <circle cx="6.5" cy="6.5" r="4" stroke="currentColor" strokeWidth="1.5"/>
+                  <path d="M9.5 9.5l3 3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+                </svg>
+                搜索
+              </button>
+            </motion.aside>
+          </>
+        )}
+      </AnimatePresence>
 
       {/* 全屏搜索弹窗 */}
       <SearchModal isOpen={searchOpen} onClose={() => setSearchOpen(false)} />

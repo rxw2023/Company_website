@@ -3,6 +3,7 @@ import { useEffect, lazy, Suspense } from "react";
 import Home from "@/pages/Home";
 import NotFoundPage from "@/pages/NotFoundPage";
 import AiChatWidget from "@/components/AiChatWidget/AiChatWidget";
+import LoadingScreen from "@/components/LoadingScreen";
 
 // 页面懒加载 - 按需加载减少初始包体积
 const ProductDetailPage = lazy(() => import("@/pages/ProductDetailPage"));
@@ -38,6 +39,7 @@ function TrailingSlashRedirect() {
 export default function App() {
   return (
     <>
+      <LoadingScreen />
       <TrailingSlashRedirect />
       <Suspense fallback={<PageLoading />}>
         <Routes>

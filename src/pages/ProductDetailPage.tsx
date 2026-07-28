@@ -5,7 +5,7 @@ import { Header } from '../components/Header';
 import Navigation from '../components/Navigation';
 import { toast } from 'sonner';
 import SeoHead from '../components/SeoHead';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 
 import a1Image1 from '../assets/images/a1-1.webp';
 import a1Image2 from '../assets/images/a1-2.webp';
@@ -1866,13 +1866,20 @@ export default function ProductDetailPage() {
               </h3>
               <div className="aspect-video bg-[#efe9de] rounded-md overflow-hidden cursor-pointer relative"
                    onClick={() => openLightbox(selectedImageIndex)}>
-                     <img 
-                       src={product.images[selectedImageIndex]} 
-                       alt={product.name} 
-                       className="w-full h-full object-contain p-4 hover:scale-[1.02] transition-transform duration-300"
-                       style={{ mixBlendMode: 'multiply' }}
-                       loading="lazy"
-                     />
+                  <AnimatePresence mode="wait">
+                    <motion.img 
+                      key={selectedImageIndex}
+                      src={product.images[selectedImageIndex]} 
+                      alt={product.name} 
+                      className="w-full h-full object-contain p-4 hover:scale-[1.02] transition-transform duration-300"
+                      style={{ mixBlendMode: 'multiply' }}
+                      loading="lazy"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
+                    />
+                  </AnimatePresence>
                     <div className="absolute inset-0 bg-black/10 opacity-0 hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
                       <i className="fa-solid fa-search-plus text-white text-4xl"></i>
                     </div>
