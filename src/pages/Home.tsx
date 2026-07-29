@@ -28,7 +28,7 @@ import a19Image from '../assets/images/a19-1.webp';
 // import a16Image from '../assets/images/a16-1.webp';
 // import a17Image from '../assets/images/a17-2.webp';
 import quickImage from '../assets/images/aispeech-logo.png';
-import aispeechLogo from '../assets/images/aispeech-logo.png';
+import aispeechLogo from '../assets/images/aispeech-logo1.png';
 import qrcodeImage from '../assets/images/qrcode.jpg';
 // 案例图片
 import e1Image from '../assets/images/e1.webp';
@@ -119,7 +119,6 @@ export default function Home() {
   const heroWrapOpacity = useTransform(heroProgress, [0, 0.85], [1, 0]);
   const heroLogoY = useTransform(heroProgress, [0, 1], [0, -40]);
   const heroLogoScale = useTransform(heroProgress, [0, 1], [1, 0.82]);
-  const heroLogoRotate = useTransform(heroProgress, [0, 1], [0, 10]);
 
   // CTA 滚动视差背景
   const ctaRef = useRef<HTMLDivElement>(null);
@@ -678,7 +677,7 @@ export default function Home() {
         >
           <motion.div
             className="hero-logo-wrap"
-            style={{ y: heroLogoY, scale: heroLogoScale, rotate: heroLogoRotate }}
+            style={{ y: heroLogoY, scale: heroLogoScale }}
             variants={{ hidden: { opacity: 0 }, visible: { opacity: 1, transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] } } }}
           >
             <img src={aispeechLogo} alt="AISPEECH" className="hero-logo" />

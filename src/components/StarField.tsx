@@ -52,8 +52,8 @@ export default function StarField({
 
     let raf = 0;
     let stars: Star[] = [];
-    let meteors: Meteor[] = [];
-    let nextMeteorAt = Math.random() * 1.5 + 0.5;
+    let activeMeteor: Meteor | null = null;
+    let nextMeteorAt = Math.random() * 2 + 1.5;
     let w = 0;
     let h = 0;
     let t = 0;
@@ -90,7 +90,7 @@ export default function StarField({
       const fromLeft = Math.random() < 0.5;
       const speed = Math.random() * 3 + 4;
       const angle = Math.PI * 0.18 + Math.random() * 0.12; // ~10-20° 下倾
-      meteors.push({
+      activeMeteor = {
         x: fromLeft ? -60 : w + 60,
         y: Math.random() * h * 0.5,
         vx: (fromLeft ? 1 : -1) * Math.cos(angle) * speed,
@@ -98,7 +98,7 @@ export default function StarField({
         life: 0,
         max: Math.random() * 50 + 50,
         len: Math.random() * 70 + 50,
-      });
+      };
     };
 
     const drawStatic = () => {
@@ -127,13 +127,9 @@ export default function StarField({
         ctx.fill();
       }
 
-      // 流星：每隔 1-3 秒生成一个，可同时存在多个
-      if (meteor && t > nextMeteorAt) {
-        spawnMeteor();
-        nextMeteorAt = t + Math.random() * 2 + 1;
-      }
-
-      meteors = meteors.filter((m) => {
+      // 流星
+      if (activeMeteor) {
+        const m = activeMeteor;
         m.life++;
         m.x += m.vx;
         m.y += m.vy;
@@ -160,8 +156,13 @@ export default function StarField({
         ctx.fillStyle = `rgba(255,250,245,${alpha})`;
         ctx.fill();
 
-        return !(m.life >= m.max || m.x < -120 || m.x > w + 120 || m.y > h + 120);
-      });
+        if (m.life >= m.max || m.x < -120 || m.x > w + 120 || m.y > h + 120) {
+          activeMeteor = null;
+          nextMeteorAt = t + Math.random() * 3 + 1.5;
+        }
+      } else if (meteor && t > nextMeteorAt) {
+        spawnMeteor();
+      }
 
       raf = requestAnimationFrame(loop);
     };
