@@ -30,6 +30,8 @@ import a19Image from '../assets/images/a19-1.webp';
 import quickImage from '../assets/images/aispeech-logo.png';
 import aispeechLogo from '../assets/images/aispeech-logo1.png';
 import qrcodeImage from '../assets/images/qrcode.jpg';
+import addressMapImage from '../assets/images/company-address-map.png';
+import heroBgImage from '../assets/images/hero-bg.png';
 // 案例图片
 import e1Image from '../assets/images/e1.webp';
 import e2Image from '../assets/images/e2.webp';
@@ -104,6 +106,8 @@ export default function Home() {
 
   // 案例行业过滤
   const [caseCat, setCaseCat] = useState<typeof CASE_CATEGORIES[number]>('all');
+  const [mapPreview, setMapPreview] = useState(false);
+  const [qrPreview, setQrPreview] = useState(false);
   const filteredCases =
     caseCat === 'all'
       ? cases
@@ -219,17 +223,33 @@ export default function Home() {
 
         .hd-hero {
           min-height: 100vh;
-          background: var(--warm-canvas);
           display: flex; flex-direction: column;
           align-items: center; justify-content: center;
           text-align: center;
           padding: calc(var(--nav-h) + 60px) 24px 80px;
           position: relative; overflow: hidden;
         }
+        .hd-hero-bg {
+          position: absolute; inset: 0;
+          width: 100%; height: 100%;
+          object-fit: cover;
+          z-index: 0;
+          pointer-events: none;
+        }
+        .hd-hero-overlay {
+          position: absolute; inset: 0;
+          background: rgba(250,246,242,0.78);
+          z-index: 1;
+          pointer-events: none;
+        }
+        .hd-hero > *:not(.hd-hero-bg):not(.hd-hero-overlay) {
+          position: relative; z-index: 2;
+        }
         .hd-hero::after {
           content: '';
           position: absolute; bottom: 0; left: 0; right: 0; height: 1px;
           background: var(--warm-hairline);
+          z-index: 3;
         }
         .hd-hero .hero-logo-wrap {
           margin-bottom: 20px;
@@ -675,6 +695,8 @@ export default function Home() {
             visible: { transition: { staggerChildren: 0.12, delayChildren: 0.05 } },
           }}
         >
+          <img src={heroBgImage} alt="" className="hd-hero-bg" aria-hidden="true" />
+          <div className="hd-hero-overlay" aria-hidden="true" />
           <motion.div
             className="hero-logo-wrap"
             style={{ y: heroLogoY, scale: heroLogoScale }}
@@ -932,7 +954,13 @@ export default function Home() {
               <p className="hd-footer-desc">思必驰 AISPEECH 授权代理商<br />杭州余杭 · 专业音视频集成<br />专注为教育、企业、政府、酒店客户提供智能会议系统、音视频集成解决方案及全流程服务。</p>
               <div className="mt-4 flex flex-col items-start">
                 <span className="text-sm font-medium mb-2" style={{ color: 'var(--warm-on-dark-soft)' }}>公司公众号</span>
-                <img src={qrcodeImage} alt="恒迪视讯公众号二维码" className="w-28 h-28 object-contain rounded-md bg-white p-1" loading="lazy" />
+                <img
+                  src={qrcodeImage}
+                  alt="恒迪视讯公众号二维码"
+                  className="w-28 h-28 object-contain rounded-md bg-white p-1 cursor-zoom-in hover:opacity-90 transition-opacity"
+                  loading="lazy"
+                  onClick={() => setQrPreview(true)}
+                />
               </div>
             </div>
             <div>
@@ -954,6 +982,14 @@ export default function Home() {
                 邮箱：<a href="mailto:guo@techhdi.com">guo@techhdi.com</a><br />
                 地址：杭州市余杭区七彩汇商业中心 2-305 室
               </p>
+              <img
+                src={addressMapImage}
+                alt="公司地址"
+                className="mt-3 w-full rounded-md object-cover cursor-zoom-in hover:opacity-90 transition-opacity"
+                style={{ maxHeight: 140 }}
+                loading="lazy"
+                onClick={() => setMapPreview(true)}
+              />
             </div>
           </div>
           <div className="hd-footer-bottom">
@@ -967,6 +1003,51 @@ export default function Home() {
         </footer>
 
       </div>
+
+      {/* 地址地图全屏预览 */}
+      {mapPreview && (
+        <div
+          className="fixed inset-0 z-[9999] bg-black/80 flex items-center justify-center p-4"
+          onClick={() => setMapPreview(false)}
+        >
+          <button
+            className="absolute top-4 right-4 text-white text-2xl w-10 h-10 flex items-center justify-center rounded-full bg-white/10 hover:bg-white/20 transition-colors"
+            onClick={() => setMapPreview(false)}
+            aria-label="关闭"
+          >
+            ✕
+          </button>
+          <img
+            src={addressMapImage}
+            alt="公司地址全图"
+            className="max-w-full max-h-[90vh] rounded-lg shadow-2xl"
+            onClick={(e) => e.stopPropagation()}
+          />
+        </div>
+      )}
+
+      {/* 公众号二维码全屏预览 */}
+      {qrPreview && (
+        <div
+          className="fixed inset-0 z-[9999] bg-black/80 flex items-center justify-center p-4"
+          onClick={() => setQrPreview(false)}
+        >
+          <button
+            className="absolute top-4 right-4 text-white text-2xl w-10 h-10 flex items-center justify-center rounded-full bg-white/10 hover:bg-white/20 transition-colors"
+            onClick={() => setQrPreview(false)}
+            aria-label="关闭"
+          >
+            ✕
+          </button>
+          <img
+            src={qrcodeImage}
+            alt="公众号二维码"
+            className="max-w-full max-h-[90vh] rounded-lg shadow-2xl"
+            onClick={(e) => e.stopPropagation()}
+          />
+        </div>
+      )}
+
     </>
   );
 }
