@@ -30,8 +30,8 @@ import a19Image from '../assets/images/a19-1.webp';
 import quickImage from '../assets/images/aispeech-logo.png';
 import aispeechLogo from '../assets/images/aispeech-logo1.png';
 import qrcodeImage from '../assets/images/qrcode.jpg';
-import addressMapImage from '../assets/images/company-address-map.png';
-import heroBgImage from '../assets/images/hero-bg.png';
+import addressMapImage from '../assets/images/company-address-map.webp';
+import heroBgImage from '../assets/images/hero-bg.webp';
 // 案例图片
 import e1Image from '../assets/images/e1.webp';
 import e2Image from '../assets/images/e2.webp';
