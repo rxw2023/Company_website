@@ -22,11 +22,7 @@ import a11Image from '../assets/images/a11-3.webp'
 import a12Image from '../assets/images/a12-2.webp';
 import a18Image from '../assets/images/a18-2.webp';
 import a19Image from '../assets/images/a19-1.webp';
-// import a13Image from '../assets/images/a13-2.webp';
-// import a14Image from '../assets/images/a14-2.webp';
-// import a15Image from '../assets/images/a15-1.webp';
-// import a16Image from '../assets/images/a16-1.webp';
-// import a17Image from '../assets/images/a17-2.webp';
+
 import quickImage from '../assets/images/aispeech-logo.png';
 import aispeechLogo from '../assets/images/aispeech-logo1.png';
 import qrcodeImage from '../assets/images/qrcode.jpg';
@@ -52,16 +48,13 @@ const products = [
   { id: 'a12', name: 'MK300 桌面安装套件',          desc: '专为MA600D矩阵麦克风桌面部署定制，安装更美观整洁，适配高端会议空间。', img: a12Image, categories: ['矩阵麦克风'] },
   { id: 'a10', name: 'AIMIC-B100 桌面控制器',      desc: '智能控制 + 精准拾音 + 便捷部署，现代高效会议的得力助手。', img: a10Image, categories: ['控制·投屏'] },
   { id: 'a7',  name: 'MC08 高端吸顶麦克风',        desc: '32 单元阵列，8 个独立配置拾音区，专为教学场景精心设计。', img: a7Image, categories: ['吸顶麦克风'] },
-  // { id: 'a15', name: 'MC08-A 高端吸顶麦克风-高校款',  desc: '4 拾音区，模拟音频，专为基础教学空间设计。', img: a15Image },
-  // { id: 'a16', name: 'MC08-U 高端吸顶麦克风-教育款',  desc: '8 拾音区，Dante+模拟，AI 转写，8台级联覆盖大型空间。', img: a16Image },
-  // { id: 'a13', name: 'MK102 嵌入式安装配件',        desc: '专为MC08定制，嵌入式结构与天花板齐平，美观隐蔽。', img: a13Image },
-  // { id: 'a14', name: 'MK200 表面安装配件',        desc: '专为MC08定制，表面安装便捷，结构稳固可靠。', img: a14Image },
+
   { id: 'a1',  name: 'MC10 吸顶麦克风',         desc: '128 单元全向麦克风阵列，16 个独立可配拾音区，精细化拾音配置。', img: a1Image, categories: ['吸顶麦克风'] },
   { id:'a11',  name: 'MC04 高端吸顶麦克风-教育款',      desc: '24单元MEMS阵列，2m精准扩声覆盖，ClearSpeakAI算法，专为教室教学打造。', img: a11Image, categories: ['吸顶麦克风'] },
   { id: 'a3',  name: 'MCS06 拾扩一体吸顶麦克风',      desc: '32 单元全向阵列，4 个拾音区，支持 Dante，集拾音扩声于一体。', img: a3Image, categories: ['吸顶麦克风'] },
   { id: 'a6',  name: 'AISPK-DC20 PoE 吸顶音箱',   desc: '全频同轴天花扬声器，PoE 供电，适用商店、会议室、酒店多场景。', img: a6Image, categories: ['会议音箱'] },
   { id: 'a8',  name: 'AIMIC-M12 企业级会议麦克风音箱',    desc: '集拾音、扩音、语音转写、字幕同传于一体，多台级联，覆盖大中小型会议室。', img: a8Image, categories: ['会议音箱'] },
-  // { id: 'a17', name: 'AIMIC-M6 AI转录麦克风音箱',   desc: '6麦阵列，AI实时转写翻译，5000mAh超长续航，便携会议利器。', img: a17Image },
+
   { id: 'a9',  name: 'C60 AI 追踪双目摄像头',      desc: '多种 AI 追踪模式，实时字幕，音视频融合，适配会议讨论、演讲、板书。', img: a9Image, categories: ['摄像追踪'] },
   { id: 'a4',  name: 'C40T 视频会议摄像机',        desc: '4K 超高清，12 倍光学 + 16 倍数字变焦，适配各类企业会议室。', img: a4Image, categories: ['摄像追踪'] },
   { id: 'a5',  name: 'MT100 AI 声像追踪主机',      desc: '音视频融合追踪引擎，多种追踪模式，适配企业与教育演讲场景。', img: a5Image, categories: ['摄像追踪'] },
