@@ -73,8 +73,6 @@ import a19Image2 from '../assets/images/a19-2.webp';
 import a19Image3 from '../assets/images/a19-3.webp';
 import a19Image4 from '../assets/images/a19-4.webp';
 
-
-
 import a1Pdf from '../assets/pdf/MC10吸顶麦克风.pdf';
 import a2Pdf from '../assets/pdf/MA600D矩阵麦克风.pdf';
 import a3Pdf from '../assets/pdf/MCS06拾扩一体吸顶麦克风.pdf';
@@ -89,7 +87,6 @@ import a11Pdf from '../assets/pdf/MC04.pdf';
 import a12Pdf from '../assets/pdf/MK300-结构尺寸六视图.pdf';
 import a18Pdf from '../assets/pdf/AI智能声像追踪主机MT100.pdf';
 import a19Pdf from '../assets/pdf/BYOM投屏套装.pdf';
-
 
 // 图片查看器组件 - 支持缩放拖拽
 function ImageLightbox({ 
@@ -1123,7 +1120,6 @@ const productData: Record<string, Product> = {
         }
       ],
   },
-
   a12: {
     id: 'a12',
     name: '思必驰MK300桌面安装套件',
@@ -1324,7 +1320,6 @@ a18:{
     ],
   },
 };
-
 // 相关产品轮播组件（独立组件，hooks 在顶层合法调用）
 function RelatedProducts({ products }: { products: { id: string; model: string; name: string; desc: string; image: string }[] }) {
   const navigate = useNavigate();
