@@ -185,8 +185,10 @@ server {
     # 替换为您的域名或ECS实例公网IP地址
     server_name 您的域名或公网IP地址;
 
-    # 设置网站根目录为上传的dist文件夹路径
-    root /var/www/react-app/dist;
+    # 设置网站根目录为上传的dist文件夹路径。
+    # ⚠️ 改成你自己的实际路径 —— 线上目前是 /var/www/Company_website/dist，
+    #    下面这个只是示例值，照抄会让你指向一个不存在的目录（表现是整站 404）。
+    root /var/www/Company_website/dist;
     index index.html;
 
     # 重要：确保React路由正常工作
@@ -194,6 +196,9 @@ server {
     # dist/faq.html），而不是 dist/product/a1/index.html。少了 $uri.html 时
     # /product/a1 与 /faq 都会回退到 index.html，预渲染的 SEO 内容、og:image
     # 与 Product/FAQ 结构化数据全部不会被送出，等于白做。
+    #
+    # 这个坑真踩过：26 个预渲染页上线三周，title 全是首页那句，
+    # 页面上看不出任何异常。改完务必用真实 URL 逐个核对 title。
     location / {
         try_files $uri $uri.html $uri/ /index.html;
     }
@@ -206,8 +211,14 @@ server {
     # 现在前端只请求同源的 /api-ai/，Authorization 头由 nginx 补上。
     # ────────────────────────────────────────────────────────────
     location /api-ai/ {
-        # 从独立文件读取密钥，便于单独设置文件权限（见下方说明）
-        include /etc/nginx/conf.d/siliconflow_key.conf;
+        # 密钥放**独立文件**，便于单独设权限（见下方 6.2.1）。
+        #
+        # ⚠️ 文件后缀必须是 .inc，且**不要**放 /etc/nginx/conf.d/ ——
+        #    因为 nginx.conf 里有 `include /etc/nginx/conf.d/*.conf;`，
+        #    那是 http 层的 include。一旦叫 .conf 放在那里，它会被全局加载，
+        #    等于给**所有** proxy_pass 都挂上这个 Authorization 头，
+        #    将来谁加一个反代就把密钥送出去了。
+        include /etc/nginx/siliconflow_key.inc;
 
         proxy_pass https://api.siliconflow.cn/;
         proxy_ssl_server_name on;
@@ -219,8 +230,12 @@ server {
         proxy_cache off;
         proxy_read_timeout 300s;
 
-        # 简易限流：防止密钥被拿来刷量（需在 http 块定义 limit_req_zone）
+        # 限流：防止密钥被拿来刷量（需在 http 块定义 limit_req_zone，见 6.2.1）
         limit_req zone=ai_chat burst=5 nodelay;
+        # 返回 429 而不是 nginx 默认的 503：前端对 429 有专门的文案
+        # （「当前咨询人数较多，请稍等片刻再试」），503 会落进"服务不稳定"那一档，
+        # 说的就不是实话了。
+        limit_req_status 429;
     }
 
     # 静态文件缓存设置，提高网站性能
@@ -234,16 +249,21 @@ server {
 
 ### 6.2.1 配置 AI 密钥（不要写进前端）
 
-创建密钥文件，并限制为仅 root 可读：
+创建密钥文件，并限制为仅 root 可读。
+
+**注意路径：`/etc/nginx/siliconflow_key.inc`**，不是 `conf.d/` 下的 `.conf`——
+原因见上面 6.2 里的说明（`conf.d/*.conf` 是 http 层 include，会全局生效）。
 
 ```bash
 # 写入密钥（把 sk-xxxx 换成你的真实 Key）
 printf 'proxy_set_header Authorization "Bearer sk-替换成你的真实Key";\n' \
-  > /etc/nginx/conf.d/siliconflow_key.conf
-chmod 600 /etc/nginx/conf.d/siliconflow_key.conf
+  > /etc/nginx/siliconflow_key.inc
+chmod 600 /etc/nginx/siliconflow_key.inc
 ```
 
-在 `/etc/nginx/nginx.conf` 的 `http { ... }` 块内加入限流区定义（用于上面的 `limit_req`）：
+在 `/etc/nginx/nginx.conf` 的 `http { ... }` 块内加入限流区定义（用于上面的 `limit_req`）。
+放在 `conf.d/` 里那个 server 配置文件的**最前面**（server 块之外）也可以 —— 那个文件
+本身就是在 http 上下文里被 include 的：
 
 ```nginx
 # 每个 IP 每秒最多 1 次 AI 请求，突发允许 5 次
@@ -253,6 +273,14 @@ limit_req_zone $binary_remote_addr zone=ai_chat:10m rate=1r/s;
 > **为什么必须这样做**：只要密钥出现在 `VITE_` 前缀的环境变量里，它就会被编译进
 > `dist/assets/*.js`，访客打开开发者工具即可提取并盗用你的 API 额度。
 > 项目里已提供 `pnpm run doctor` 命令，会自动扫描打包产物中的明文密钥，建议每次发版前执行。
+
+> **已启用 HTTPS 的服务器不要照抄上面整段。** 用 certbot 签过证书的机器上
+> 已经有 `listen 443 ssl` 的 server 块，正确做法是在**那个块**里改 `root` 与
+> `location /`，并补上 `/api-ai/` 与限流，而不是新粘贴一个 `listen 80` 的块。
+> 同时注意 certbot 通常还会有一个 80 端口做 HTTP→HTTPS 跳转的 server 块。
+>
+> 编辑完先 `nginx -t` 确认语法，再 `systemctl reload nginx`（不要用 restart，
+> reload 不中断现有连接）。
 
 
 编辑完成后，按`Ctrl+O`保存文件，然后按`Ctrl+X`退出编辑器。
