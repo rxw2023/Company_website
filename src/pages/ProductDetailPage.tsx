@@ -5,6 +5,7 @@ import { Header } from '../components/Header';
 import Navigation from '../components/Navigation';
 import { toast } from 'sonner';
 import SeoHead from '../components/SeoHead';
+import { responsiveImageByUrl, DETAIL_SIZES, THUMB_SIZES } from '../data/responsiveImage';
 import { motion, AnimatePresence } from 'framer-motion';
 
 import a1Image1 from '../assets/images/a1-1.webp';
@@ -85,7 +86,9 @@ import a9Pdf from '../assets/pdf/AI追踪双目语音摄像头C60.pdf';
 import a10Pdf from '../assets/pdf/B100_DM0403.pdf';
 import a11Pdf from '../assets/pdf/MC04.pdf';
 import a12Pdf from '../assets/pdf/MK300-结构尺寸六视图.pdf';
-import a18Pdf from '../assets/pdf/AI智能声像追踪主机MT100.pdf';
+// ！D1 曾经错误地指向 MT100 的彩页（访客点 D1 的"下载产品彩页"会拿到 MT100 规格书）。
+// 已在事实源 products.json 修正，这里同步。`pnpm run doctor` 现在会守住这条对应关系。
+import a18Pdf from '../assets/pdf/会议办公大模型信创一体机D1.pdf';
 import a19Pdf from '../assets/pdf/BYOM投屏套装.pdf';
 
 // 图片查看器组件 - 支持缩放拖拽
@@ -730,7 +733,7 @@ const productData: Record<string, Product> = {
   },
   'a7': {
     id: 'a7',
-    name: '思必驰高端吸顶麦克风-MC08',
+    name: '思必驰高端吸顶麦克风MC08',
     description: 'MC08是思必驰推出的一款适用教学场景的高端吸顶麦克风， 集成了多达32单元的全向麦克风阵列，提供了8个独立可配置拾音区，可实现通话拾音区、扩声拾音区、静音区等精细化拾音配置。MC08采用Dante数字音频技术，可实现稳定的、高保真的数字音频传输，广泛兼容数字音频生态，可实现IP数字化管理。MC08还提供了模拟音频接口，兼容传统的音频系统方案，单台MC08即可覆盖整个讲台区域，可同时实现教室扩声、远程教学和课程录播的三合一能力，通过内置自研的AI算法，提供高清降噪、混响抑制、啸叫抑制、自动增益和语音转写等功能，有效提升教学效果。',
     images: [
       a7Image1,
@@ -801,7 +804,7 @@ const productData: Record<string, Product> = {
   },
   'a8': {
     id: 'a8',
-    name: '思必驰企业级会议麦克风音箱AIMIC-M12',
+    name: '思必驰企业级会议麦克风音箱M12',
     description: 'M12是一款集拾音、扩音、语音转写、字幕同传于一体的企业级会议麦克风音箱，可通过多台级联，满足大中小型多类会议室需求。',
     images: [
       a8Image1,
@@ -1349,24 +1352,24 @@ function RelatedProducts({ products }: { products: { id: string; model: string; 
   };
 
   return (
-    <div className="mt-6 bg-[#efe9de] rounded-xl p-4">
+    <div className="mt-6 bg-[var(--warm-surface)] rounded-xl p-4">
       <div className="flex items-center justify-between mb-3">
-        <h3 className="text-lg font-semibold flex items-center gap-2 text-[#141413]">
-          <i className="fa-solid fa-cubes text-[#cc785c]"></i>
+        <h3 className="text-lg font-semibold flex items-center gap-2 text-[var(--warm-ink)]">
+          <i className="fa-solid fa-cubes text-[var(--warm-primary)]"></i>
           相关产品
         </h3>
         <div className="flex gap-1">
           <button
             onClick={() => scroll('left')}
             disabled={!canScrollLeft}
-            className="w-8 h-8 rounded-md bg-[#faf9f5] border border-[#e6dfd8] flex items-center justify-center text-[#6c6a64] hover:border-[#cc785c] hover:text-[#3d3d3a] disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+            className="w-8 h-8 rounded-md bg-[var(--warm-canvas)] border border-[var(--warm-hairline)] flex items-center justify-center text-[var(--warm-muted)] hover:border-[var(--warm-primary)] hover:text-[var(--warm-body)] disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
           >
             <i className="fa-solid fa-chevron-left text-xs"></i>
           </button>
           <button
             onClick={() => scroll('right')}
             disabled={!canScrollRight}
-            className="w-8 h-8 rounded-md bg-[#faf9f5] border border-[#e6dfd8] flex items-center justify-center text-[#6c6a64] hover:border-[#cc785c] hover:text-[#3d3d3a] disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+            className="w-8 h-8 rounded-md bg-[var(--warm-canvas)] border border-[var(--warm-hairline)] flex items-center justify-center text-[var(--warm-muted)] hover:border-[var(--warm-primary)] hover:text-[var(--warm-body)] disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
           >
             <i className="fa-solid fa-chevron-right text-xs"></i>
           </button>
@@ -1380,11 +1383,11 @@ function RelatedProducts({ products }: { products: { id: string; model: string; 
         {products.map((rp) => (
           <div
             key={rp.id}
-            className="bg-[#faf9f5] rounded-xl border border-[#e6dfd8] hover:border-[#cc785c] transition-all duration-300 cursor-pointer overflow-hidden flex-shrink-0"
+            className="bg-[var(--warm-canvas)] rounded-xl border border-[var(--warm-hairline)] hover:border-[var(--warm-primary)] transition-all duration-300 cursor-pointer overflow-hidden flex-shrink-0"
             style={{ width: '260px' }}
             onClick={() => navigate(`/product/${rp.id}`)}
           >
-            <div className="aspect-video bg-[#efe9de] flex items-center justify-center">
+            <div className="aspect-video bg-[var(--warm-surface)] flex items-center justify-center">
               <img
                 src={rp.image}
                 alt={rp.name}
@@ -1394,9 +1397,9 @@ function RelatedProducts({ products }: { products: { id: string; model: string; 
               />
             </div>
             <div className="p-3">
-              <p className="text-xs text-[#6c6a64] uppercase tracking-wider mb-0.5">{rp.model}</p>
-              <p className="text-sm font-semibold text-[#141413] mb-1">{rp.name}</p>
-              <p className="text-xs text-[#6c6a64] line-clamp-2">{rp.desc}</p>
+              <p className="text-xs text-[var(--warm-muted)] uppercase tracking-wider mb-0.5">{rp.model}</p>
+              <p className="text-sm font-semibold text-[var(--warm-ink)] mb-1">{rp.name}</p>
+              <p className="text-xs text-[var(--warm-muted)] line-clamp-2">{rp.desc}</p>
             </div>
           </div>
         ))}
@@ -1504,7 +1507,7 @@ export default function ProductDetailPage() {
         onNext={goToNextImage}
       />
       <Navigation />
-      <div className="min-h-screen bg-[#faf9f5] text-[#3d3d3a] pt-16">
+      <div id="main-content" tabIndex={-1} className="min-h-screen bg-[var(--warm-canvas)] text-[var(--warm-body)] pt-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
           {/* 头部信息 - 只显示AISPEECH的logo */}
           <Header 
@@ -1514,20 +1517,22 @@ export default function ProductDetailPage() {
           <div className="mt-6 sm:mt-8 grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8">
             {/* 产品图片区域 */}
             <div>
-              <h3 className="text-lg font-semibold mb-3 text-[#141413] flex items-center gap-2">
-                <i className="fa-solid fa-images text-[#cc785c]"></i>
+              <h3 className="text-lg font-semibold mb-3 text-[var(--warm-ink)] flex items-center gap-2">
+                <i className="fa-solid fa-images text-[var(--warm-primary)]"></i>
                 产品图片
               </h3>
-              <div className="aspect-video bg-[#efe9de] rounded-md overflow-hidden cursor-pointer relative"
+              <div className="aspect-video bg-[var(--warm-surface)] rounded-md overflow-hidden cursor-pointer relative"
                    onClick={() => openLightbox(selectedImageIndex)}>
                   <AnimatePresence mode="wait">
                     <motion.img 
                       key={selectedImageIndex}
+                      {...responsiveImageByUrl(product.images[selectedImageIndex], DETAIL_SIZES)}
                       src={product.images[selectedImageIndex]} 
                       alt={product.name} 
                       className="w-full h-full object-contain p-4 hover:scale-[1.02] transition-transform duration-300"
                       style={{ mixBlendMode: 'multiply' }}
                       loading="lazy"
+                      decoding="async"
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
                       exit={{ opacity: 0 }}
@@ -1543,7 +1548,7 @@ export default function ProductDetailPage() {
                  {product.images.map((img, index) => (
                        <button
                         key={index}
-                        className={`w-20 h-14 flex-shrink-0 overflow-hidden rounded border-2 ${selectedImageIndex === index ? 'border-[#cc785c]' : 'border-[#e6dfd8]'} hover:opacity-90 transition-opacity focus:outline-none focus:ring-2 focus:ring-[#cc785c]/30`}
+                        className={`w-20 h-14 flex-shrink-0 overflow-hidden rounded border-2 ${selectedImageIndex === index ? 'border-[var(--warm-primary)]' : 'border-[var(--warm-hairline)]'} hover:opacity-90 transition-opacity focus:outline-none focus:ring-2 focus:ring-[var(--warm-primary)]`}
                         onClick={(e) => {
                           e.stopPropagation(); // 防止触发父级点击事件
                           setSelectedImageIndex(index);
@@ -1554,11 +1559,13 @@ export default function ProductDetailPage() {
                         aria-label={`查看图片 ${index + 1}`}
                       >
                           <img 
+                            {...responsiveImageByUrl(img, THUMB_SIZES)}
                             src={img} 
                             alt={`缩略图 ${index + 1}`} 
                              className="w-full h-full object-contain cursor-pointer"
                              style={{ mixBlendMode: 'multiply' }}
                              loading="lazy"
+                             decoding="async"
                              onClick={(e) => {
                                e.stopPropagation(); // 防止触发按钮的点击事件
                                openLightbox(index); // 直接点击缩略图也可以打开大图
@@ -1569,20 +1576,20 @@ export default function ProductDetailPage() {
               </div>
               {/* 产品问答 - 可选部分 */}
               {(product as any).faq && ((product as any).faq as { question: string; answer: string }[]).length > 0 && (
-                <div className="mt-6 bg-[#efe9de] rounded-xl p-4">
-                  <h3 className="text-lg font-semibold mb-4 flex items-center gap-2 text-[#141413]">
-                    <i className="fa-solid fa-circle-question text-[#cc785c]"></i>
+                <div className="mt-6 bg-[var(--warm-surface)] rounded-xl p-4">
+                  <h3 className="text-lg font-semibold mb-4 flex items-center gap-2 text-[var(--warm-ink)]">
+                    <i className="fa-solid fa-circle-question text-[var(--warm-primary)]"></i>
                     关于{product.name}的常见问题
                   </h3>
                   <div className="space-y-4">
                     {((product as any).faq as { question: string; answer: string }[]).map((item: { question: string; answer: string }, index: number) => (
-                      <div key={index} className="border-b border-[#e6dfd8] last:border-0 pb-3 last:pb-0">
-                        <p className="font-medium text-[#141413] mb-1">
-                          <span className="text-[#cc785c] mr-1">问{index + 1}、</span>
+                      <div key={index} className="border-b border-[var(--warm-hairline)] last:border-0 pb-3 last:pb-0">
+                        <p className="font-medium text-[var(--warm-ink)] mb-1">
+                          <span className="text-[var(--warm-primary)] mr-1">问{index + 1}、</span>
                           {item.question}
                         </p>
-                        <p className="text-[#3d3d3a] pl-5">
-                          <span className="text-[#cc785c] font-medium">答：</span>
+                        <p className="text-[var(--warm-body)] pl-5">
+                          <span className="text-[var(--warm-primary)] font-medium">答：</span>
                           {item.answer}
                         </p>
                       </div>
@@ -1604,10 +1611,10 @@ export default function ProductDetailPage() {
             <div>
               <h1 className="text-xl sm:text-2xl font-bold mb-2">{product.name}</h1>
               {(product as any).subtitle && (
-                <h2 className={`text-base sm:text-lg ${product.id.startsWith('h') ? 'text-red-600' : 'text-[#cc785c]'} mb-4`}>{(product as any).subtitle}</h2>
+                <h2 className={`text-base sm:text-lg ${product.id.startsWith('h') ? 'text-red-600' : 'text-[var(--warm-primary)]'} mb-4`}>{(product as any).subtitle}</h2>
               )}
               {product.description && (
-                <p className="text-[#6c6a64] mb-4 sm:mb-6 text-sm sm:text-base whitespace-pre-line">{product.description}</p>
+                <p className="text-[var(--warm-muted)] mb-4 sm:mb-6 text-sm sm:text-base whitespace-pre-line">{product.description}</p>
               )}
                 {/* 产品规格列表 */}
                 <div className="mb-6">
@@ -1617,13 +1624,13 @@ export default function ProductDetailPage() {
                       <div className="space-y-6">
                         {(product as any).specs?.map((category: any, categoryIndex: number) => (
                           <div key={categoryIndex} className="overflow-x-auto">
-                            <h3 className="font-medium mb-2 text-[#141413]">{category.category}</h3>
-                            <table className="min-w-full bg-[#efe9de] rounded-xl overflow-hidden">
-                              <tbody className="divide-y divide-[#e6dfd8]">
+                            <h3 className="font-medium mb-2 text-[var(--warm-ink)]">{category.category}</h3>
+                            <table className="min-w-full bg-[var(--warm-surface)] rounded-xl overflow-hidden">
+                              <tbody className="divide-y divide-[var(--warm-hairline)]">
                                 {category.items.map((item: any, index: number) => (
-                                  <tr key={index} className={index % 2 === 0 ? 'bg-[#faf9f5]' : 'bg-[#f4efe6]'}>
-                                    <td className="px-4 py-2 text-sm font-medium text-[#3d3d3a]">{item.name}</td>
-                                    <td className="px-4 py-2 text-sm text-[#3d3d3a]" dangerouslySetInnerHTML={{ __html: item.value }}></td>
+                                  <tr key={index} className={index % 2 === 0 ? 'bg-[var(--warm-canvas)]' : 'bg-[var(--warm-card-hover)]'}>
+                                    <td className="px-4 py-2 text-sm font-medium text-[var(--warm-body)]">{item.name}</td>
+                                    <td className="px-4 py-2 text-sm text-[var(--warm-body)]" dangerouslySetInnerHTML={{ __html: item.value }}></td>
                                   </tr>
                                 ))}
                               </tbody>
@@ -1636,19 +1643,19 @@ export default function ProductDetailPage() {
               {/* 下载按钮 */}
               <button
                 onClick={handleDownloadBrochure}
-                className="bg-[#cc785c] hover:bg-[#a9583e] text-white px-6 py-3 rounded-[8px] transition-all active:scale-[0.97] flex items-center justify-center w-full sm:w-auto text-sm sm:text-base"
+                className="bg-[var(--warm-primary)] hover:bg-[var(--warm-primary-active)] text-white px-6 py-3 rounded-[8px] transition-all active:scale-[0.97] flex items-center justify-center w-full sm:w-auto text-sm sm:text-base"
                 aria-label="下载产品彩页"
               >
                 <i className="fa-solid fa-download mr-2"></i>
                 下载产品彩页
               </button>
               {/* 联系方式 */}
-              <div className="mt-6 text-sm text-[#6c6a64]">
+              <div className="mt-6 text-sm text-[var(--warm-muted)]">
                 <p>如需了解更多产品信息，请联系我们：</p>
                 <p className="mt-1">guo@techhdi.com | 18814845538</p>
                 <p className="mt-1">地址：杭州市余杭区七彩汇商业中心2-305室</p>
-               <p className="text-xs mt-2 flex items-center gap-4" style={{color: '#a09d96'}}>
-  	<a href="https://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener" style={{color: '#a09d96', textDecoration: 'none'}} className="hover:text-[#3d3d3a]">
+               <p className="text-xs mt-2 flex items-center gap-4" style={{color: 'var(--warm-on-dark-soft)'}}>
+  	<a href="https://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener" style={{color: 'var(--warm-on-dark-soft)', textDecoration: 'none'}} className="hover:text-[var(--warm-body)]">
      		 ICP备案号：浙ICP备2026007647号-1
     	</a>
     	<a href="https://beian.mps.gov.cn/#/query/webSearch?code=33011002019014" rel="noreferrer" target="_blank" className="flex items-center">

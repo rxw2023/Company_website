@@ -190,17 +190,70 @@ server {
     index index.html;
 
     # 重要：确保React路由正常工作
+    # $uri.html 这一项不能省 —— 预渲染产物是「扁平文件」（dist/product/a1.html、
+    # dist/faq.html），而不是 dist/product/a1/index.html。少了 $uri.html 时
+    # /product/a1 与 /faq 都会回退到 index.html，预渲染的 SEO 内容、og:image
+    # 与 Product/FAQ 结构化数据全部不会被送出，等于白做。
     location / {
-        try_files $uri $uri/ /index.html;
+        try_files $uri $uri.html $uri/ /index.html;
+    }
+
+    # ────────────────────────────────────────────────────────────
+    # AI 助手反代：密钥在**服务端**注入，前端产物里不含任何 Key
+    #
+    # 背景：早期版本用 VITE_AI_API_KEY，带 VITE_ 前缀的变量会被 Vite
+    # 编译进浏览器 JS，任何人按 F12 就能拿到并盗刷额度。
+    # 现在前端只请求同源的 /api-ai/，Authorization 头由 nginx 补上。
+    # ────────────────────────────────────────────────────────────
+    location /api-ai/ {
+        # 从独立文件读取密钥，便于单独设置文件权限（见下方说明）
+        include /etc/nginx/conf.d/siliconflow_key.conf;
+
+        proxy_pass https://api.siliconflow.cn/;
+        proxy_ssl_server_name on;
+        proxy_set_header Host api.siliconflow.cn;
+        proxy_set_header Origin https://api.siliconflow.cn;
+
+        # 流式输出（SSE）必须关闭缓冲，否则回答会一次性吐出而不是逐字显示
+        proxy_buffering off;
+        proxy_cache off;
+        proxy_read_timeout 300s;
+
+        # 简易限流：防止密钥被拿来刷量（需在 http 块定义 limit_req_zone）
+        limit_req zone=ai_chat burst=5 nodelay;
     }
 
     # 静态文件缓存设置，提高网站性能
-    location ~* \.(js|css|png|jpg|jpeg|gif|ico)$ {
+    # 注意包含 webp / mp4 / pdf —— 本站图片约 16MB、视频约 9MB、彩页约 9MB
+    location ~* \.(js|css|png|jpg|jpeg|gif|ico|webp|svg|mp4|pdf|woff2?)$ {
         expires 30d;
         add_header Cache-Control "public, max-age=2592000";
     }
 }
 ```
+
+### 6.2.1 配置 AI 密钥（不要写进前端）
+
+创建密钥文件，并限制为仅 root 可读：
+
+```bash
+# 写入密钥（把 sk-xxxx 换成你的真实 Key）
+printf 'proxy_set_header Authorization "Bearer sk-替换成你的真实Key";\n' \
+  > /etc/nginx/conf.d/siliconflow_key.conf
+chmod 600 /etc/nginx/conf.d/siliconflow_key.conf
+```
+
+在 `/etc/nginx/nginx.conf` 的 `http { ... }` 块内加入限流区定义（用于上面的 `limit_req`）：
+
+```nginx
+# 每个 IP 每秒最多 1 次 AI 请求，突发允许 5 次
+limit_req_zone $binary_remote_addr zone=ai_chat:10m rate=1r/s;
+```
+
+> **为什么必须这样做**：只要密钥出现在 `VITE_` 前缀的环境变量里，它就会被编译进
+> `dist/assets/*.js`，访客打开开发者工具即可提取并盗用你的 API 额度。
+> 项目里已提供 `pnpm run doctor` 命令，会自动扫描打包产物中的明文密钥，建议每次发版前执行。
+
 
 编辑完成后，按`Ctrl+O`保存文件，然后按`Ctrl+X`退出编辑器。
 
@@ -308,7 +361,7 @@ systemctl reload nginx
 
 **可能原因及解决方法**：
 
-- **缺少try_files配置**：确保Nginx配置文件中的`location /`块包含`try_files $uri $uri/ /index.html;`这一行，这对于React路由至关重要
+- **缺少try_files配置**：确保Nginx配置文件中的`location /`块包含`try_files $uri $uri.html $uri/ /index.html;`这一行，这对于React路由至关重要。**注意 `$uri.html` 不能漏**——预渲染产物是扁平文件（`dist/product/a1.html`、`dist/faq.html`），漏掉它会导致预渲染页面永远不被送出
 
 ### 问题3：上传文件时出现权限错误
 

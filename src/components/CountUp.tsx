@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { motion, useInView, useMotionValue, animate } from 'framer-motion';
+import { motion, useInView, useMotionValue, useReducedMotion, animate } from 'framer-motion';
 
 interface CountUpProps {
   /** 目标数值 */
@@ -39,11 +39,21 @@ export default function CountUp({
 }: CountUpProps) {
   const ref = useRef<HTMLSpanElement>(null);
   const inView = useInView(ref, { once, amount });
+  const prefersReduced = useReducedMotion();
   const motionVal = useMotionValue(from);
   const [display, setDisplay] = useState(from);
 
   useEffect(() => {
     if (!inView) return;
+
+    // 降级：直接给到终值。animate() 是命令式调用，不受 MotionConfig 管控，
+    // 必须在此显式处理，否则减弱动效的用户仍会看到数字滚动。
+    if (prefersReduced) {
+      motionVal.set(to);
+      setDisplay(to);
+      return;
+    }
+
     const controls = animate(motionVal, to, {
       duration,
       delay,
@@ -51,7 +61,7 @@ export default function CountUp({
       onUpdate: (v) => setDisplay(v),
     });
     return () => controls.stop();
-  }, [inView, to, from, duration, delay, motionVal]);
+  }, [inView, to, from, duration, delay, motionVal, prefersReduced]);
 
   // 不支持数字滚动时（如 4K）直接显示原文，由调用方处理
   const formatted = display.toLocaleString('en-US', {
@@ -64,9 +74,9 @@ export default function CountUp({
       ref={ref}
       className={className}
       style={style}
-      initial={{ opacity: 0 }}
-      animate={inView ? { opacity: 1 } : { opacity: 0 }}
-      transition={{ duration: 0.4, delay }}
+      initial={prefersReduced ? { opacity: 1 } : { opacity: 0 }}
+      animate={inView || prefersReduced ? { opacity: 1 } : { opacity: 0 }}
+      transition={prefersReduced ? { duration: 0 } : { duration: 0.4, delay }}
     >
       {prefix}{formatted}{suffix}
     </motion.span>

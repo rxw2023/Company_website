@@ -1,26 +1,29 @@
 import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import type { ChatMessage } from './aiService';
-import { sendMessageToSiliconFlow } from './aiService';
+import { sendMessageToSiliconFlow, AiChatError, MAX_INPUT_LENGTH, getModelDisplayName } from './aiService';
 
 // ============ 配置 ============
+// 安全：此处不再持有 API Key。鉴权头由服务端注入
+// （开发环境 vite dev proxy，生产环境 nginx 反代）。详见 aiService.ts 顶部注释。
 const CONFIG = {
-  /** SiliconFlow API Key */
-  apiKey: import.meta.env.VITE_AI_API_KEY,
   model: import.meta.env.VITE_AI_MODEL,
 };
 
+/** 展示用的模型品牌名，由模型 id 派生，避免换模型后 UI 文案露出旧品牌 */
+const MODEL_LABEL = getModelDisplayName(CONFIG.model);
+
 // ============ 主题色（与全站暖色统一） ============
 const C = {
-  primary: '#cc785c',
-  primaryActive: '#a9583e',
-  ink: '#141413',
-  body: '#3d3d3a',
-  muted: '#6c6a64',
-  hairline: '#e6dfd8',
-  surface: '#efe9de',
-  canvas: '#faf9f5',
-  cardHover: '#f4efe6',
+  primary: 'var(--warm-primary)',
+  primaryActive: 'var(--warm-primary-active)',
+  ink: 'var(--warm-ink)',
+  body: 'var(--warm-body)',
+  muted: 'var(--warm-muted)',
+  hairline: 'var(--warm-hairline)',
+  surface: 'var(--warm-surface)',
+  canvas: 'var(--warm-canvas)',
+  cardHover: 'var(--warm-card-hover)',
 };
 
 // ============ 组件 ============
@@ -40,7 +43,7 @@ export default function AiChatWidget() {
 
   // 发送消息
   const handleSend = async () => {
-    const text = input.trim();
+    const text = input.trim().slice(0, MAX_INPUT_LENGTH);
     if (!text || isLoading) return;
 
     const userMsg: ChatMessage = { role: 'user', content: text, timestamp: Date.now() };
@@ -52,9 +55,10 @@ export default function AiChatWidget() {
     try {
       const reply = await sendMessageToSiliconFlow(
         [...messages, userMsg],
-        CONFIG.apiKey,
-        CONFIG.model,
-        (chunk) => setStreamingText(chunk)
+        {
+          model: CONFIG.model,
+          onStream: (chunk) => setStreamingText(chunk),
+        }
       );
 
       setStreamingText('');
@@ -63,14 +67,18 @@ export default function AiChatWidget() {
         { role: 'assistant', content: reply, timestamp: Date.now() },
       ]);
     } catch (err) {
+      // 技术细节只写控制台，绝不回显给访客（旧版会把原始 API 错误直接显示出来）
       console.error('AI 聊天错误:', err);
-      const errMsg = err instanceof Error ? err.message : String(err);
+      const friendly =
+        err instanceof AiChatError
+          ? err.message
+          : '智能助手暂时不可用，请稍后再试。';
       setStreamingText('');
       setMessages(prev => [
         ...prev,
         {
           role: 'assistant',
-          content: `[调试] 请求失败，原因：${errMsg}\n\n如有紧急需求请联系：18814845538`,
+          content: `${friendly}\n\n也可直接联系销售：18814845538`,
           timestamp: Date.now(),
         },
       ]);
@@ -216,7 +224,7 @@ export default function AiChatWidget() {
                     恒迪知识助手
                   </p>
                   <p style={{ color: 'rgba(255,255,255,0.75)', fontSize: 11.5, marginTop: 2 }}>
-                    基于 DeepSeek · AI 驱动
+                    基于 {MODEL_LABEL} · AI 驱动
                   </p>
                 </div>
               </div>
@@ -236,9 +244,14 @@ export default function AiChatWidget() {
               </button>
             </div>
 
-            {/* 消息列表 */}
+            {/* 消息列表
+                aria-live 让读屏用户能听到回答；此前流式回复是完全静默的。
+                role="log" 表示这是持续追加的对话记录。 */}
             <div
               className="flex-1 overflow-y-auto p-4 space-y-4"
+              role="log"
+              aria-live="polite"
+              aria-label="对话内容"
               style={{ background: C.surface }}
             >
               {messages.length === 0 && !isLoading && (
@@ -413,7 +426,7 @@ export default function AiChatWidget() {
                 </motion.button>
               </div>
               <p style={{ fontSize: 10, color: C.muted, marginTop: 6, textAlign: 'center', opacity: 0.8 }}>
-                Powered by DeepSeek · 恒迪视讯技术支持
+                Powered by {MODEL_LABEL} · 恒迪视讯技术支持
               </p>
             </div>
 

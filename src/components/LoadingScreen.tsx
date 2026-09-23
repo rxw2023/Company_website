@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { motion, AnimatePresence, useMotionValue, animate } from 'framer-motion';
+import { motion, AnimatePresence, useMotionValue, useReducedMotion, animate } from 'framer-motion';
 
 const STORAGE_KEY = 'hd-loading-shown';
 const DURATION = 1.8; // 进度条动画时长 s
@@ -7,16 +7,18 @@ const DURATION = 1.8; // 进度条动画时长 s
 /**
  * 首屏加载仪式动画（Son Daven 风格）。
  * 仅在首次会话显示一次（sessionStorage），完成后淡出。
- * 背景与首页一致 #faf9f5，避免 prerender 空白到内容的跳变。
+ * 背景与首页一致 var(--warm-canvas)，避免 prerender 空白到内容的跳变。
  */
 export default function LoadingScreen() {
   const [done, setDone] = useState(false);
   const [progress, setProgress] = useState(0);
+  const prefersReduced = useReducedMotion();
   const mv = useMotionValue(0);
 
   useEffect(() => {
-    // 会话内已显示过则直接跳过
-    if (sessionStorage.getItem(STORAGE_KEY)) {
+    // 会话内已显示过、或用户开启了「减弱动态效果」则直接跳过。
+    // 这个遮罩会挡住首屏约 2.7 秒，对前庭敏感用户与 LCP 都不友好。
+    if (prefersReduced || sessionStorage.getItem(STORAGE_KEY)) {
       setDone(true);
       setProgress(100);
       return;
@@ -40,7 +42,7 @@ export default function LoadingScreen() {
       controls.stop();
       clearTimeout(exitTimer);
     };
-  }, [mv]);
+  }, [mv, prefersReduced]);
 
   return (
     <AnimatePresence>
@@ -48,11 +50,13 @@ export default function LoadingScreen() {
         <motion.div
           exit={{ opacity: 0 }}
           transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+          /* 纯装饰性遮罩：对读屏软件隐藏，避免用户被无意义的进度数字干扰 */
+          aria-hidden="true"
           style={{
             position: 'fixed',
             inset: 0,
             zIndex: 9999,
-            background: '#faf9f5',
+            background: 'var(--warm-canvas)',
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
@@ -86,7 +90,7 @@ export default function LoadingScreen() {
               fontStyle: 'italic',
               fontSize: 22,
               fontWeight: 400,
-              color: '#141413',
+              color: 'var(--warm-ink)',
               letterSpacing: '-0.01em',
               marginBottom: 56,
               textAlign: 'center',
@@ -114,7 +118,7 @@ export default function LoadingScreen() {
               <span
                 style={{
                   fontSize: 10,
-                  color: '#6c6a64',
+                  color: 'var(--warm-muted)',
                   letterSpacing: '0.3em',
                   textTransform: 'uppercase',
                   fontFamily: '"Inter", -apple-system, sans-serif',
@@ -126,7 +130,7 @@ export default function LoadingScreen() {
               <span
                 style={{
                   fontSize: 12,
-                  color: '#141413',
+                  color: 'var(--warm-ink)',
                   fontFamily: '"JetBrains Mono", monospace',
                   fontVariantNumeric: 'tabular-nums',
                   letterSpacing: '0.02em',
@@ -142,7 +146,7 @@ export default function LoadingScreen() {
                 position: 'relative',
                 width: '100%',
                 height: 1,
-                background: '#e6dfd8',
+                background: 'var(--warm-hairline)',
                 overflow: 'hidden',
               }}
             >
@@ -153,7 +157,7 @@ export default function LoadingScreen() {
                   top: 0,
                   bottom: 0,
                   width: `${progress}%`,
-                  background: '#cc785c',
+                  background: 'var(--warm-primary)',
                   transition: 'none',
                 }}
               />
@@ -165,7 +169,7 @@ export default function LoadingScreen() {
                 marginTop: 14,
                 textAlign: 'center',
                 fontSize: 10,
-                color: '#a09d96',
+                color: 'var(--warm-on-dark-soft)',
                 letterSpacing: '0.2em',
                 textTransform: 'uppercase',
                 fontFamily: '"Inter", -apple-system, sans-serif',

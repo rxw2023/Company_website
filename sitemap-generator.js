@@ -1,13 +1,24 @@
 /**
  * Vite 插件：构建时自动生成 sitemap.xml
- * 从 Home.tsx 的数据中提取产品 ID 和案例 ID
+ *
+ * 数据来源：src/data/products.json 与 src/data/cases.json（单一事实源）。
+ *
+ * 历史教训：旧版用正则去抓 Home.tsx 的源码来提取 id，一旦首页改成从数据文件
+ * 派生就立刻失效（sitemap 只剩 2 条 URL）。改为直接读数据文件，彻底消除这类脆弱依赖。
  */
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const BASE_URL = 'https://www.techhdi.com';
+
+function readData(fileName) {
+  const filePath = path.resolve(__dirname, 'src/data', fileName);
+  if (!fs.existsSync(filePath)) {
+    throw new Error(`[Sitemap] 找不到数据文件：${filePath}`);
+  }
+  return JSON.parse(fs.readFileSync(filePath, 'utf-8'));
+}
 
 function sitemapPlugin() {
   return {
@@ -16,29 +27,22 @@ function sitemapPlugin() {
     closeBundle() {
       console.log('\n[Sitemap] Generating sitemap.xml...');
 
-      // 从 Home.tsx 源码提取产品和案例数据
-      const homePath = path.resolve(__dirname, 'src/pages/Home.tsx');
-      const homeSource = fs.readFileSync(homePath, 'utf-8');
+      const { site, products } = readData('products.json');
+      const { cases } = readData('cases.json');
 
-      // 提取产品 ID：id: 'a1', id: 'a2', ...（跳过被注释掉的行）
-      const productIds = [...homeSource.matchAll(/^\s*(?!\/\/)\s*\{?\s*id:\s*'(a\d+)'/gm)].map(m => m[1]);
-
-      // 提取案例 ID：id: 'e1', id: 'e2', ...
-      const caseIds = [...homeSource.matchAll(/id:\s*'(e\d+)'/g)].map(m => m[1]);
-
-      // 过滤掉占位产品（如 a99）
-      const realProductIds = productIds.filter(id => id !== 'a99');
+      // 构建日期作为 lastmod（内容在构建时重新生成）
+      const lastmod = new Date().toISOString().slice(0, 10);
 
       const urls = [
         { loc: '/', priority: '1.0', changefreq: 'weekly' },
         { loc: '/faq', priority: '0.8', changefreq: 'monthly' },
-        ...realProductIds.map(id => ({
-          loc: `/product/${id}`,
+        ...products.map((p) => ({
+          loc: `/product/${p.id}`,
           priority: '0.9',
           changefreq: 'monthly',
         })),
-        ...caseIds.map(id => ({
-          loc: `/case/${id}`,
+        ...cases.map((c) => ({
+          loc: `/case/${c.id}`,
           priority: '0.7',
           changefreq: 'monthly',
         })),
@@ -46,11 +50,16 @@ function sitemapPlugin() {
 
       const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-${urls.map(u => `  <url>
-    <loc>${BASE_URL}${u.loc}</loc>
+${urls
+  .map(
+    (u) => `  <url>
+    <loc>${site.url}${u.loc}</loc>
+    <lastmod>${lastmod}</lastmod>
     <changefreq>${u.changefreq}</changefreq>
     <priority>${u.priority}</priority>
-  </url>`).join('\n')}
+  </url>`
+  )
+  .join('\n')}
 </urlset>
 `;
 
@@ -59,7 +68,9 @@ ${urls.map(u => `  <url>
         fs.mkdirSync(outDir, { recursive: true });
       }
       fs.writeFileSync(path.join(outDir, 'sitemap.xml'), sitemap);
-      console.log(`[Sitemap] Generated ${urls.length} URLs → dist/sitemap.xml`);
+      console.log(
+        `[Sitemap] Generated ${urls.length} URLs (${products.length} 产品 + ${cases.length} 案例) → dist/sitemap.xml`
+      );
     },
   };
 }

@@ -18,19 +18,23 @@ export default {
         mono: ['"JetBrains Mono"', 'monospace'],
       },
       colors: {
+        // 引用 src/index.css 里的 CSS 自定义属性，不再重复写死色值。
+        // 改品牌色只需改 index.css 一处。
+        // 注意：这样写之后 `bg-warm-primary/50` 这类透明度修饰符不再可用
+        // （Tailwind 需要原始通道值才能算 alpha）；需要时请用 var() 或 color-mix。
         warm: {
-          canvas:    '#faf9f5',
-          primary:   '#cc785c',
-          'primary-active': '#a9583e',
-          ink:       '#141413',
-          body:      '#3d3d3a',
-          muted:     '#6c6a64',
-          hairline:  '#e6dfd8',
-          surface:   '#efe9de',
-          'surface-dark': '#181715',
-          'on-dark':        '#faf9f5',
-          'on-dark-soft':   '#a09d96',
-          'card-hover':     '#f4efe6',
+          canvas:           'var(--warm-canvas)',
+          primary:          'var(--warm-primary)',
+          'primary-active': 'var(--warm-primary-active)',
+          ink:              'var(--warm-ink)',
+          body:             'var(--warm-body)',
+          muted:            'var(--warm-muted)',
+          hairline:         'var(--warm-hairline)',
+          surface:          'var(--warm-surface)',
+          'surface-dark':   'var(--warm-surface-dark)',
+          'on-dark':        'var(--warm-on-dark)',
+          'on-dark-soft':   'var(--warm-on-dark-soft)',
+          'card-hover':     'var(--warm-card-hover)',
         },
       },
       borderRadius: {

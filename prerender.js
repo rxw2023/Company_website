@@ -3,12 +3,15 @@
  * 输出扁平文件：dist/product/a1.html（而非 dist/product/a1/index.html）
  * 避免 Nginx 301 重定向加尾部斜杠导致 URL 与 React Router 不一致
  *
- * 注意：这是纯静态 HTML 壳（不含 JS 渲染的完整内容），
- * 但包含完整的 SEO meta 标签和结构化数据，
- * 确保搜索引擎爬虫能直接获取产品的 title、description、Product Schema。
+ * 数据来源：src/data/products.json 与 src/data/cases.json（单一事实源）。
  *
- * 修复：从 dist/index.html 提取编译后的 JS/CSS 资源路径，
- * 避免引用开发路径 /src/main.tsx 导致生产环境页面空白。
+ * 本次修订：
+ *  1. 产品/案例数据改从单一事实源读取，不再在脚本里手抄一份。
+ *  2. og:image / Product schema image 通过 Vite manifest 解析成**打包后的哈希文件名**。
+ *     旧版写死 /assets/a1-1.webp，而 Vite 产物是 /assets/a1-1-BXr3magi.webp，
+ *     导致全部产品页的分享预览图与结构化数据图片 404。图片主图统一取 cardImage。
+ *  3. 顺带把 dist/index.html 里手写的 ItemList 结构化数据替换为按事实源生成，
+ *     修掉"只列 10 个产品、缺 MC04/MK300/D1/BYOM"的问题。
  */
 import fs from 'fs';
 import path from 'path';
@@ -17,36 +20,67 @@ import { fileURLToPath } from 'url';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const distDir = path.resolve(__dirname, 'dist');
 
-// 产品数据 - 与 ProductDetailPage.tsx 保持同步
-const products = [
-  { id: 'a1', name: '思必驰MC10吸顶麦克风', description: 'MC10是思必驰推出的一款高端吸顶会议麦克风，集成128单元全向麦克风阵列，16个独立可配拾音区，Dante数字音频技术，AI降噪/去混响/反馈抑制/自动增益/语音转写。适用于各类会议空间的吊装需求。' },
-  { id: 'a2', name: '思必驰MA600D矩阵麦克风', description: '无感扩声新标杆，3m拾音半径，>18dB扩声增益，48kHz采样率，<15ms延迟。AI降噪+反馈抑制双算法，24个可配拾音区，64单元MEMS麦克风阵列，Dante音频，支持无限级联。适用大会议室、指挥大厅、报告厅。' },
-  { id: 'a3', name: '思必驰MCS06拾扩一体吸顶麦克风', description: 'MCS06是思必驰推出的一款高端拾扩一体吸顶麦，集成32单元全向麦克风阵列，4个独立可配拾音区，Dante数字音频技术，2个15W高性能扬声器，AI降噪/去混响/回声抑制/双讲通话/自动增益/语音转写。' },
-  { id: 'a4', name: '思必驰C40T视频会议室摄像机', description: 'C40T超高清摄像机提供4K超高清会议体验，16倍数字变焦+12倍光学变焦，水平260°平移72.5°广角，视频叠加字幕功能，支持搭配MT100和吸顶麦实现智能声像追踪方案。' },
-  { id: 'a5', name: '思必驰AI智能声像追踪主机MT100', description: 'MT100搭载思必驰PTZ摄像机，与吸顶麦克风系统结合，AI算法实时追踪发言人和动作，支持4K@30fps，PIP/PBP多画面模式，HDMI/USB3.0/网络输出，PoE供电。' },
-  { id: 'a6', name: '思必驰AISPK-DC20PoE吸顶音箱', description: '全频同轴天花扬声器，6.5寸低音+1寸蚕丝膜高音，频率响应65Hz-20kHz，额定功率30W/峰值60W，Dante音频传输，嵌入式/吊挂安装，适用于会议室/酒店/商场等多种场所。' },
-  { id: 'a7', name: '思必驰高端吸顶麦克风MC08', description: 'MC08是思必驰适用教学场景的高端吸顶麦克风，32单元全向麦克风阵列，8个可配置拾音区（4扩声+4通话），Dante数字音频+模拟音频双接口，支持教室扩声、远程教学、课程录播三合一。' },
-  { id: 'a8', name: '思必驰企业级会议麦克风音箱M12', description: 'M12集拾音、扩音、语音转写、字幕同传于一体，12个模拟全向麦克风，1个8W全频喇叭+1个8W高音喇叭，支持多台级联，USB Type-C/DC/PoE多种供电方式。' },
-  { id: 'a9', name: '思必驰AI追踪双目语音摄像头C60', description: 'C60集多种AI追踪模式、AI会议助理、AI实时字幕、音视频融合于一体，双目镜头（特写+全景），12倍光学变焦+16倍数字变焦，水平+/-130°/垂直-30°~+90°，64个预置位。' },
-  { id: 'a10', name: '思必驰桌面控制器AIMIC-B100系列', description: 'AIMIC-B100系列智能会议桌面控制器，集智能控制、精准拾音与便捷部署于一身。四款型号：有线/无线 x 静音单元/主席单元，触控按键，支持全局静音/音量调节/VIP模式切换。' },
-  { id: 'a11', name: '思必驰MC04高端吸顶麦克风-教育款', description: 'MC04是思必驰面向教室教学场景推出的一款高端吸顶麦克风，搭载24单元全向MEMS麦克风阵列，具备2米精准扩声覆盖半径，内置ClearSpeakAI专利算法，专为常态化教室、紧凑型讲台及录播教室设计。' },
-  { id:'a12',name:'思必驰MK300桌面安装套件',description:'MK300 是一款面向矩阵麦克风桌面安装场景开发的定制配件。通过与设备结构贴合的外观设计，可优化桌面安装效果，使设备部署更整洁、更美观，更适合高端会议空间。'},
-  // { id:'a13',name:'思必驰MK102 嵌入式安装配件',description:'MK102 是一款面向 MC08 高端吸顶麦克风嵌入式安装场景开发的定制配件。通过嵌入天花板的结构设计，使设备安装后与天花板表面齐平，实现美观隐蔽的安装效果，适配高端教学与会议空间。'},
-  // { id:'a14',name:'思必驰MK200 表面安装配件',description:'MK200 是一款面向 MC08 高端吸顶麦克风表面安装场景开发的定制配件。采用表面安装结构设计，安装操作简单快捷，适用于常规天花板表面安装，稳固可靠。'},
-  // { id:'a15',name:'思必驰高端吸顶麦克风 MC08-A（高校款）',description:'MC08-A 是思必驰推出的面向高校基础教学场景的高端吸顶麦克风，集成 32 单元全向麦克风阵列，提供 4 个独立扩声拾音区，通过模拟音频接口兼容传统音频系统。满足教室本地扩声需求，内置 AI 降噪、混响抑制、啸叫抑制、回声消除等算法。'},
-  // { id:'a16',name:'思必驰高端吸顶麦克风 MC08-U（教育款）',description:'MC08-U 是思必驰推出的面向教育教学场景的高端吸顶麦克风，集成 32 单元全向麦克风阵列，提供 8 个独立可配置拾音区。采用 Dante + 模拟双音频架构，支持 8 台级联覆盖超大型空间，配备 AI 实时语音转写功能，实现教室扩声、远程教学和课程录播三合一。'},
-  // { id:'a17',name:'思必驰AI转录麦克风音箱 AIMIC-M6',description:'AIMIC-M6 是思必驰推出的 AI 转录麦克风音箱，集 6 单元全向麦克风阵列、高保真扬声器、AI 实时语音转写与翻译于一体。蓝牙 V5.3 无线连接，5000mAh 大电池支持 25 小时以上连续通话，轻巧便携（仅 300g），是移动办公和中小型会议的理想选择。'},
-  {id:'a18',name:'思必驰会议办公大模型信创一体机D1',description:'D1是思必驰基于自主创新技术推出的一款专为党政企客户会议办公效率提升的大模型信创一体机，内置"DFM+DeepSeek"双大语言模型加持，采用从底层芯片到上层应用的全国产化技术架构，基于自研的全链路智能语音语言技术，提供离线语音识别、声纹区分发言人、AI纪要生成等多种功能，可满足对数据安全性要求较高的政企客户会议研讨、演讲培训、知识库搭建等多场景会议纪要整理及结构化知识管理需求，帮助解决会议记录难、会议纪要整理费时费力等问题。'},
-  {id:'a19',name:'思必驰BYOM投屏套装（SW10+SD10）',description:'集无线投屏、BYOM会议、HDMI矩阵切换、会议室中控于一体的企业级音视频协作中枢。支持AirPlay/Miracast/投屏器多方式无线投屏，最高4K@60Hz超清画质；双网物理隔离设计符合政企安全规范；USB-C一线通五合一；单屏最多四路信号同屏显示；自带RS232中控接口，一台设备替代传统三台设备。适用于10-100㎡中高端会议室。'},
-];
+// ============ 读取单一事实源 ============
 
-const SITE_URL = 'https://www.techhdi.com';
-const SITE_NAME = '恒迪视讯';
+function readData(fileName) {
+  const filePath = path.resolve(__dirname, 'src/data', fileName);
+  if (!fs.existsSync(filePath)) {
+    console.error(`[Prerender] ERROR: 找不到数据文件 ${filePath}`);
+    process.exit(1);
+  }
+  return JSON.parse(fs.readFileSync(filePath, 'utf-8'));
+}
+
+const { site: SITE, products, bundles } = readData('products.json');
+const { cases } = readData('cases.json');
+const { details: caseDetails } = readData('caseDetails.json');
 
 /**
- * 从 dist/index.html 提取编译后的 JS/CSS 资源路径
- * 确保预渲染页面加载的是生产构建产物而非开发路径
+ * 案例的卡片级与详情级数据分两个文件存（详情正文不该进首页 bundle）。
+ * 预渲染需要两边，这里按 id 合并一次；doctor 会校验两个文件 id 集合一致。
  */
+const caseDetailById = new Map(caseDetails.map((d) => [d.id, d]));
+for (const c of cases) {
+  const d = caseDetailById.get(c.id);
+  if (!d) {
+    console.error(`[Prerender] ERROR: cases.json 的 ${c.id} 在 caseDetails.json 里没有对应详情`);
+    process.exit(1);
+  }
+  Object.assign(c, d);
+}
+const { items: faqItems } = readData('faq.json');
+
+// ============ 资源路径解析 ============
+
+/**
+ * 读取 Vite 生成的 manifest，把源码资源路径映射为打包后的带哈希路径。
+ * manifest 在 dist/.vite/manifest.json（Vite 5+ 默认位置）。
+ */
+function loadManifest() {
+  const manifestPath = path.join(distDir, '.vite', 'manifest.json');
+  if (!fs.existsSync(manifestPath)) {
+    console.warn(
+      '[Prerender] WARN: 未找到 dist/.vite/manifest.json。' +
+        '请确认 vite.config.ts 中已开启 build.manifest。' +
+        'og:image 将回退为未哈希路径（可能 404）。'
+    );
+    return {};
+  }
+  return JSON.parse(fs.readFileSync(manifestPath, 'utf-8'));
+}
+
+const manifest = loadManifest();
+
+/** 图片 key（如 "a1-1"）→ 站点绝对 URL */
+function imageUrl(key) {
+  const entry = manifest[`src/assets/images/${key}.webp`];
+  if (!entry) {
+    console.warn(`[Prerender] WARN: manifest 中找不到图片 src/assets/images/${key}.webp`);
+    return `${SITE.url}/assets/${key}.webp`;
+  }
+  return `${SITE.url}/${entry.file}`;
+}
+
 function extractBuiltAssets() {
   const indexPath = path.join(distDir, 'index.html');
   if (!fs.existsSync(indexPath)) {
@@ -55,12 +89,10 @@ function extractBuiltAssets() {
   }
   const indexHtml = fs.readFileSync(indexPath, 'utf-8');
 
-  // 提取 <script type="module" crossorigin src="..."></script>
   const jsMatch = indexHtml.match(/<script[^>]*\bsrc="([^"]+)"[^>]*>/);
-  // 提取 <link rel="stylesheet" crossorigin href="..."> （Vite编译产物的CSS带crossorigin属性）
-  const cssMatch = indexHtml.match(/<link[^>]*\brel="stylesheet"[^>]*\bcrossorigin[^>]*\bhref="([^"]+)"[^>]*>/)
-    || indexHtml.match(/<link[^>]*\bhref="([^"]*\/assets\/index[^"]*\.css)"[^>]*>/);
-  // 提取 favicon
+  const cssMatch =
+    indexHtml.match(/<link[^>]*\brel="stylesheet"[^>]*\bcrossorigin[^>]*\bhref="([^"]+)"[^>]*>/) ||
+    indexHtml.match(/<link[^>]*\bhref="([^"]*\/assets\/index[^"]*\.css)"[^>]*>/);
   const iconMatch = indexHtml.match(/<link[^>]*\brel="icon"[^>]*\bhref="([^"]+)"[^>]*>/);
 
   if (!jsMatch) {
@@ -77,167 +109,204 @@ function extractBuiltAssets() {
   return assets;
 }
 
-function generateProductHTML(product, assets) {
-  const imageUrl = `${SITE_URL}/assets/${product.id === 'a8' ? 'a8-2' : product.id}-1.webp`;
-  const productUrl = `${SITE_URL}/product/${product.id}`;
-
-  // 构建资源引用标签
+function assetTags(assets) {
   const iconTag = assets.icon
     ? `  <link rel="icon" href="${assets.icon}" type="image/webp" />`
     : '';
   const cssTag = assets.css
     ? `  <link rel="stylesheet" crossorigin href="${assets.css}">`
     : '';
+  return { iconTag, cssTag };
+}
+
+/** JSON-LD 字符串安全转义（避免引号截断脚本块） */
+function ldJson(obj) {
+  return JSON.stringify(obj, null, 2).replace(/</g, '\\u003c');
+}
+
+// ============ 产品页 ============
+
+function generateProductHTML(product, assets) {
+  const { iconTag, cssTag } = assetTags(assets);
+  const imageUrlFull = imageUrl(product.cardImage);
+  const productUrl = `${SITE.url}/product/${product.id}`;
+  const title = `${product.name} - ${SITE.name}`;
+
+  const productSchema = ldJson({
+    '@context': 'https://schema.org',
+    '@type': 'Product',
+    name: product.name,
+    description: product.seoDescription,
+    image: imageUrlFull,
+    sku: product.model,
+    category: product.category,
+    brand: { '@type': 'Brand', name: SITE.brandFull },
+    offers: {
+      '@type': 'Offer',
+      availability: 'https://schema.org/InStock',
+      priceCurrency: 'CNY',
+      seller: { '@type': 'Organization', name: SITE.legalName },
+    },
+    url: productUrl,
+  });
+
+  const breadcrumbSchema = ldJson({
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: '首页', item: SITE.url },
+      { '@type': 'ListItem', position: 2, name: '产品', item: `${SITE.url}/#products` },
+      { '@type': 'ListItem', position: 3, name: product.name, item: productUrl },
+    ],
+  });
+
+  const specList = product.keySpecs
+    .map((s) => `      <li>${s.label}：${s.value}</li>`)
+    .join('\n');
 
   return `<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>${product.name} - ${SITE_NAME}</title>
-  <meta name="description" content="${product.description}" />
-  <meta name="keywords" content="${product.name},${SITE_NAME},思必驰,AISPEECH,音视频解决方案,智能会议,恒迪视讯" />
+  <title>${title}</title>
+  <meta name="description" content="${product.seoDescription}" />
+  <meta name="keywords" content="${product.name},${product.model},${SITE.name},${SITE.brandFull},${SITE.brand},音视频解决方案,智能会议,Dante音频" />
   <link rel="canonical" href="${productUrl}" />
-  <meta property="og:title" content="${product.name} - ${SITE_NAME}" />
-  <meta property="og:description" content="${product.description}" />
+  <meta property="og:title" content="${title}" />
+  <meta property="og:description" content="${product.seoDescription}" />
   <meta property="og:url" content="${productUrl}" />
   <meta property="og:type" content="product" />
-  <meta property="og:image" content="${imageUrl}" />
+  <meta property="og:image" content="${imageUrlFull}" />
   <meta property="og:locale" content="zh_CN" />
   <meta name="robots" content="index, follow" />
 ${iconTag}
-  <!-- Product Schema -->
   <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "Product",
-    "name": "${product.name}",
-    "description": "${product.description}",
-    "image": "${imageUrl}",
-    "brand": {
-      "@type": "Brand",
-      "name": "AISPEECH"
-    },
-    "offers": {
-      "@type": "Offer",
-      "availability": "https://schema.org/InStock",
-      "priceCurrency": "CNY",
-      "seller": {
-        "@type": "Organization",
-        "name": "恒迪视讯（杭州）科技有限公司"
-      }
-    },
-    "url": "${productUrl}"
-  }
+${productSchema}
   </script>
-  <!-- Breadcrumb Schema -->
   <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    "itemListElement": [
-      {
-        "@type": "ListItem",
-        "position": 1,
-        "name": "首页",
-        "item": "${SITE_URL}"
-      },
-      {
-        "@type": "ListItem",
-        "position": 2,
-        "name": "产品",
-        "item": "${SITE_URL}"
-      },
-      {
-        "@type": "ListItem",
-        "position": 3,
-        "name": "${product.name}",
-        "item": "${productUrl}"
-      }
-    ]
-  }
+${breadcrumbSchema}
   </script>
-  <noscript>
-    <h1>${product.name}</h1>
-    <p>${product.description}</p>
-    <p>如需了解更多产品信息，请联系我们：guo@techhdi.com | 18814845538</p>
-    <p>请启用JavaScript以获得最佳浏览体验。</p>
-  </noscript>
 ${cssTag}
 </head>
 <body>
   <div id="root"></div>
+  <noscript>
+    <h1>${product.name}</h1>
+    <p>${product.seoDescription}</p>
+    <h2>关键规格</h2>
+    <ul>
+${specList}
+    </ul>
+    <p>如需了解更多产品信息，请联系我们：${SITE.email} | ${SITE.phone}</p>
+    <p>请启用 JavaScript 以获得最佳浏览体验。</p>
+  </noscript>
   <script type="module" crossorigin src="${assets.js}"></script>
 </body>
 </html>`;
+}
+
+// ============ 案例页 ============
+
+/** HTML 文本转义：案例正文里出现过英文引号，未来也可能出现 < 或 & */
+function escapeHtml(s) {
+  return String(s)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
 }
 
 function generateCaseHTML(caseItem, assets) {
-  const caseUrl = `${SITE_URL}/case/${caseItem.id}`;
+  const { iconTag, cssTag } = assetTags(assets);
+  const caseUrl = `${SITE.url}/case/${caseItem.id}`;
+  /**
+   * title 必须与客户端 SeoHead 输出的一致。
+   *
+   * 此前这里用 cases.json 的 name（"中国香港科技大学"），而客户端详情页用的是
+   * 它自己那份 caseData 里的 name（"行业案例分享 - 香港科技大学"）——
+   * 同一个 URL 对不执行 JS 的爬虫（GPTBot / PerplexityBot 等，robots.txt 明确放行）
+   * 和 Google 给出了两个不同的标题。现已合并数据源，两边都用 detailTitle。
+   */
+  const title = `${caseItem.detailTitle} - ${SITE.name}`;
+  const imageUrlFull = imageUrl(caseItem.cardImage);
 
-  const iconTag = assets.icon
-    ? `  <link rel="icon" href="${assets.icon}" type="image/webp" />`
-    : '';
-  const cssTag = assets.css
-    ? `  <link rel="stylesheet" crossorigin href="${assets.css}">`
-    : '';
+  const articleSchema = ldJson({
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: caseItem.detailTitle,
+    description: caseItem.seoDescription,
+    image: imageUrlFull,
+    articleSection: caseItem.category,
+    about: caseItem.detailTag,
+    inLanguage: 'zh-CN',
+    publisher: { '@type': 'Organization', name: SITE.legalName },
+    url: caseUrl,
+  });
+
+  const breadcrumbSchema = ldJson({
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: '首页', item: SITE.url },
+      { '@type': 'ListItem', position: 2, name: '案例', item: `${SITE.url}/#cases` },
+      { '@type': 'ListItem', position: 3, name: caseItem.detailTitle, item: caseUrl },
+    ],
+  });
+
+  // 正文进 noscript：不执行 JS 的爬虫此前只看到一个标题加一句描述
+  const sectionHtml = caseItem.sections
+    .map((s) => `    <h2>${escapeHtml(s.label)}</h2>\n    <p>${escapeHtml(s.content)}</p>`)
+    .join('\n');
 
   return `<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>${caseItem.name} - ${SITE_NAME}</title>
-  <meta name="description" content="${caseItem.name} - 恒迪视讯音视频解决方案案例分享，思必驰AISPEECH智能会议产品实际应用。" />
+  <title>${escapeHtml(title)}</title>
+  <meta name="description" content="${escapeHtml(caseItem.seoDescription)}" />
   <link rel="canonical" href="${caseUrl}" />
-  <meta property="og:title" content="${caseItem.name} - ${SITE_NAME}" />
+  <meta property="og:title" content="${escapeHtml(title)}" />
+  <meta property="og:description" content="${escapeHtml(caseItem.seoDescription)}" />
   <meta property="og:url" content="${caseUrl}" />
   <meta property="og:type" content="article" />
+  <meta property="og:image" content="${imageUrlFull}" />
+  <meta property="og:locale" content="zh_CN" />
   <meta name="robots" content="index, follow" />
 ${iconTag}
-  <noscript>
-    <h1>${caseItem.name}</h1>
-    <p>恒迪视讯音视频解决方案案例分享。请启用JavaScript以获得最佳浏览体验。</p>
-  </noscript>
+  <script type="application/ld+json">
+${articleSchema}
+  </script>
+  <script type="application/ld+json">
+${breadcrumbSchema}
+  </script>
 ${cssTag}
 </head>
 <body>
   <div id="root"></div>
+  <noscript>
+    <h1>${escapeHtml(caseItem.detailTitle)}</h1>
+    <p>${escapeHtml(caseItem.seoDescription)}</p>
+${sectionHtml}
+    <p>如需了解更多案例信息，请联系我们：${SITE.email} | ${SITE.phone}</p>
+    <p>请启用 JavaScript 以获得最佳浏览体验。</p>
+  </noscript>
   <script type="module" crossorigin src="${assets.js}"></script>
 </body>
 </html>`;
 }
 
-// 案例数据
-const cases = [
-  { id: 'e1', name: '案例分享 - 香港科技大学' },
-  { id: 'e2', name: '案例分享 - 上海交通大学' },
-  { id: 'e3', name: '案例分享 - 上海虹口艺术幼儿园' },
-  { id: 'e4', name: '案例分享 - 华东师范大学' },
-  { id: 'e5', name: '案例分享 - 北京理工大学' },
-  { id: 'e6', name: '案例分享 - 成都大学' },
-  { id: 'e7', name: '案例分享 - 苏州广电跨年演讲晚会' },
-  { id: 'e8', name: '案例分享 - 苏州独墅湖世尊酒店' },
-  { id: 'e9', name: '案例分享 - 国泰基金' },
-  { id: 'e10', name: '案例分享 - 上海交通大学医学院附属仁济医院' },
-  { id: 'e11', name: '案例分享 - 国际陆港集团' },
-  { id: 'e12', name: '案例分享 - 成都新希望金融科技' },
-];
+// ============ 404 ============
 
 function generate404HTML(assets) {
-  const iconTag = assets.icon
-    ? `  <link rel="icon" href="${assets.icon}" type="image/webp" />`
-    : '';
-  const cssTag = assets.css
-    ? `  <link rel="stylesheet" crossorigin href="${assets.css}">`
-    : '';
-
+  const { iconTag, cssTag } = assetTags(assets);
   return `<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>页面不存在 - 恒迪视讯</title>
+  <title>页面不存在 - ${SITE.name}</title>
   <meta name="robots" content="noindex" />
   <meta http-equiv="refresh" content="3;url=/" />
 ${iconTag}
@@ -250,33 +319,243 @@ ${cssTag}
 </html>`;
 }
 
+// ============ 首页结构化数据回填 ============
+
+/**
+ * 把 dist/index.html 中手写的 ItemList JSON-LD 替换为按事实源生成的版本。
+ * 首页没有做 SSR，这份静态 JSON-LD 是爬虫能拿到的唯一产品清单，必须完整。
+ */
+function patchIndexItemList(assets) {
+  const indexPath = path.join(distDir, 'index.html');
+  const html = fs.readFileSync(indexPath, 'utf-8');
+
+  const itemList = {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    name: `${SITE.name} - ${SITE.brandFull}${SITE.brand}智能会议产品`,
+    description: `${SITE.name}代理${SITE.brandFull}${SITE.brand}全系列智能会议产品`,
+    numberOfItems: products.length,
+    itemListElement: products.map((p, i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      name: p.name,
+      url: `${SITE.url}/product/${p.id}`,
+    })),
+  };
+
+  const replacement = `<script type="application/ld+json">
+${ldJson(itemList)}
+    </script>`;
+
+  const scriptRe = /<script type="application\/ld\+json">[\s\S]*?<\/script>/g;
+  const blocks = html.match(scriptRe) || [];
+  const target = blocks.find((b) => b.includes('"@type": "ItemList"'));
+
+  if (!target) {
+    console.warn('[Prerender] WARN: dist/index.html 中未找到 ItemList 结构化数据，跳过回填。');
+    return;
+  }
+
+  fs.writeFileSync(indexPath, html.replace(target, replacement));
+  console.log(
+    `[Prerender] index.html ItemList 已回填：numberOfItems=${products.length}（含全部产品）`
+  );
+  void assets;
+}
+
+// ============ 首页正文（noscript）============
+
+/**
+ * 首页没有做 SSR，React 挂载前 <div id="root"> 是空的。
+ *
+ * 对**不执行 JS 的爬虫**来说整个首页就是一片空白 —— 而本站 robots.txt 明确
+ * 允许 GPTBot / PerplexityBot / Claude-Web，也就是主动邀请了它们来抓。
+ * 这里把真实正文写进 <noscript>：浏览器在 JS 开启时不显示它，
+ * 爬虫读原始 HTML 时能拿到全部文字。
+ *
+ * 说明：这是「静态内容注入」，不是真 SSR（React 仍用 createRoot 而非 hydrateRoot）。
+ * 真 SSR 需要引入 esbuild + react-dom/server 的构建链，是另一个量级的改动，
+ * 收益（首屏可见内容）与本方案（可索引内容）不同，这里先取后者。
+ */
+function homeNoscript() {
+  const productItems = products
+    .map((p) => `      <li><a href="${SITE.url}/product/${p.id}">${p.name}</a>：${p.cardDesc}</li>`)
+    .join('\n');
+
+  const caseItems = cases
+    .map((c) => `      <li>${c.name}（${c.tag}）—— ${c.seoDescription}</li>`)
+    .join('\n');
+
+  const bundleItems = bundles
+    .map((b) => `      <li>${b.name}（${b.condition}）：${b.note}</li>`)
+    .join('\n');
+
+  return `  <noscript>
+    <h1>智能音视频，重新定义会议体验</h1>
+    <p>${SITE.legalName}专注于音视频系统集成、会议室智能控制、视频会议系统、音频处理，主营${SITE.brandFull}（${SITE.brand}）全系列音视频产品，服务高校、企业、政府、酒店客户。</p>
+
+    <h2>产品系列（共 ${products.length} 款）</h2>
+    <ul>
+${productItems}
+    </ul>
+
+    <h2>工程案例（共 ${cases.length} 个）</h2>
+    <ul>
+${caseItems}
+    </ul>
+
+    <h2>方案组合参考</h2>
+    <ul>
+${bundleItems}
+    </ul>
+
+    <h2>联系我们</h2>
+    <p>邮箱：${SITE.email}　电话：${SITE.phone}</p>
+    <p><a href="${SITE.url}/faq">常见问题 FAQ</a></p>
+    <p>请启用 JavaScript 以获得完整交互体验。</p>
+  </noscript>
+`;
+}
+
+function injectHomeNoscript() {
+  const indexPath = path.join(distDir, 'index.html');
+  const html = fs.readFileSync(indexPath, 'utf-8');
+
+  if (html.includes('</noscript>')) {
+    console.log('[Prerender] index.html 已有 noscript 正文，跳过注入。');
+    return;
+  }
+
+  const rootRe = /<div id="root"><\/div>/;
+  if (!rootRe.test(html)) {
+    console.warn('[Prerender] WARN: index.html 中未找到 <div id="root"></div>，跳过正文注入。');
+    return;
+  }
+
+  fs.writeFileSync(indexPath, html.replace(rootRe, `${homeNoscript()}    <div id="root"></div>`));
+  console.log(
+    `[Prerender] index.html 已注入 noscript 正文：${products.length} 产品 / ${cases.length} 案例 / ${bundles.length} 方案组合`
+  );
+}
+
+// ============ FAQ 页 ============
+
+/**
+ * 生成真实的 dist/faq.html。
+ * 此前 /faq 只在 sitemap 里存在、却没有对应文件，nginx 会把它回退到 index.html，
+ * 于是 /faq 的 title/description 与首页完全重复。
+ *
+ * ⚠️ 要让这个文件真的被送出，nginx 必须写 `try_files $uri $uri.html $uri/ /index.html;`
+ *    —— 少了 $uri.html 这一项，全部预渲染页面都不会生效。见 DEPLOYMENT_GUIDE.md。
+ */
+function generateFaqHTML(assets) {
+  const { iconTag, cssTag } = assetTags(assets);
+  const faqUrl = `${SITE.url}/faq`;
+  const title = `常见问题 FAQ - ${SITE.name}`;
+  const description =
+    '恒迪视讯常见问题：代理品牌与主营产品、会议室选型、安装与级联、售后支持，以及 MC10 / MA600D / MCS06 / C40T / C60 / M12 等设备的常见技术问答。';
+
+  const faqSchema = ldJson({
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faqItems.map((f) => ({
+      '@type': 'Question',
+      name: f.question,
+      acceptedAnswer: { '@type': 'Answer', text: f.answer },
+    })),
+  });
+
+  // 按分类分组，让正文有结构而不是 21 条平铺
+  const byCategory = new Map();
+  for (const f of faqItems) {
+    if (!byCategory.has(f.category)) byCategory.set(f.category, []);
+    byCategory.get(f.category).push(f);
+  }
+  const body = [...byCategory.entries()]
+    .map(
+      ([cat, list]) =>
+        `    <h2>${cat}</h2>\n` +
+        list.map((f) => `    <h3>${f.question}</h3>\n    <p>${f.answer}</p>`).join('\n')
+    )
+    .join('\n');
+
+  return `<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>${title}</title>
+  <meta name="description" content="${description}" />
+  <link rel="canonical" href="${faqUrl}" />
+  <meta property="og:title" content="${title}" />
+  <meta property="og:description" content="${description}" />
+  <meta property="og:url" content="${faqUrl}" />
+  <meta property="og:type" content="website" />
+  <meta property="og:locale" content="zh_CN" />
+  <meta name="robots" content="index, follow" />
+${iconTag}
+  <script type="application/ld+json">
+${faqSchema}
+  </script>
+${cssTag}
+</head>
+<body>
+  <noscript>
+    <h1>${SITE.name} 常见问题</h1>
+${body}
+    <p>如需更多帮助请联系：${SITE.email} | ${SITE.phone}</p>
+  </noscript>
+  <div id="root"></div>
+  <script type="module" crossorigin src="${assets.js}"></script>
+</body>
+</html>`;
+}
+
+// ============ 主流程 ============
+
 function prerender() {
   console.log('\n[Prerender] Generating static HTML for product and case pages...');
 
-  // 从 dist/index.html 提取编译后的 JS/CSS 资源路径
   const assets = extractBuiltAssets();
 
-  // 生成产品页面（扁平文件：dist/product/a1.html）
+  const productDir = path.join(distDir, 'product');
+  fs.mkdirSync(productDir, { recursive: true });
   for (const product of products) {
-    const productDir = path.join(distDir, 'product');
-    fs.mkdirSync(productDir, { recursive: true });
-    fs.writeFileSync(path.join(productDir, `${product.id}.html`), generateProductHTML(product, assets));
+    fs.writeFileSync(
+      path.join(productDir, `${product.id}.html`),
+      generateProductHTML(product, assets)
+    );
     console.log(`  [Prerender] /product/${product.id}.html -> ${product.name}`);
   }
 
-  // 生成案例页面（扁平文件：dist/case/e1.html）
+  const caseDir = path.join(distDir, 'case');
+  fs.mkdirSync(caseDir, { recursive: true });
   for (const caseItem of cases) {
-    const caseDir = path.join(distDir, 'case');
-    fs.mkdirSync(caseDir, { recursive: true });
-    fs.writeFileSync(path.join(caseDir, `${caseItem.id}.html`), generateCaseHTML(caseItem, assets));
+    fs.writeFileSync(
+      path.join(caseDir, `${caseItem.id}.html`),
+      generateCaseHTML(caseItem, assets)
+    );
     console.log(`  [Prerender] /case/${caseItem.id}.html -> ${caseItem.name}`);
   }
 
-  console.log(`[Prerender] Generated ${products.length + cases.length} static HTML pages`);
+  console.log(
+    `[Prerender] Generated ${products.length + cases.length} static HTML pages`
+  );
 
-  // 生成 404.html
+  patchIndexItemList(assets);
+  injectHomeNoscript();
+
+  fs.writeFileSync(path.join(distDir, 'faq.html'), generateFaqHTML(assets));
+  console.log(
+    `[Prerender] Generated /faq.html -> ${faqItems.length} 条问答（含 FAQPage 结构化数据）`
+  );
+
   fs.writeFileSync(path.join(distDir, '404.html'), generate404HTML(assets));
   console.log('[Prerender] Generated 404.html');
+
+  // 构建完成标记（原由 shell 的 touch 生成，改为跨平台写法）
+  fs.writeFileSync(path.join(distDir, 'build.flag'), '');
+  console.log('[Prerender] Generated build.flag');
 }
 
 prerender();

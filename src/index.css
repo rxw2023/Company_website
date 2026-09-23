@@ -2,6 +2,36 @@
 @tailwind components;
 @tailwind utilities;
 :root {
+  /* ============================================================
+     设计 token —— 全站唯一字面量来源
+     ------------------------------------------------------------
+     改品牌色只需要改这里。
+
+     此前这些值同时存在于三个地方：
+       1. Home.tsx 内联 <style> 的 :root（只在该路由生效）
+       2. tailwind.config.js 的 theme.extend.colors.warm
+       3. 7 个文件里共 147 处硬编码 hex
+     现在 (1) 上移到这里成为全局；(2) 改为引用 var()；
+     (3) 全部替换为 var()。`pnpm run doctor` 会守住这条规则。
+     ============================================================ */
+  --warm-canvas: #faf9f5;
+  --warm-primary: #cc785c;
+  --warm-primary-active: #a9583e;
+  --warm-ink: #141413;
+  --warm-body: #3d3d3a;
+  --warm-muted: #6c6a64;
+  --warm-hairline: #e6dfd8;
+  --warm-surface: #efe9de;
+  --warm-surface-dark: #181715;
+  --warm-on-dark: #faf9f5;
+  --warm-on-dark-soft: #a09d96;
+  --warm-card-hover: #f4efe6;
+
+  --nav-h: 64px;
+  --font-display: 'Cormorant Garamond', Georgia, serif;
+  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
   line-height: 1.5;
   font-weight: 400;
@@ -23,5 +53,36 @@
   button, a {
     min-height: 44px;
     min-width: 44px;
+  }
+}
+
+/* ============================================================
+   「减弱动态效果」全局兜底
+   ------------------------------------------------------------
+   依据 motion-web / references/motion-tokens.md 的
+   "Reduced Motion Fallback Ladder"。
+
+   framer-motion 的声明式动画由 App.tsx 的
+   <MotionConfig reducedMotion="user"> 统一处理；命令式的
+   animate()（CountUp / LoadingScreen）与 Canvas（StarField）
+   各自在组件内处理。这里补齐 JS 管不到的第三类：**纯 CSS 动画与过渡**。
+
+   本站受此影响的具体项：
+     - 聊天按钮呼吸环  hd-pulse-ring  2.4s infinite
+     - 流式输出光标    hd-blink       1s   infinite
+     - 加载点弹跳      hd-dot-bounce  1.2s infinite
+   以及全站数十处 hover/状态 transition。
+
+   animation-iteration-count: 1 是为了让 infinite 动画真正停下，
+   否则 duration 缩到 0.01ms 后它会以极高频率重播。
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }

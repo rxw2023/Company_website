@@ -1,0 +1,808 @@
+{
+  "a1-1": {
+    "originalWidth": 626,
+    "originalHeight": 480,
+    "variants": []
+  },
+  "a1-2": {
+    "originalWidth": 531,
+    "originalHeight": 480,
+    "variants": []
+  },
+  "a1-3": {
+    "originalWidth": 853,
+    "originalHeight": 480,
+    "variants": [
+      {
+        "w": 640,
+        "file": "a1-3.640.webp",
+        "bytes": 14042
+      }
+    ]
+  },
+  "a1-4": {
+    "originalWidth": 742,
+    "originalHeight": 480,
+    "variants": [
+      {
+        "w": 640,
+        "file": "a1-4.640.webp",
+        "bytes": 34678
+      }
+    ]
+  },
+  "a10-1": {
+    "originalWidth": 1920,
+    "originalHeight": 1070,
+    "variants": [
+      {
+        "w": 640,
+        "file": "a10-1.640.webp",
+        "bytes": 13972
+      }
+    ]
+  },
+  "a10-2": {
+    "originalWidth": 1920,
+    "originalHeight": 1066,
+    "variants": [
+      {
+        "w": 640,
+        "file": "a10-2.640.webp",
+        "bytes": 8892
+      }
+    ]
+  },
+  "a10-3": {
+    "originalWidth": 1920,
+    "originalHeight": 1066,
+    "variants": [
+      {
+        "w": 640,
+        "file": "a10-3.640.webp",
+        "bytes": 9694
+      }
+    ]
+  },
+  "a10-4": {
+    "originalWidth": 1920,
+    "originalHeight": 1066,
+    "variants": [
+      {
+        "w": 640,
+        "file": "a10-4.640.webp",
+        "bytes": 9732
+      }
+    ]
+  },
+  "a10-5": {
+    "originalWidth": 1920,
+    "originalHeight": 1066,
+    "variants": [
+      {
+        "w": 640,
+        "file": "a10-5.640.webp",
+        "bytes": 8892
+      }
+    ]
+  },
+  "a11-1": {
+    "originalWidth": 1774,
+    "originalHeight": 887,
+    "variants": [
+      {
+        "w": 640,
+        "file": "a11-1.640.webp",
+        "bytes": 31026
+      }
+    ]
+  },
+  "a11-2": {
+    "originalWidth": 1780,
+    "originalHeight": 1920,
+    "variants": [
+      {
+        "w": 640,
+        "file": "a11-2.640.webp",
+        "bytes": 84480
+      }
+    ]
+  },
+  "a11-3": {
+    "originalWidth": 1440,
+    "originalHeight": 1920,
+    "variants": [
+      {
+        "w": 640,
+        "file": "a11-3.640.webp",
+        "bytes": 112356
+      }
+    ]
+  },
+  "a11-4": {
+    "originalWidth": 1920,
+    "originalHeight": 986,
+    "variants": [
+      {
+        "w": 640,
+        "file": "a11-4.640.webp",
+        "bytes": 7424
+      }
+    ]
+  },
+  "a12-1": {
+    "originalWidth": 1055,
+    "originalHeight": 1491,
+    "variants": [
+      {
+        "w": 640,
+        "file": "a12-1.640.webp",
+        "bytes": 48556
+      }
+    ]
+  },
+  "a12-2": {
+    "originalWidth": 1076,
+    "originalHeight": 759,
+    "variants": [
+      {
+        "w": 640,
+        "file": "a12-2.640.webp",
+        "bytes": 4072
+      }
+    ]
+  },
+  "a18-1": {
+    "originalWidth": 929,
+    "originalHeight": 628,
+    "variants": [
+      {
+        "w": 640,
+        "file": "a18-1.640.webp",
+        "bytes": 15914
+      }
+    ]
+  },
+  "a18-2": {
+    "originalWidth": 836,
+    "originalHeight": 558,
+    "variants": [
+      {
+        "w": 640,
+        "file": "a18-2.640.webp",
+        "bytes": 9590
+      }
+    ]
+  },
+  "a19-1": {
+    "originalWidth": 1920,
+    "originalHeight": 1200,
+    "variants": [
+      {
+        "w": 640,
+        "file": "a19-1.640.webp",
+        "bytes": 2868
+      }
+    ]
+  },
+  "a19-2": {
+    "originalWidth": 1920,
+    "originalHeight": 1200,
+    "variants": [
+      {
+        "w": 640,
+        "file": "a19-2.640.webp",
+        "bytes": 5468
+      }
+    ]
+  },
+  "a19-3": {
+    "originalWidth": 1920,
+    "originalHeight": 1200,
+    "variants": [
+      {
+        "w": 640,
+        "file": "a19-3.640.webp",
+        "bytes": 14032
+      }
+    ]
+  },
+  "a19-4": {
+    "originalWidth": 192,
+    "originalHeight": 422,
+    "variants": []
+  },
+  "a2-1": {
+    "originalWidth": 1920,
+    "originalHeight": 278,
+    "variants": [
+      {
+        "w": 640,
+        "file": "a2-1.640.webp",
+        "bytes": 13236
+      }
+    ]
+  },
+  "a2-2": {
+    "originalWidth": 873,
+    "originalHeight": 480,
+    "variants": [
+      {
+        "w": 640,
+        "file": "a2-2.640.webp",
+        "bytes": 2402
+      }
+    ]
+  },
+  "a2-3": {
+    "originalWidth": 876,
+    "originalHeight": 480,
+    "variants": [
+      {
+        "w": 640,
+        "file": "a2-3.640.webp",
+        "bytes": 5994
+      }
+    ]
+  },
+  "a2-4": {
+    "originalWidth": 876,
+    "originalHeight": 480,
+    "variants": [
+      {
+        "w": 640,
+        "file": "a2-4.640.webp",
+        "bytes": 1306
+      }
+    ]
+  },
+  "a3-1": {
+    "originalWidth": 768,
+    "originalHeight": 480,
+    "variants": [
+      {
+        "w": 640,
+        "file": "a3-1.640.webp",
+        "bytes": 49616
+      }
+    ]
+  },
+  "a3-2": {
+    "originalWidth": 768,
+    "originalHeight": 480,
+    "variants": [
+      {
+        "w": 640,
+        "file": "a3-2.640.webp",
+        "bytes": 10600
+      }
+    ]
+  },
+  "a3-3": {
+    "originalWidth": 742,
+    "originalHeight": 480,
+    "variants": [
+      {
+        "w": 640,
+        "file": "a3-3.640.webp",
+        "bytes": 5274
+      }
+    ]
+  },
+  "a3-4": {
+    "originalWidth": 1269,
+    "originalHeight": 820,
+    "variants": [
+      {
+        "w": 640,
+        "file": "a3-4.640.webp",
+        "bytes": 25358
+      }
+    ]
+  },
+  "a4-1": {
+    "originalWidth": 1920,
+    "originalHeight": 1080,
+    "variants": [
+      {
+        "w": 640,
+        "file": "a4-1.640.webp",
+        "bytes": 5024
+      }
+    ]
+  },
+  "a4-2": {
+    "originalWidth": 1920,
+    "originalHeight": 1080,
+    "variants": [
+      {
+        "w": 640,
+        "file": "a4-2.640.webp",
+        "bytes": 4152
+      }
+    ]
+  },
+  "a4-3": {
+    "originalWidth": 1600,
+    "originalHeight": 900,
+    "variants": [
+      {
+        "w": 640,
+        "file": "a4-3.640.webp",
+        "bytes": 5230
+      }
+    ]
+  },
+  "a4-4": {
+    "originalWidth": 1920,
+    "originalHeight": 1080,
+    "variants": [
+      {
+        "w": 640,
+        "file": "a4-4.640.webp",
+        "bytes": 5736
+      }
+    ]
+  },
+  "a5-1": {
+    "originalWidth": 1920,
+    "originalHeight": 1080,
+    "variants": [
+      {
+        "w": 640,
+        "file": "a5-1.640.webp",
+        "bytes": 4910
+      }
+    ]
+  },
+  "a5-2": {
+    "originalWidth": 1920,
+    "originalHeight": 1080,
+    "variants": [
+      {
+        "w": 640,
+        "file": "a5-2.640.webp",
+        "bytes": 5310
+      }
+    ]
+  },
+  "a5-3": {
+    "originalWidth": 1920,
+    "originalHeight": 1080,
+    "variants": [
+      {
+        "w": 640,
+        "file": "a5-3.640.webp",
+        "bytes": 3230
+      }
+    ]
+  },
+  "a5-4": {
+    "originalWidth": 1920,
+    "originalHeight": 1080,
+    "variants": [
+      {
+        "w": 640,
+        "file": "a5-4.640.webp",
+        "bytes": 2630
+      }
+    ]
+  },
+  "a6-1": {
+    "originalWidth": 1920,
+    "originalHeight": 1798,
+    "variants": [
+      {
+        "w": 640,
+        "file": "a6-1.640.webp",
+        "bytes": 102826
+      }
+    ]
+  },
+  "a6-2": {
+    "originalWidth": 1920,
+    "originalHeight": 1754,
+    "variants": [
+      {
+        "w": 640,
+        "file": "a6-2.640.webp",
+        "bytes": 38834
+      }
+    ]
+  },
+  "a6-3": {
+    "originalWidth": 1920,
+    "originalHeight": 1498,
+    "variants": [
+      {
+        "w": 640,
+        "file": "a6-3.640.webp",
+        "bytes": 11462
+      }
+    ]
+  },
+  "a6-4": {
+    "originalWidth": 1920,
+    "originalHeight": 1670,
+    "variants": [
+      {
+        "w": 640,
+        "file": "a6-4.640.webp",
+        "bytes": 66998
+      }
+    ]
+  },
+  "a7-1": {
+    "originalWidth": 1920,
+    "originalHeight": 1066,
+    "variants": [
+      {
+        "w": 640,
+        "file": "a7-1.640.webp",
+        "bytes": 4950
+      }
+    ]
+  },
+  "a7-2": {
+    "originalWidth": 1920,
+    "originalHeight": 1012,
+    "variants": [
+      {
+        "w": 640,
+        "file": "a7-2.640.webp",
+        "bytes": 24236
+      }
+    ]
+  },
+  "a7-3": {
+    "originalWidth": 1920,
+    "originalHeight": 978,
+    "variants": [
+      {
+        "w": 640,
+        "file": "a7-3.640.webp",
+        "bytes": 17932
+      }
+    ]
+  },
+  "a7-4": {
+    "originalWidth": 1920,
+    "originalHeight": 1066,
+    "variants": [
+      {
+        "w": 640,
+        "file": "a7-4.640.webp",
+        "bytes": 23824
+      }
+    ]
+  },
+  "a8-1": {
+    "originalWidth": 1920,
+    "originalHeight": 1080,
+    "variants": [
+      {
+        "w": 640,
+        "file": "a8-1.640.webp",
+        "bytes": 1934
+      }
+    ]
+  },
+  "a8-2": {
+    "originalWidth": 1920,
+    "originalHeight": 1080,
+    "variants": [
+      {
+        "w": 640,
+        "file": "a8-2.640.webp",
+        "bytes": 21598
+      }
+    ]
+  },
+  "a8-3": {
+    "originalWidth": 1920,
+    "originalHeight": 1080,
+    "variants": [
+      {
+        "w": 640,
+        "file": "a8-3.640.webp",
+        "bytes": 18932
+      }
+    ]
+  },
+  "a8-4": {
+    "originalWidth": 1920,
+    "originalHeight": 1080,
+    "variants": [
+      {
+        "w": 640,
+        "file": "a8-4.640.webp",
+        "bytes": 1888
+      }
+    ]
+  },
+  "a9-1": {
+    "originalWidth": 1920,
+    "originalHeight": 1080,
+    "variants": [
+      {
+        "w": 640,
+        "file": "a9-1.640.webp",
+        "bytes": 4604
+      }
+    ]
+  },
+  "a9-2": {
+    "originalWidth": 1920,
+    "originalHeight": 1080,
+    "variants": [
+      {
+        "w": 640,
+        "file": "a9-2.640.webp",
+        "bytes": 2010
+      }
+    ]
+  },
+  "a9-3": {
+    "originalWidth": 1920,
+    "originalHeight": 1080,
+    "variants": [
+      {
+        "w": 640,
+        "file": "a9-3.640.webp",
+        "bytes": 5402
+      }
+    ]
+  },
+  "a9-4": {
+    "originalWidth": 1920,
+    "originalHeight": 1080,
+    "variants": [
+      {
+        "w": 640,
+        "file": "a9-4.640.webp",
+        "bytes": 4700
+      }
+    ]
+  },
+  "company-address-map": {
+    "originalWidth": 1442,
+    "originalHeight": 1920,
+    "variants": [
+      {
+        "w": 640,
+        "file": "company-address-map.640.webp",
+        "bytes": 24380
+      }
+    ]
+  },
+  "e1": {
+    "originalWidth": 1920,
+    "originalHeight": 1296,
+    "variants": [
+      {
+        "w": 640,
+        "file": "e1.640.webp",
+        "bytes": 30102
+      }
+    ]
+  },
+  "e10-1": {
+    "originalWidth": 1213,
+    "originalHeight": 855,
+    "variants": [
+      {
+        "w": 640,
+        "file": "e10-1.640.webp",
+        "bytes": 28994
+      }
+    ]
+  },
+  "e10-2": {
+    "originalWidth": 1015,
+    "originalHeight": 597,
+    "variants": [
+      {
+        "w": 640,
+        "file": "e10-2.640.webp",
+        "bytes": 57480
+      }
+    ]
+  },
+  "e11-1": {
+    "originalWidth": 1920,
+    "originalHeight": 1080,
+    "variants": [
+      {
+        "w": 640,
+        "file": "e11-1.640.webp",
+        "bytes": 23558
+      }
+    ]
+  },
+  "e11-2": {
+    "originalWidth": 1920,
+    "originalHeight": 1080,
+    "variants": [
+      {
+        "w": 640,
+        "file": "e11-2.640.webp",
+        "bytes": 19024
+      }
+    ]
+  },
+  "e12-1": {
+    "originalWidth": 1920,
+    "originalHeight": 1080,
+    "variants": [
+      {
+        "w": 640,
+        "file": "e12-1.640.webp",
+        "bytes": 31588
+      }
+    ]
+  },
+  "e12-2": {
+    "originalWidth": 1846,
+    "originalHeight": 1920,
+    "variants": [
+      {
+        "w": 640,
+        "file": "e12-2.640.webp",
+        "bytes": 45340
+      }
+    ]
+  },
+  "e2": {
+    "originalWidth": 1702,
+    "originalHeight": 1276,
+    "variants": [
+      {
+        "w": 640,
+        "file": "e2.640.webp",
+        "bytes": 46912
+      }
+    ]
+  },
+  "e3-1": {
+    "originalWidth": 1920,
+    "originalHeight": 1440,
+    "variants": [
+      {
+        "w": 640,
+        "file": "e3-1.640.webp",
+        "bytes": 27418
+      }
+    ]
+  },
+  "e3-2": {
+    "originalWidth": 1920,
+    "originalHeight": 1080,
+    "variants": [
+      {
+        "w": 640,
+        "file": "e3-2.640.webp",
+        "bytes": 18978
+      }
+    ]
+  },
+  "e4-1": {
+    "originalWidth": 1920,
+    "originalHeight": 1368,
+    "variants": [
+      {
+        "w": 640,
+        "file": "e4-1.640.webp",
+        "bytes": 19130
+      }
+    ]
+  },
+  "e4-2": {
+    "originalWidth": 1620,
+    "originalHeight": 1920,
+    "variants": [
+      {
+        "w": 640,
+        "file": "e4-2.640.webp",
+        "bytes": 35682
+      }
+    ]
+  },
+  "e5-1": {
+    "originalWidth": 1706,
+    "originalHeight": 1279,
+    "variants": [
+      {
+        "w": 640,
+        "file": "e5-1.640.webp",
+        "bytes": 32432
+      }
+    ]
+  },
+  "e5-2": {
+    "originalWidth": 1279,
+    "originalHeight": 1706,
+    "variants": [
+      {
+        "w": 640,
+        "file": "e5-2.640.webp",
+        "bytes": 29590
+      }
+    ]
+  },
+  "e6-1": {
+    "originalWidth": 1440,
+    "originalHeight": 1080,
+    "variants": [
+      {
+        "w": 640,
+        "file": "e6-1.640.webp",
+        "bytes": 27306
+      }
+    ]
+  },
+  "e6-2": {
+    "originalWidth": 1440,
+    "originalHeight": 1080,
+    "variants": [
+      {
+        "w": 640,
+        "file": "e6-2.640.webp",
+        "bytes": 53196
+      }
+    ]
+  },
+  "e7-1": {
+    "originalWidth": 1107,
+    "originalHeight": 686,
+    "variants": [
+      {
+        "w": 640,
+        "file": "e7-1.640.webp",
+        "bytes": 33600
+      }
+    ]
+  },
+  "e7-2": {
+    "originalWidth": 483,
+    "originalHeight": 297,
+    "variants": []
+  },
+  "e8-1": {
+    "originalWidth": 349,
+    "originalHeight": 201,
+    "variants": []
+  },
+  "e8-2": {
+    "originalWidth": 1067,
+    "originalHeight": 604,
+    "variants": [
+      {
+        "w": 640,
+        "file": "e8-2.640.webp",
+        "bytes": 35704
+      }
+    ]
+  },
+  "e9-1": {
+    "originalWidth": 1706,
+    "originalHeight": 1279,
+    "variants": [
+      {
+        "w": 640,
+        "file": "e9-1.640.webp",
+        "bytes": 40940
+      }
+    ]
+  },
+  "e9-2": {
+    "originalWidth": 1920,
+    "originalHeight": 864,
+    "variants": [
+      {
+        "w": 640,
+        "file": "e9-2.640.webp",
+        "bytes": 20690
+      }
+    ]
+  }
+}

@@ -1,4 +1,4 @@
-import { motion, type Variants, type Transition } from 'framer-motion';
+import { motion, useReducedMotion, type Variants, type Transition } from 'framer-motion';
 import type { ReactNode } from 'react';
 
 type Direction = 'up' | 'down' | 'left' | 'right' | 'none';
@@ -48,21 +48,28 @@ export default function Reveal({
   as = 'div',
   hoverLift,
 }: RevealProps) {
-  const variants: Variants = {
-    hidden: { opacity: 0, ...offset(direction, distance) },
-    visible: {
-      opacity: 1,
-      x: 0,
-      y: 0,
-      transition: {
-        duration,
-        delay,
-        ease: [0.22, 1, 0.36, 1], // easeOutQuint
-      },
-    },
-  };
+  const prefersReduced = useReducedMotion();
 
-  const transition: Transition = { duration, delay, ease: [0.22, 1, 0.36, 1] };
+  // 降级时不做位移、不加延迟：内容直接就位，避免"看不见的偏移"影响读屏与布局
+  const variants: Variants = prefersReduced
+    ? { hidden: { opacity: 1 }, visible: { opacity: 1 } }
+    : {
+        hidden: { opacity: 0, ...offset(direction, distance) },
+        visible: {
+          opacity: 1,
+          x: 0,
+          y: 0,
+          transition: {
+            duration,
+            delay,
+            ease: [0.22, 1, 0.36, 1], // easeOutQuint
+          },
+        },
+      };
+
+  const transition: Transition = prefersReduced
+    ? { duration: 0 }
+    : { duration, delay, ease: [0.22, 1, 0.36, 1] };
 
   const MotionTag = motion[as] as typeof motion.div;
 
@@ -75,7 +82,7 @@ export default function Reveal({
       viewport={{ once, amount }}
       variants={variants}
       transition={transition}
-      whileHover={hoverLift ? { y: -hoverLift } : undefined}
+      whileHover={hoverLift && !prefersReduced ? { y: -hoverLift } : undefined}
     >
       {children}
     </MotionTag>

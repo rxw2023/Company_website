@@ -1,86 +1,73 @@
 import { Link, useLocation } from 'react-router-dom';
 import { useEffect, useRef, useState } from 'react';
-import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
+import { motion, AnimatePresence, useScroll, useTransform, useReducedMotion } from 'framer-motion';
 import Navigation from '../components/Navigation';
 import SeoHead from '../components/SeoHead';
 import Reveal from '../components/Reveal';
 import CountUp from '../components/CountUp';
 import MouseGlow from '../components/MouseGlow';
-import StarField from '../components/StarField';
-// 产品图片
-import a1Image from '../assets/images/a1-1.webp';
-import a2Image from '../assets/images/a2-1.webp';
-import a3Image from '../assets/images/a3-3.webp';
-import a4Image from '../assets/images/a4-1.webp';
-import a5Image from '../assets/images/a5-1.webp';
-import a6Image from '../assets/images/a6-1.webp';
-import a7Image from '../assets/images/a7-1.webp';
-import a8Image from '../assets/images/a8-2.webp';
-import a9Image from '../assets/images/a9-1.webp';
-import a10Image from '../assets/images/a10-1.webp';
-import a11Image from '../assets/images/a11-3.webp'
-import a12Image from '../assets/images/a12-2.webp';
-import a18Image from '../assets/images/a18-2.webp';
-import a19Image from '../assets/images/a19-1.webp';
-
+import SoundField from '../components/SoundField';
+import Ma600dField from '../components/Ma600dField';
+import RoomPicker from '../components/RoomPicker';
+// 产品数据来自单一事实源 src/data/products.json
+import { PRODUCTS, CATEGORIES as PRODUCT_CATEGORIES } from '../data/products';
+// 案例数据来自单一事实源 src/data/cases.json
+import { CASES, CASE_CATEGORIES as CASE_CATEGORY_LIST } from '../data/cases';
+import { IMAGE_BY_KEY, CASE_IMAGE_BY_KEY } from '../data/productImages';
+import { responsiveImage, CARD_SIZES } from '../data/responsiveImage';
 import quickImage from '../assets/images/aispeech-logo.png';
 import aispeechLogo from '../assets/images/aispeech-logo1.png';
 import qrcodeImage from '../assets/images/qrcode.jpg';
 import addressMapImage from '../assets/images/company-address-map.webp';
-import heroBgImage from '../assets/images/hero-bg.webp';
-// 案例图片
-import e1Image from '../assets/images/e1.webp';
-import e2Image from '../assets/images/e2.webp';
-import e3Image from '../assets/images/e3-1.webp';
-import e4Image from '../assets/images/e4-1.webp';
-import e5Image from '../assets/images/e5-1.webp';
-import e6Image from '../assets/images/e6-1.webp';
-import e7Image from '../assets/images/e7-1.webp';
-import e8Image from '../assets/images/e8-1.webp';
-import e9Image from '../assets/images/e9-1.webp';
-import e10Image from '../assets/images/e10-1.webp';
-import e11Image from '../assets/images/e11-1.webp';
-import e12Image from '../assets/images/e12-1.webp';
 
-const products = [
-  
-  { id: 'a2',  name: 'MA600D 矩阵麦克风',        desc: '无感扩声新标杆，3m 拾音半径，>18dB 增益，AI 降噪 + 反馈抑制双算法。', img: a2Image, categories: ['矩阵麦克风'] },
-  { id: 'a12', name: 'MK300 桌面安装套件',          desc: '专为MA600D矩阵麦克风桌面部署定制，安装更美观整洁，适配高端会议空间。', img: a12Image, categories: ['矩阵麦克风'] },
-  { id: 'a10', name: 'AIMIC-B100 桌面控制器',      desc: '智能控制 + 精准拾音 + 便捷部署，现代高效会议的得力助手。', img: a10Image, categories: ['控制·投屏'] },
-  { id: 'a7',  name: 'MC08 高端吸顶麦克风',        desc: '32 单元阵列，8 个独立配置拾音区，专为教学场景精心设计。', img: a7Image, categories: ['吸顶麦克风'] },
+/** 首页卡片视图模型 —— 由 products.json 派生，展示顺序即 PRODUCTS 的顺序 */
+interface HomeProduct {
+  id: string;
+  name: string;
+  desc: string;
+  img: string;
+  /** 尺寸变体的 srcset（由 gen:images 生成；缺失时为空，回落到原图） */
+  srcSet?: string;
+  sizes?: string;
+  categories: string[];
+}
 
-  { id: 'a1',  name: 'MC10 吸顶麦克风',         desc: '128 单元全向麦克风阵列，16 个独立可配拾音区，精细化拾音配置。', img: a1Image, categories: ['吸顶麦克风'] },
-  { id:'a11',  name: 'MC04 高端吸顶麦克风-教育款',      desc: '24单元MEMS阵列，2m精准扩声覆盖，ClearSpeakAI算法，专为教室教学打造。', img: a11Image, categories: ['吸顶麦克风'] },
-  { id: 'a3',  name: 'MCS06 拾扩一体吸顶麦克风',      desc: '32 单元全向阵列，4 个拾音区，支持 Dante，集拾音扩声于一体。', img: a3Image, categories: ['吸顶麦克风'] },
-  { id: 'a6',  name: 'AISPK-DC20 PoE 吸顶音箱',   desc: '全频同轴天花扬声器，PoE 供电，适用商店、会议室、酒店多场景。', img: a6Image, categories: ['会议音箱'] },
-  { id: 'a8',  name: 'AIMIC-M12 企业级会议麦克风音箱',    desc: '集拾音、扩音、语音转写、字幕同传于一体，多台级联，覆盖大中小型会议室。', img: a8Image, categories: ['会议音箱'] },
-
-  { id: 'a9',  name: 'C60 AI 追踪双目摄像头',      desc: '多种 AI 追踪模式，实时字幕，音视频融合，适配会议讨论、演讲、板书。', img: a9Image, categories: ['摄像追踪'] },
-  { id: 'a4',  name: 'C40T 视频会议摄像机',        desc: '4K 超高清，12 倍光学 + 16 倍数字变焦，适配各类企业会议室。', img: a4Image, categories: ['摄像追踪'] },
-  { id: 'a5',  name: 'MT100 AI 声像追踪主机',      desc: '音视频融合追踪引擎，多种追踪模式，适配企业与教育演讲场景。', img: a5Image, categories: ['摄像追踪'] },
-  { id: 'a18', name: '会议办公大模型信创一体机D1',      desc: 'AI 语音记录、AI要点总结、AI一键纪要、AI待办生成', img: a18Image, categories: ['控制·投屏'] },
-  { id: 'a19', name: 'BYOM 投屏套装',                desc: '无线投屏、BYOM会议、HDMI矩阵切换、中控四合一，4K@60Hz，双网隔离', img: a19Image, categories: ['控制·投屏'] },
-  { id: 'a99', name: '后续产品尽情期待',       desc: '', img: quickImage, categories: [] },
+const products: HomeProduct[] = [
+  ...PRODUCTS.map((p) => {
+    const img = IMAGE_BY_KEY[p.cardImage];
+    const { srcSet, sizes } = responsiveImage(p.cardImage, img, CARD_SIZES);
+    return {
+      id: p.id,
+      name: p.cardName,
+      desc: p.cardDesc,
+      img,
+      srcSet,
+      sizes,
+      categories: [p.category],
+    };
+  }),
+  // 占位卡片：仅展示用，不进入 sitemap / SEO / AI 知识库
+  { id: 'a99', name: '后续产品尽情期待', desc: '', img: quickImage, categories: [] },
 ];
 
-const CATEGORIES = ['all', '吸顶麦克风', '矩阵麦克风', '摄像追踪', '会议音箱', '控制·投屏'] as const;
+const CATEGORIES: string[] = ['all', ...PRODUCT_CATEGORIES];
 
-const cases = [
-  { id: 'e1',  tag: '高等教育', name: '中国香港科技大学',             img: e1Image, category: '教育院校' },
-  { id: 'e2',  tag: '高等教育', name: '上海交通大学',                 img: e2Image, category: '教育院校' },
-  { id: 'e3',  tag: '学前教育', name: '上海虹口艺术幼儿园',           img: e3Image, category: '教育院校' },
-  { id: 'e4',  tag: '高等教育', name: '华东师范大学',                 img: e4Image, category: '教育院校' },
-  { id: 'e5',  tag: '高等教育', name: '北京理工大学',                 img: e5Image, category: '教育院校' },
-  { id: 'e6',  tag: '高等教育', name: '成都大学',                     img: e6Image, category: '教育院校' },
-  { id: 'e7',  tag: '大型活动', name: '苏州广电跨年演讲晚会',         img: e7Image, category: '大型活动' },
-  { id: 'e8',  tag: '酒店会场', name: '苏州独墅湖世尊酒店',           img: e8Image, category: '酒店会场' },
-  { id: 'e9',  tag: '金融机构', name: '国泰基金',                     img: e9Image, category: '政企金融' },
-  { id: 'e10', tag: '医疗机构', name: '上海仁济医院',                 img: e10Image, category: '政企金融' },
-  { id: 'e11', tag: '物流企业', name: '国际陆港集团',                 img: e11Image, category: '政企金融' },
-  { id: 'e12', tag: '金融科技', name: '成都新希望金融科技',           img: e12Image, category: '政企金融' },
-];
+/** 首页案例卡片视图模型 —— 由 cases.json 派生 */
+const cases = CASES.map((c) => {
+  const img = CASE_IMAGE_BY_KEY[c.cardImage];
+  const { srcSet, sizes } = responsiveImage(c.cardImage, img, CARD_SIZES);
+  return {
+    id: c.id,
+    tag: c.tag,
+    name: c.name,
+    img,
+    srcSet,
+    sizes,
+    category: c.category,
+  };
+});
 
-const CASE_CATEGORIES = ['all', '教育院校', '政企金融', '酒店会场', '大型活动'] as const;
+const CASE_CATEGORIES: string[] = ['all', ...CASE_CATEGORY_LIST];
 
 function scrollTo(id: string) {
   const el = document.getElementById(id);
@@ -91,14 +78,14 @@ export default function Home() {
   const location = useLocation();
 
   // 产品场景过滤
-  const [activeCat, setActiveCat] = useState<typeof CATEGORIES[number]>('all');
+  const [activeCat, setActiveCat] = useState<string>('all');
   const filteredProducts =
     activeCat === 'all'
       ? products
       : products.filter((p) => p.categories.includes(activeCat));
 
   // 案例行业过滤
-  const [caseCat, setCaseCat] = useState<typeof CASE_CATEGORIES[number]>('all');
+  const [caseCat, setCaseCat] = useState<string>('all');
   const [mapPreview, setMapPreview] = useState(false);
   const [qrPreview, setQrPreview] = useState(false);
   const filteredCases =
@@ -108,6 +95,12 @@ export default function Home() {
 
   // Hero 滚动视差
   const heroRef = useRef<HTMLDivElement>(null);
+  /**
+   * 注意：useScroll/useTransform 是**直接绑定**到 style 的 motion value，
+   * 不经过 framer 的动画管线，因此 <MotionConfig reducedMotion="user"> 管不到它们，
+   * 必须在此显式降级，否则减弱动效的用户依旧会被滚动视差影响。
+   */
+  const prefersReduced = useReducedMotion();
   const { scrollYProgress: heroProgress } = useScroll({
     target: heroRef,
     offset: ['start start', 'end start'],
@@ -149,32 +142,12 @@ export default function Home() {
         description="恒迪视讯代理思必驰AISPEECH智能会议产品：MC10吸顶麦克风、MA600D矩阵麦克风、MCS06拾扩一体吸顶麦、C40T视频会议室摄像机、MT100声像追踪主机、DC20PoE吸顶音箱、MC08教学吸顶麦、M12会议麦克风音箱、C60 AI追踪摄像头、AIMIC-B100桌面控制器。服务高校、企业、政府、酒店。"
         url="/"
         breadcrumbs={[{ name: '首页', url: '/' }]}
-        itemList={products.filter(p => p.id !== 'a99').map(p => ({
-          name: p.name,
-          url: `/product/${p.id}`,
-        }))}
       />
 
       <style>{`
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-        :root {
-          --warm-canvas:      #faf9f5;
-          --warm-primary:     #cc785c;
-          --warm-primary-active: #a9583e;
-          --warm-ink:         #141413;
-          --warm-body:        #3d3d3a;
-          --warm-muted:       #6c6a64;
-          --warm-hairline:    #e6dfd8;
-          --warm-surface:     #efe9de;
-          --warm-surface-dark: #181715;
-          --warm-on-dark:     #faf9f5;
-          --warm-on-dark-soft:#a09d96;
-          --warm-card-hover:  #f4efe6;
-          --nav-h: 64px;
-          --font-display: 'Cormorant Garamond', Georgia, serif;
-          --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-          --font-mono: 'JetBrains Mono', monospace;
-        }
+        /* 设计 token 已上移到 src/index.css 的 :root，成为全站唯一字面量来源。
+           此处不再重复定义，避免出现第二份色值。 */
         .hd-page {
           font-family: var(--font-body);
           -webkit-font-smoothing: antialiased;
@@ -222,20 +195,29 @@ export default function Home() {
           padding: calc(var(--nav-h) + 60px) 24px 80px;
           position: relative; overflow: hidden;
         }
-        .hd-hero-bg {
+        /* Hero 机制：天花板阵列的声场与波束（见 components/SoundField.tsx）
+           取代原先 659KB 的静态底图 —— 既让动效来自业务本身的物理，
+           又把首屏最大的一笔字节开销移出关键路径。 */
+        .hd-hero-field {
           position: absolute; inset: 0;
           width: 100%; height: 100%;
-          object-fit: cover;
           z-index: 0;
           pointer-events: none;
         }
+        /* 径向遮罩：中心（H1 所在）保持高可读性，四周尽量留出声场透出。
+           边缘 0.14 是刻意的——声场元素本身很淡，遮罩太厚就等于没有。 */
         .hd-hero-overlay {
           position: absolute; inset: 0;
-          background: rgba(250,246,242,0.78);
+          background: radial-gradient(
+            ellipse 68% 56% at 50% 45%,
+            rgba(250,246,242,0.90) 0%,
+            rgba(250,246,242,0.60) 50%,
+            rgba(250,246,242,0.14) 100%
+          );
           z-index: 1;
           pointer-events: none;
         }
-        .hd-hero > *:not(.hd-hero-bg):not(.hd-hero-overlay) {
+        .hd-hero > *:not(.hd-hero-field):not(.hd-hero-overlay) {
           position: relative; z-index: 2;
         }
         .hd-hero::after {
@@ -351,6 +333,54 @@ export default function Home() {
           color: var(--warm-muted);
           max-width: 540px;
           margin-bottom: 56px;
+        }
+
+        /* ── 三种不同的区块头形态 ──────────────────────────────
+           依据 motion-web 「design-slop.md」A3：
+           「一页至少要有 3 种不同的段落形状」——一个页面里每一段都是
+           「eyebrow + 标题 + 段落」的同一套堆叠，无论字体多好都会读成模板。
+           改动前 产品 / 案例 / 关于 / CTA 四段是完全相同的堆叠。
+           现在分别是：分栏带分隔线 / 工具条 / 居中堆叠，CTA 是通栏深色。 */
+
+        /* 形态 A · 分栏：标题在左、描述在右，顶部一条分隔线（产品） */
+        .hd-sec-head--split {
+          display: grid;
+          grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+          gap: 4px 48px;
+          align-items: end;
+          padding-top: 26px;
+          border-top: 1px solid var(--warm-hairline);
+          margin-bottom: 32px;
+        }
+        .hd-sec-head--split .hd-section-desc {
+          max-width: none; margin-bottom: 0; padding-bottom: 2px;
+        }
+
+        /* 形态 B · 工具条：标题与筛选器同一行，没有独立描述段（案例） */
+        .hd-sec-head--toolbar {
+          display: flex;
+          justify-content: space-between;
+          align-items: flex-end;
+          gap: 20px 32px;
+          flex-wrap: wrap;
+          margin-bottom: 28px;
+        }
+        .hd-sec-head--toolbar .hd-section-title { margin-bottom: 6px; }
+        .hd-sec-head--toolbar .hd-section-desc {
+          max-width: 460px; margin-bottom: 0; font-size: 15px;
+        }
+        .hd-sec-head--toolbar .hd-cat-tabs { margin: 0; flex-shrink: 0; }
+
+        /* 形态 C · 居中堆叠：保留最经典的一种（关于） */
+        .hd-sec-head--stack { text-align: center; }
+        .hd-sec-head--stack .hd-section-desc {
+          margin-left: auto; margin-right: auto;
+        }
+
+        @media (max-width: 820px) {
+          .hd-sec-head--split { grid-template-columns: 1fr; gap: 0; }
+          .hd-sec-head--split .hd-section-desc { margin-bottom: 8px; }
+          .hd-sec-head--toolbar { align-items: flex-start; }
         }
 
         .hd-product-grid {
@@ -593,6 +623,13 @@ export default function Home() {
           background: var(--warm-surface-dark);
           padding: 96px 24px; text-align: center;
         }
+        /* MA600D 拾音场点阵：铺满通栏、位于内容之下 */
+        .hd-cta-field {
+          position: absolute; inset: 0;
+          width: 100%; height: 100%;
+          z-index: 0;
+          pointer-events: none;
+        }
         .hd-cta-band h2 {
           font-family: var(--font-display);
           font-size: clamp(28px, 4vw, 44px);
@@ -669,7 +706,8 @@ export default function Home() {
         }
       `}</style>
 
-      <div className="hd-page">
+      {/* id/tabIndex 供 App.tsx 的「跳到主要内容」链接定位 */}
+      <div className="hd-page" id="main-content" tabIndex={-1}>
 
         {/* NAV */}
         <Navigation />
@@ -678,7 +716,7 @@ export default function Home() {
         <MouseGlow />
 
         {/* HERO */}
-        <motion.div ref={heroRef} style={{ y: heroWrapY, opacity: heroWrapOpacity }}>
+        <motion.div ref={heroRef} style={prefersReduced ? undefined : { y: heroWrapY, opacity: heroWrapOpacity }}>
         <motion.section
           className="hd-hero"
           initial="hidden"
@@ -688,11 +726,11 @@ export default function Home() {
             visible: { transition: { staggerChildren: 0.12, delayChildren: 0.05 } },
           }}
         >
-          <img src={heroBgImage} alt="" className="hd-hero-bg" aria-hidden="true" />
+          <SoundField className="hd-hero-field" />
           <div className="hd-hero-overlay" aria-hidden="true" />
           <motion.div
             className="hero-logo-wrap"
-            style={{ y: heroLogoY, scale: heroLogoScale }}
+            style={prefersReduced ? undefined : { y: heroLogoY, scale: heroLogoScale }}
             variants={{ hidden: { opacity: 0 }, visible: { opacity: 1, transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] } } }}
           >
             <img src={aispeechLogo} alt="AISPEECH" className="hero-logo" />
@@ -720,11 +758,12 @@ export default function Home() {
             variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0, transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] } } }}
           >
             <div className="stat">
-              <div className="stat-num"><CountUp to={14} suffix="+" /></div>
+              {/* 由事实源派生，避免新增产品/案例后这个数字失真（原为写死的 14 / 12） */}
+              <div className="stat-num"><CountUp to={PRODUCTS.length} suffix="+" /></div>
               <div className="stat-label">核心产品线</div>
             </div>
             <div className="stat">
-              <div className="stat-num"><CountUp to={12} /></div>
+              <div className="stat-num"><CountUp to={CASES.length} /></div>
               <div className="stat-label">标杆案例</div>
             </div>
             <div className="stat">
@@ -787,25 +826,30 @@ export default function Home() {
         {/* PRODUCTS */}
         <section className="hd-section-gray scroll-mt-16" id="products">
           <div className="hd-section-inner">
-             <Reveal direction="up" as="p" className="hd-section-eyebrow">思必驰</Reveal>
-             <Reveal direction="up" delay={0.08} as="h2" className="hd-section-title">产品系列</Reveal>
-             <Reveal direction="up" delay={0.16} as="p" className="hd-section-desc" style={{ maxWidth: 'none' }}>专为现代会议室设计的智能音视频设备，覆盖从教室到大礼堂的全场景需求。</Reveal>
+             {/* 形态 A · 分栏 + 顶部规则线。多数内容直接就在，不做入场动画 */}
+             <div className="hd-sec-head hd-sec-head--split">
+               <div>
+                 <p className="hd-section-eyebrow">思必驰</p>
+                 <h2 className="hd-section-title">产品系列</h2>
+               </div>
+               <p className="hd-section-desc">
+                 专为现代会议室设计的智能音视频设备，覆盖从教室到大礼堂的全场景需求。
+               </p>
+             </div>
 
             {/* 场景过滤 tab */}
-            <Reveal direction="up" delay={0.2}>
-              <div className="hd-cat-tabs">
-                {CATEGORIES.map((cat) => (
-                  <button
-                    key={cat}
-                    className={`hd-cat-tab ${activeCat === cat ? 'active' : ''}`}
-                    onClick={() => setActiveCat(cat)}
-                    type="button"
-                  >
-                    {cat === 'all' ? '全部' : cat}
-                  </button>
-                ))}
-              </div>
-            </Reveal>
+            <div className="hd-cat-tabs">
+              {CATEGORIES.map((cat) => (
+                <button
+                  key={cat}
+                  className={`hd-cat-tab ${activeCat === cat ? 'active' : ''}`}
+                  onClick={() => setActiveCat(cat)}
+                  type="button"
+                >
+                  {cat === 'all' ? '全部' : cat}
+                </button>
+              ))}
+            </div>
 
             <motion.div layout className="hd-product-grid">
               <AnimatePresence mode="popLayout">
@@ -821,7 +865,14 @@ export default function Home() {
                     whileHover={{ y: -4 }}
                   >
                     <div className="hd-product-img-wrap">
-                      <img src={p.img} alt={p.name} loading="lazy" />
+                      <img
+                        src={p.img}
+                        srcSet={p.srcSet}
+                        sizes={p.sizes}
+                        alt={p.name}
+                        loading="lazy"
+                        decoding="async"
+                      />
                     </div>
                     <div className="hd-product-info">
                       <div className="hd-product-name">{p.name}</div>
@@ -839,15 +890,21 @@ export default function Home() {
           </div>
         </section>
 
+        {/* 选型器：产品看完了，下一个问题自然是「我的房间该配哪套」 */}
+        <RoomPicker />
+
         {/* CASES */}
         <section className="hd-section-light scroll-mt-16" id="cases">
           <div className="hd-section-inner">
-             <Reveal direction="up" as="p" className="hd-section-eyebrow">思必驰</Reveal>
-             <Reveal direction="up" delay={0.08} as="h2" className="hd-section-title">案例集锦</Reveal>
-             <Reveal direction="up" delay={0.16} as="p" className="hd-section-desc">服务高校、金融机构、酒店及政企客户，每一个案例都是信任的见证。</Reveal>
-
-            {/* 案例行业过滤 tab */}
-            <Reveal direction="up" delay={0.2}>
+            {/* 形态 B · 工具条：标题块与筛选器同一行，与产品段的分栏明显不同 */}
+            <div className="hd-sec-head hd-sec-head--toolbar">
+              <div>
+                <p className="hd-section-eyebrow">思必驰</p>
+                <h2 className="hd-section-title">案例集锦</h2>
+                <p className="hd-section-desc">
+                  服务高校、金融机构、酒店及政企客户，每一个案例都是信任的见证。
+                </p>
+              </div>
               <div className="hd-cat-tabs">
                 {CASE_CATEGORIES.map((cat) => (
                   <button
@@ -860,7 +917,7 @@ export default function Home() {
                   </button>
                 ))}
               </div>
-            </Reveal>
+            </div>
 
             <motion.div layout className="hd-case-grid">
               <AnimatePresence mode="popLayout">
@@ -876,7 +933,14 @@ export default function Home() {
                   >
                     <Link to={`/case/${c.id}`} className="hd-case-card">
                       <div className="hd-case-img-wrap">
-                        <img src={c.img} alt={c.name} loading="lazy" />
+                        <img
+                          src={c.img}
+                          srcSet={c.srcSet}
+                          sizes={c.sizes}
+                          alt={c.name}
+                          loading="lazy"
+                          decoding="async"
+                        />
                       </div>
                       <div className="hd-case-info">
                         <div className="hd-case-tag">{c.tag}</div>
@@ -893,27 +957,37 @@ export default function Home() {
         {/* ABOUT */}
         <section className="hd-section-gray scroll-mt-16" id="about">
           <div className="hd-section-inner">
-            <Reveal direction="up" as="p" className="hd-section-eyebrow">关于恒迪视讯</Reveal>
-            <Reveal direction="up" delay={0.08} as="h2" className="hd-section-title">专注音视频<br />企业级系统集成</Reveal>
-            <Reveal direction="up" delay={0.16} as="p" className="hd-section-desc">
-              恒迪视讯是思必驰 AISPEECH 的授权代理商，总部位于杭州余杭，专注为教育、企业、政府和酒店客户提供专业级音视频集成解决方案。提供样品试用、现场测试、工程设计与售后支持的全流程服务。
-            </Reveal>
-            <Reveal direction="up" delay={0.24}>
+            {/* 形态 C · 居中堆叠：保留最经典的一种，与 A/B 形成对比 */}
+            <div className="hd-sec-head hd-sec-head--stack">
+              <p className="hd-section-eyebrow">关于恒迪视讯</p>
+              <h2 className="hd-section-title">专注音视频<br />企业级系统集成</h2>
+              <p className="hd-section-desc">
+                恒迪视讯是思必驰 AISPEECH 的授权代理商，总部位于杭州余杭，专注为教育、企业、政府和酒店客户提供专业级音视频集成解决方案。提供样品试用、现场测试、工程设计与售后支持的全流程服务。
+              </p>
+            </div>
+            <div style={{ textAlign: 'center' }}>
               <Link to="/faq" style={{ display: 'inline-block', fontSize: 15, fontFamily: 'var(--font-body)', fontWeight: 500, padding: '10px 20px', background: 'var(--warm-primary)', color: '#fff', borderRadius: 8, textDecoration: 'none', marginRight: 12, marginBottom: 12 }}>
                 常见问题 FAQ
               </Link>
-              <span onClick={() => scrollTo('footer')} style={{ display: 'inline-block', fontSize: 15, fontFamily: 'var(--font-body)', padding: '9px 19px', border: '1px solid var(--warm-hairline)', color: 'var(--warm-ink)', borderRadius: 8, textDecoration: 'none', cursor: 'pointer' }}>
+              <button
+                type="button"
+                onClick={() => scrollTo('footer')}
+                style={{ display: 'inline-block', fontSize: 15, fontFamily: 'var(--font-body)', padding: '9px 19px', border: '1px solid var(--warm-hairline)', background: 'transparent', color: 'var(--warm-ink)', borderRadius: 8, textDecoration: 'none', cursor: 'pointer' }}
+              >
                 预约体验 / 申请样品
-              </span>
-            </Reveal>
+              </button>
+            </div>
           </div>
         </section>
 
         {/* CTA BAND */}
         <div className="hd-cta-band" ref={ctaRef} style={{ position: 'relative', overflow: 'hidden' }}>
-          {/* 星空背景 */}
-          <StarField density={90} style={{ zIndex: 0 }} />
-          {/* 视差光晕 */}
+          {/* 视差光晕。
+              必须在点阵**下面**（DOM 在前、z-index 同为 0），原因：
+              · 它带 mixBlendMode:'screen'，压在点阵上会提亮点阵，
+                而"波前变亮"正是点阵唯一可读的信号
+              · 它的暖陶土色是为原来的星空调的；垫在下面只负责给底带一个暖色焦点，
+                不参与点阵的明暗，两者就不打架了 */}
           <motion.div
             aria-hidden
             style={{
@@ -922,20 +996,23 @@ export default function Home() {
               width: 600, height: 600,
               marginLeft: -300, marginTop: -300,
               borderRadius: '50%',
-              y: ctaGlowY,
-              scale: ctaGlowScale,
-              background: 'radial-gradient(circle, rgba(204,120,92,0.28) 0%, rgba(204,120,92,0.08) 40%, rgba(204,120,92,0) 70%)',
+              ...(prefersReduced ? {} : { y: ctaGlowY, scale: ctaGlowScale }),
+              background: 'radial-gradient(circle, rgba(204,120,92,0.22) 0%, rgba(204,120,92,0.06) 40%, rgba(204,120,92,0) 70%)',
               pointerEvents: 'none',
-              zIndex: 1,
+              zIndex: 0,
               mixBlendMode: 'screen',
             }}
           />
+          {/* MA600D 拾音场：横杆按真实长宽比绘制，下方点阵是它投射的拾取点阵列。
+              指针扫过时从落点发出声波涟漪，波前经过的点被抬起、变大、变亮。
+              取代了原来的星空 —— 星空放在 B2B 音视频站上属于 design-slop.md 的 B5
+              「动效与内容无关」。 */}
+          <Ma600dField className="hd-cta-field" />
           <div style={{ position: 'relative', zIndex: 2 }}>
-          <Reveal direction="up" as="h2" className="" style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(28px, 4vw, 44px)', fontWeight: 400, lineHeight: 1.12, color: 'var(--warm-on-dark)', letterSpacing: '-0.03em', marginBottom: 12 }}>准备好升级您的会议室了吗？</Reveal>
-          <Reveal direction="up" delay={0.12} as="p" style={{ fontFamily: 'var(--font-body)', fontSize: 16, color: 'var(--warm-on-dark-soft)', letterSpacing: '-0.01em', marginBottom: 36 }}>样品试用 · 现场演示 · 工程设计 · 全程支持</Reveal>
-          <Reveal direction="up" delay={0.24}>
-            <span className="btn-white" onClick={() => scrollTo('footer')}>联系我们</span>
-          </Reveal>
+          {/* CTA 是通栏深色带，本身已是第 4 种形态，不再叠加入场动画 */}
+          <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(28px, 4vw, 44px)', fontWeight: 400, lineHeight: 1.12, color: 'var(--warm-on-dark)', letterSpacing: '-0.03em', marginBottom: 12 }}>准备好升级您的会议室了吗？</h2>
+          <p style={{ fontFamily: 'var(--font-body)', fontSize: 16, color: 'var(--warm-on-dark-soft)', letterSpacing: '-0.01em', marginBottom: 36 }}>样品试用 · 现场演示 · 工程设计 · 全程支持</p>
+          <span className="btn-white" onClick={() => scrollTo('footer')}>联系我们</span>
           </div>
         </div>
 

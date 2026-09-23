@@ -5,9 +5,16 @@
   "type": "module",
   "scripts": {
     "dev:client": "vite --host --port 3000",
-    "dev": "pnpm dev:client",
+    "dev": "pnpm run dev:client",
+    "clean": "node scripts/clean.mjs",
+    "optimize:images": "node scripts/optimize-images.mjs",
+    "gen:images": "node scripts/gen-image-variants.mjs",
     "build:client": "vite build",
-    "build": "rm -rf dist && pnpm build:client && node prerender.js && touch dist/build.flag"
+    "build": "pnpm run clean && pnpm run build:client && node prerender.js",
+    "doctor": "node scripts/doctor.mjs",
+    "check:motion": "node scripts/motion-check.mjs",
+    "_comment:verify": "必须写 pnpm run doctor —— 单独写 pnpm doctor 会命中 pnpm 自带的内置 doctor 命令（什么都不检查、直接退出 0），知识一致性这一关会被静默跳过",
+    "verify": "pnpm run build && pnpm run doctor && pnpm run check:motion"
   },
   "dependencies": {
     "framer-motion": "^12.9.2",
