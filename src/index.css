@@ -78,7 +78,7 @@
 
    framer-motion 的声明式动画由 App.tsx 的
    <MotionConfig reducedMotion="user"> 统一处理；命令式的
-   animate()（CountUp / LoadingScreen）与 Canvas（StarField）
+   animate()（LoadingScreen）与 Canvas（StarField）
    各自在组件内处理。这里补齐 JS 管不到的第三类：**纯 CSS 动画与过渡**。
 
    本站受此影响的具体项：

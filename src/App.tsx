@@ -80,7 +80,7 @@ export default function App() {
      * 只保留透明度过渡。
      *
      * 注意：以下三类**不受此配置管控**，各自做了显式降级：
-     *   · 命令式动画（animate()）—— CountUp、LoadingScreen 进度条
+     *   · 命令式动画（animate()）—— LoadingScreen 进度条
      *   · 直接绑定的 motion value（useScroll/useTransform）—— 首页 hero 与 CTA 视差
      *   · Canvas 绘制 —— SoundField 声场、Ma600dCurtain 拾音场帷幕
      * 另有纯 CSS 动画与过渡，由 src/index.css 的 prefers-reduced-motion 兜底。

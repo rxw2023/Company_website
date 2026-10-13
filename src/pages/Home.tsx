@@ -4,7 +4,6 @@ import { motion, AnimatePresence, useScroll, useTransform, useReducedMotion } fr
 import Navigation from '../components/Navigation';
 import SeoHead from '../components/SeoHead';
 import Reveal from '../components/Reveal';
-import CountUp from '../components/CountUp';
 import MouseGlow from '../components/MouseGlow';
 import SoundField from '../components/SoundField';
 import HeroCarousel from '../components/HeroCarousel/HeroCarousel';
@@ -279,10 +278,10 @@ export default function Home() {
           display: flex; flex-direction: column;
           align-items: center; justify-content: center;
           text-align: center;
-          /* 底部 32px：轮播带紧随其后还有 28px 上边距，两者相加约 60px。
-             曾经是 80px + 44px = 124px —— 那是「首屏之后直接接深色区」时的
-             间隙，中间插进轮播后就成了明显的断层。 */
-          padding: calc(var(--nav-h) + 36px) 24px 32px;
+          /* 底部只留 8px：四个数字移除后这里不再有内容，
+             留白全给下面的轮播带（它自己还有 14px 上边距）。
+             两者相加 22px ≈ 分隔线，屏幕高的机器上轮播会露出一条边。 */
+          padding: calc(var(--nav-h) + 36px) 24px 8px;
           position: relative; overflow: hidden;
         }
         /* Hero 机制：天花板阵列的声场与波束（见 components/SoundField.tsx）
@@ -377,22 +376,9 @@ export default function Home() {
         }
         .hd-hero .btn-outline:hover { border-color: var(--warm-primary); background: rgba(204,120,92,0.04); }
         .hd-hero .btn-outline:active { transform: scale(0.97); }
-        .hd-hero .hero-stats {
-          display: flex; gap: 48px; flex-wrap: wrap;
-          justify-content: center; margin-top: 72px;
-          border-top: 1px solid var(--warm-hairline);
-          padding-top: 40px; width: 100%; max-width: 780px;
-        }
-        .hd-hero .stat { text-align: center; }
-        .hd-hero .stat-num {
-          font-family: var(--font-display);
-          font-size: 36px; font-weight: 500;
-          color: var(--warm-ink); letter-spacing: -0.03em;
-        }
-        .hd-hero .stat-label {
-          font-size: 13px; color: var(--warm-muted);
-          margin-top: 4px; letter-spacing: -0.1px;
-        }
+        /* 四个数字（核心产品线 / 标杆案例 / 麦克风阵列单元 / 超高清会议视频）
+           按需求整块移除：HTML 与 CSS 都删了，组件 CountUp 也一并删除
+           （全站已无引用）。留死代码比删掉更糟 —— 下一个人会以为首屏还有这块。 */
 
         /* ── 产品图轮播（首屏之下的通栏展示带）──────────────────
            数据在 src/data/heroSlides.json；暂停/切换逻辑在
@@ -417,7 +403,7 @@ export default function Home() {
           position: relative;
           z-index: 1;
           background: var(--warm-canvas);
-          padding: 26px 24px 10px;
+          padding: 14px 24px 10px;
         }
         .hd-carousel-band-inner {
           max-width: 1040px;
@@ -1045,7 +1031,6 @@ export default function Home() {
         @media (max-width: 768px) {
           .hd-nav .nav-links { display: none; }
           .hd-footer-inner { grid-template-columns: 1fr; }
-          .hd-hero .hero-stats { gap: 28px; }
           .hd-feature-item:first-child, .hd-feature-item:last-child { border-radius: 12px; }
           .hd-feature-inner { grid-template-columns: 1fr 1fr; gap: 2px; }
         }
@@ -1102,35 +1087,6 @@ export default function Home() {
           >
             <span className="btn-primary" onClick={() => scrollTo('products')}>探索产品</span>
             <span className="btn-outline" onClick={() => scrollTo('footer')}>样品 / 预约体验</span>
-          </motion.div>
-          <motion.div
-            className="hero-stats"
-            variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0, transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] } } }}
-          >
-            <div className="stat">
-              {/* 由事实源派生，避免新增产品/案例后这个数字失真（原为写死的 14 / 12）。
-                  产品数现在是全品牌合计（含玩视智能、恒迪自己的产品），
-                  算的是真实产品条目 —— brands.json 里的「敬请期待」占位卡不计入。 */}
-              <div className="stat-num">
-                <CountUp
-                  to={BRAND_VIEWS.reduce((n, b) => n + b.products.length, 0)}
-                  suffix="+"
-                />
-              </div>
-              <div className="stat-label">核心产品线</div>
-            </div>
-            <div className="stat">
-              <div className="stat-num"><CountUp to={CASES.length} /></div>
-              <div className="stat-label">标杆案例</div>
-            </div>
-            <div className="stat">
-              <div className="stat-num"><CountUp to={128} /></div>
-              <div className="stat-label">麦克风阵列单元（MC10）</div>
-            </div>
-            <div className="stat">
-              <div className="stat-num"><CountUp to={4} suffix="K" /></div>
-              <div className="stat-label">超高清会议视频（C40T）</div>
-            </div>
           </motion.div>
         </motion.section>
         </motion.div>
