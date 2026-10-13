@@ -1,9 +1,9 @@
 # 首页「产品系列」多品牌维护指南
 
-首页产品系列区块现在是**三张品牌卡片**（思必驰 / 玩视智能 / 恒迪），点哪张就显示哪个品牌的产品。
+首页产品系列区块现在是**三张品牌卡片**（思必驰 / 玩视 / HRVAC），点哪张就显示哪个品牌的产品。
 这份文档是「要加东西时该改哪一行」的唯一说明。
 
-> 目前玩视智能与恒迪两张卡片是**搭好的空框架**：卡片、tab、空态、校验都在，
+> 目前玩视与 HRVAC（恒迪自有品牌）两张卡片是**搭好的空框架**：卡片、tab、空态、校验都在，
 > 只是还没有产品数据。往 `products` 数组里加一条，卡片立刻出现，不需要改任何组件代码。
 
 ---
@@ -14,8 +14,8 @@
 src/data/
 ├── brands.json              ★ 品牌清单（顺序 = 页面上 tab 的顺序）
 ├── brands/
-│   ├── wanshi.json          ← 玩视智能的产品卡片（加产品改这里）
-│   └── hengdi.json          ← 恒迪自有品牌的产品卡片（加产品改这里）
+│   ├── wanshi.json          ← 玩视的产品卡片（加产品改这里）
+│   └── hengdi.json          ← HRVAC（恒迪自有品牌）的产品卡片（加产品改这里）
 ├── products.json            ← 思必驰产品（详情页 / 站内搜索 / AI 知识库的事实源）
 ├── brands.ts                访问层：把上面几份数据拼成首页要的视图模型
 ├── products.ts              思必驰产品的访问层
@@ -43,7 +43,7 @@ src/data/
 
 ## 2. 最常见的四件事
 
-### ① 给玩视智能 / 恒迪加一个产品（最常做）
+### ① 给玩视 / HRVAC 加一个产品（最常做）
 
 打开 `src/data/brands/wanshi.json`（或 `hengdi.json`），往 `products` 里加一条：
 
@@ -52,7 +52,7 @@ src/data/
   "id": "w1",
   "brand": "wanshi",
   "model": "WX-200",
-  "name": "玩视智能 WX-200 无线投屏器",
+  "name": "玩视 WX-200 无线投屏器",
   "category": "控制·投屏",
   "desc": "一句话说清它是什么、解决什么问题，40～80 字。",
   "status": "live",
@@ -65,7 +65,7 @@ src/data/
 
 | 字段 | 必填 | 说明 |
 | --- | --- | --- |
-| `id` | ✅ | 格式 `<品牌前缀><数字>`：玩视 = `w1` / `w2`，恒迪 = `h1` / `h2`。**不能和思必驰的 `a1`、`a2` 等重名**（doctor 会查） |
+| `id` | ✅ | 格式 `<品牌前缀><数字>`：玩视 = `w1` / `w2`，HRVAC（恒迪）= `h1` / `h2`。**不能和思必驰的 `a1`、`a2` 等重名**（doctor 会查） |
 | `brand` | ✅ | 固定写该品牌的 id（`wanshi` / `hengdi`），doctor 会核对 |
 | `model` | ✅ | 对外型号 |
 | `name` | ✅ | 卡片标题，建议「品牌 + 型号 + 品类」 |
@@ -100,7 +100,7 @@ png/jpg 直接丢进 `src/assets/images/` 的后果是：文件进了仓库，do
 pnpm towebp 下载 --out src/assets/images
 
 # 2. 改成资源 key 规范的文件名（同一个产品的多张图用 -1/-2 后缀）
-#    玩视智能：w1-1.webp / w1-2.webp      恒迪：h1-1.webp / h1-2.webp
+#    玩视：w1-1.webp / w1-2.webp      HRVAC：h1-1.webp / h1-2.webp
 #    思必驰沿用旧规范：a1-5.webp（追加在末尾，不要改动已有文件名）
 
 # 3. 生成卡片用的小尺寸变体（640px），并刷新 imageVariants.json
@@ -173,7 +173,7 @@ export const BRAND_IMAGE_BY_KEY: Record<string, string> = {
 
 | 想改 | 改字段 |
 | --- | --- |
-| tab 上的字（如「恒迪」→「恒迪视讯」） | `tabLabel` |
+| tab 上的字（如「玩视智能」→「玩视」、第 3 张卡改用英文品牌名「HRVAC」） | `tabLabel` |
 | 标题上方的小字 | `eyebrow` |
 | 标题右侧的说明 | `tagline`（建议 ≤ 20 汉字，太长小屏会挤） |
 | 品牌色 | `color` |
@@ -210,7 +210,7 @@ pnpm run verify     # 体检 + 构建 + 预渲染 + 动效检查（发版前跑�
 - `src/data/products.ts` 的 `buildSystemPrompt()` 只读 `products.json`
 - 品牌层（`brands.json` / `brands/*.json`）的数据不进入 AI 客服的 system prompt
 
-这样做的原因是：玩视智能、恒迪的产品参数目前还没核实，一旦进了 AI 知识库，
+这样做的原因是：玩视、HRVAC 的产品参数目前还没核实，一旦进了 AI 知识库，
 客服就会拿未核实的参数回答客户 —— 这个仓库以前正是因为这个吃过事故
 （MA600D 拾音半径被说成 6m、丢了「现场扩声 3m」的前提）。
 
@@ -228,7 +228,7 @@ pnpm run verify     # 体检 + 构建 + 预渲染 + 动效检查（发版前跑�
 
 | 我要… | 改哪 |
 | --- | --- |
-| 加玩视智能 / 恒迪的产品 | `src/data/brands/wanshi.json` 或 `hengdi.json` 的 `products` |
+| 加玩视 / HRVAC 的产品 | `src/data/brands/wanshi.json` 或 `hengdi.json` 的 `products` |
 | 给产品配图 | `pnpm towebp` → `pnpm gen:images` → `productImages.ts` 的 `BRAND_IMAGE_BY_KEY` |
 | 加品牌 | `brands.json` + 新建 `brands/<id>.json` + 三处登记（见 ③） |
 | 改卡片文案 / 颜色 / 顺序 | `brands.json` |

@@ -16,7 +16,7 @@
       "id": "wanshi",
       "name": "玩视智能",
       "enName": "WANSHI",
-      "tabLabel": "玩视智能",
+      "tabLabel": "玩视",
       "eyebrow": "玩视智能",
       "tagline": "玩视智能的音视频产品线，与思必驰方案互补，覆盖更多会议室组合。",
       "color": "#4a7c9b",
@@ -28,14 +28,14 @@
     {
       "id": "hengdi",
       "name": "恒迪",
-      "enName": "HDI",
-      "tabLabel": "恒迪视讯",
+      "enName": "HRVAC",
+      "tabLabel": "HRVAC",
       "eyebrow": "恒迪视讯",
-      "tagline": "恒迪视讯自有品牌产品线，由我们自己定义规格、包装与交付，现货与定制兼顾。",
+      "tagline": "自有品牌 HRVAC 产品线，由我们自己定义规格、包装与交付，现货与定制兼顾。",
       "color": "#8a7a5c",
       "isPrimary": false,
       "dataFile": "src/data/brands/hengdi.json",
-      "emptyState": "恒迪自有品牌产品正在上架，即将上线。",
+      "emptyState": "HRVAC 产品正在上架，即将上线。",
       "placeholderCard": true
     }
   ]
