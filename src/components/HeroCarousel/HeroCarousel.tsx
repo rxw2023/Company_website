@@ -113,27 +113,39 @@ export default function HeroCarousel({ className }: { className?: string }) {
         }
         .hd-carousel-dot {
           box-sizing: border-box;
-          /* 尺寸全部钉死：width/height 是 22px 的热区，视觉上的点是 6px。
-             之前视觉点 8px + active 再放大 1.15 倍，显得又大又抢眼 ——
-             它是「第几张」的标记，不该比产品名还显眼。 */
+          /* 按钮只当「点击热区」：22px 见方、无内边距、不画任何东西。
+             视觉上的点交给里面的 .hd-carousel-dot-core（6px）。
+             为什么不用「按钮 + padding + background-clip: content-box」那套：
+             实测选中点在截图里仍有约 24px，和 CSS 算出来的 6px 对不上 ——
+             content-box 裁剪在圆角 + 透明背景的组合下不按预期走。
+             让一个真实元素承担视觉尺寸，量出来是多少就是多少。 */
+          display: flex;
+          align-items: center;
+          justify-content: center;
           width: 22px; height: 22px;
           min-width: 22px; min-height: 22px;
           max-width: 22px; max-height: 22px;
-          padding: 8px;
+          padding: 0;
           margin: 0;
           border: 0;
+          border-radius: 0;
+          background: none;
+          cursor: pointer;
+        }
+        .hd-carousel-dot-core {
+          width: 6px; height: 6px;
           border-radius: 50%;
           background: var(--warm-muted);
-          background-clip: content-box;
           opacity: 0.3;
-          cursor: pointer;
           transition: opacity 0.2s, background 0.2s;
         }
-        .hd-carousel-dot:hover { opacity: 0.65; }
-        /* 选中态只靠深浅区分，不再放大 —— 放大一圈会让人以为点错了 */
-        .hd-carousel-dot.active {
+        .hd-carousel-dot:hover .hd-carousel-dot-core { opacity: 0.65; }
+        /* 选中态只靠「深浅」区分，不放大也不纯黑 ——
+           纯黑 + 更大的点径在一排浅灰点旁边过于抢眼，
+           读起来像「一个大黑点带着两个小点」而不是「第 1 / 3 张」。 */
+        .hd-carousel-dot.active .hd-carousel-dot-core {
           opacity: 1;
-          background: var(--warm-ink);
+          background: var(--warm-body);
         }
         .hd-carousel-dot:focus-visible {
           outline: 2px solid var(--warm-primary);
@@ -172,7 +184,10 @@ export default function HeroCarousel({ className }: { className?: string }) {
                 aria-label={`第 ${i + 1} 张：${s.alt}`}
                 aria-current={i === index}
                 onClick={() => select(i)}
-              />
+              >
+                {/* 视觉上的点在这里；按钮本身只负责点击热区与语义 */}
+                <span className="hd-carousel-dot-core" aria-hidden="true" />
+              </button>
             ))}
           </div>
         )}
