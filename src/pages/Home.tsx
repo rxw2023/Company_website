@@ -417,14 +417,13 @@ export default function Home() {
         }
         .hd-carousel {
           /* --carousel-h 是舞台高度：**唯一**按屏高调的参数，
-             它同时决定「图片上下留多少白」。
-             调这个值之前先想清楚代价：
-               · 调矮 → 超宽产品图（6.9:1）撑满宽度后上下留白变少、显得更实，
-                 但 2:1 的横版海报（RM-P1W）会被压小
-               · 调高 → 反过来
-             三张图比例差 3 倍以上，这个值必然是折中，不存在让三张都满意的数。
-             现在的取值让产品图占到舞台高度的 ~72%。 */
-          --carousel-h: clamp(180px, 22vh, 246px);
+             它决定三张图各自能画多大，而且三张之间是此消彼长的：
+               · 产品图（6.9:1）宽度顶格，高度再涨也不会变大 —— 抬舞台对它无效
+               · 横版海报（2:1）受高度约束，海报宽度 = 高度 × 2
+                 → 舞台 189px 时海报仅 378px 宽，占舞台 36%，左右各空 330px
+             所以抬高舞台主要是「把海报喂大」，代价是产品图上下留白变多。
+             当前取值让海报长到约 600px 宽（占舞台 58%），产品图占高约 50%。 */
+          --carousel-h: clamp(240px, 30vh, 300px);
           position: relative;
           border-radius: 16px;
           overflow: hidden;
@@ -488,10 +487,9 @@ export default function Home() {
            doctor 的 [样式] 项会守这条。 */
         @media (max-width: 820px) {
           .hd-carousel-band { padding: 20px 16px 6px; }
-          /* 移动端把横向内边距压到 8px 并把舞台压矮一点：
-             超宽产品图（6.9:1）在窄屏上原本被 16px 横向内边距压着，
-             容器 350px 时图只渲染到约 304px 宽。 */
-          .hd-carousel { --carousel-h: clamp(130px, 18vh, 186px); }
+          /* 移动端同样按「喂大海报」的思路取值：
+             窄屏上海报受宽度限制（356px 宽 → 178px 高），舞台给到 ~200px 刚好铺满 */
+          .hd-carousel { --carousel-h: clamp(150px, 24vh, 210px); }
           .hd-carousel-img.is-contain { padding: 6px 8px; }
         }
 
