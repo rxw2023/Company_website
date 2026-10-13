@@ -428,9 +428,12 @@ export default function Home() {
           position: relative;
           border-radius: 16px;
           overflow: hidden;
-          border: 1px solid var(--warm-hairline);
+          /* 不描边、不投影：底色与页面相同（--warm-canvas），所以容器和页面
+             本来就该是一体的。原来那道 1px 描边 + 向下 50px 的投影会让轮播
+             看起来是"浮在页面上的一张卡"，和里面的图片留白叠起来就是两层框。
+             要拆掉这层观感，投影改成只留一点点当作极轻的层次提示。 */
           background: var(--warm-canvas);
-          box-shadow: 0 20px 50px -30px rgba(20,20,19,0.45);
+          box-shadow: 0 8px 24px -22px rgba(20,20,19,0.35);
         }
         .hd-carousel:focus-visible {
           outline: 2px solid var(--warm-primary);
@@ -451,6 +454,13 @@ export default function Home() {
         .hd-carousel-img {
           width: 100%; height: 100%;
           display: block;
+          /* 抹掉「两层」观感的关键一行。
+             产品图/海报自带近白底，而页面底色是暖米色（--warm-canvas）——
+             两块颜色一叠就是一块可见的矩形，看着像图片浮在页面上。
+             multiply 让图里的浅色底直接融进页面底色（实测底色差从 RGB 18 降到 3），
+             深色机器本身几乎不受影响。
+             产品卡片图 .hd-product-img-wrap img 一直在用同一招。 */
+          mix-blend-mode: multiply;
         }
         .hd-carousel-img.is-contain {
           object-fit: contain;
