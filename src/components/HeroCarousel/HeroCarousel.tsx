@@ -8,11 +8,13 @@ import { useCarousel } from './useCarousel';
 const DATA = catalog as unknown as HeroSlidesCatalog;
 
 /**
- * 是否显示右下/底部那排指示圆点。
- * 按需求关闭：轮播上只留图 + 左下角名称。
- * 关掉后轮播没有可点击的跳转入口，只剩自动播放 + 方向键/滑动。
+ * 是否显示底部那排指示圆点。
+ *
+ * 中途按需求关过一次，后来又按要求开回来 —— 结论是它有用：
+ * 关掉时访客不知道这里有几张图、也没有手动跳转入口。
+ * 关掉后键盘方向键需要先 Tab 到容器上才生效，开启后点圆点即可。
  */
-const SHOW_DOTS = false;
+const SHOW_DOTS = true;
 
 interface SlideView extends HeroSlide {
   src: string;
@@ -54,7 +56,7 @@ export default function HeroCarousel({ className }: { className?: string }) {
 
   return (
     <div
-      className={`hd-carousel ${className || ''}`}
+      className={`hd-carousel ${SHOW_DOTS ? 'js-dots-on' : ''} ${className || ''}`}
       role="group"
       aria-roledescription="轮播"
       aria-label="产品图轮播"
@@ -102,6 +104,49 @@ export default function HeroCarousel({ className }: { className?: string }) {
         关掉后要留意：访客不知道这里有几张图、也点不了；
         同时轮播不再有可聚焦元素，键盘方向键需要先 Tab 到容器上才生效。
       */}
+      {/* 指示点样式写在这里而不是 Home.tsx 的页面样式块里，是有原因的：
+          index.css 有一条移动端全局规则 `button, a { min-width/height: 44px }`，
+          它把圆点也当成按钮一起撑成 44px 的大灰饼。Home.tsx 的 <style> 虽然写在
+          后面，但插入 DOM 的位置在 index.css **之前**，同权重下赢不了它。
+          组件自己的 <style> 渲染在 index.css 之后，同权重即可覆盖。
+          （更省事的 !important 也能修，但那会让以后调尺寸的人莫名其妙。） */}
+      <style>{`
+        .hd-carousel-dots {
+          position: absolute;
+          left: 0; right: 0; bottom: 8px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          gap: 4px;
+        }
+        .hd-carousel-dot {
+          box-sizing: border-box;
+          /* 尺寸全部钉死：width/height 是 24px 的热区，视觉上的点是 8px */
+          width: 24px; height: 24px;
+          min-width: 24px; min-height: 24px;
+          max-width: 24px; max-height: 24px;
+          padding: 8px;
+          margin: 0;
+          border: 0;
+          border-radius: 50%;
+          background: var(--warm-muted);
+          background-clip: content-box;
+          opacity: 0.35;
+          cursor: pointer;
+          transition: opacity 0.2s, background 0.2s, transform 0.2s;
+        }
+        .hd-carousel-dot:hover { opacity: 0.7; }
+        .hd-carousel-dot.active {
+          opacity: 1;
+          background: var(--warm-ink);
+          transform: scale(1.15);
+        }
+        .hd-carousel-dot:focus-visible {
+          outline: 2px solid var(--warm-primary);
+          outline-offset: 2px;
+        }
+      `}</style>
+
       {SHOW_DOTS && (
         <div className="hd-carousel-dots">
           {SLIDES.map((s, i) => (

@@ -1208,6 +1208,67 @@ const TOKEN_HEX = {
 }
 
 /**
+ * 内联样式的模板字符串护栏。
+ *
+ * 这个站点的页面级 CSS 写在 JSX 的 `template literal` 里
+ * （`<style>{`...`}</style>`）。在那种地方**一个多余的反引号就会提前结束字符串**，
+ * 于是整段 JSX 变成语法错误 —— 但症状极具误导性：
+ *   · `vite build` 只报一行 Babel 解析错误，看不出是注释里多了个反引号
+ *   · `pnpm run dev` 页面直接白屏，`document.body` 只有一百多字节
+ *   · tsc 完全检查不出来（它不做 JSX 里的模板字符串语义分析）
+ * 这个坑真的踩过：一条 CSS 注释里写 `` `button, a { ... }` `` 就把首页打白了。
+ * 所以放进 doctor：任何人再犯，`pnpm run verify` 立刻报出来。
+ */
+{
+  const TICK = String.fromCharCode(96);
+  const OPEN = '<style>{' + TICK;
+  const CLOSE = TICK + '}</style>';
+  const suspects = [];
+
+  const walkTsx = (dir) => {
+    for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+      const full = path.join(dir, entry.name);
+      if (entry.isDirectory()) walkTsx(full);
+      else if (/\.tsx$/.test(entry.name)) checkInlineStyle(full);
+    }
+  };
+
+  function checkInlineStyle(file) {
+    const text = fs.readFileSync(file, 'utf-8');
+    const start = text.indexOf(OPEN);
+    if (start < 0) return;
+    const bodyStart = start + OPEN.length;
+    const end = text.indexOf(CLOSE, bodyStart);
+    if (end < 0) {
+      suspects.push(
+        `${path.relative(ROOT, file)}: 找不到 \`}</style>\` 结束标记 —— 模板可能已被反引号破坏`
+      );
+      return;
+    }
+    const body = text.slice(bodyStart, end);
+    body.split('\n').forEach((line, i) => {
+      if (line.includes(TICK)) {
+        suspects.push(
+          `${path.relative(ROOT, file)} 第 ${i + 1} 行（CSS 注释在模板字符串内，不能出现反引号）:\n` +
+            `           ${line.trim().slice(0, 100)}`
+        );
+      }
+    });
+  }
+
+  walkTsx(p('src'));
+
+  if (suspects.length) {
+    err(
+      `[样式] 内联 <style> 模板里出现了反引号 —— 会提前结束模板字符串，页面直接白屏：\n` +
+        suspects.map((s) => `         ${s}`).join('\n')
+    );
+  } else {
+    note('[样式] 内联 <style> 模板里没有多余反引号（不会因注释而白屏）✓');
+  }
+}
+
+/**
  * 图片管线：源图上限 + 卡片变体覆盖。
  *
  * 这两件事都是「改了图但忘了跑脚本」才会坏，而坏了以后没有任何可见症状 ——

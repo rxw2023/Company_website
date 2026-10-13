@@ -468,37 +468,28 @@ export default function Home() {
           pointer-events: none;
           max-width: 70%;
         }
-        /* 指示点：比一般轮播收敛（6px、无外圈），它是标记不是控件主角 */
-        .hd-carousel-dots {
-          position: absolute;
-          left: 0; right: 0; bottom: 12px;
-          display: flex;
-          justify-content: center;
-          gap: 7px;
-        }
-        .hd-carousel-dot {
-          width: 6px; height: 6px;
-          padding: 0;
-          border: 0;
-          border-radius: 50%;
-          background: var(--warm-hairline);
-          cursor: pointer;
-          transition: background 0.2s, transform 0.2s;
-        }
-        .hd-carousel-dot:hover { background: var(--warm-muted); }
-        .hd-carousel-dot.active {
-          background: var(--warm-muted);
-          transform: scale(1.35);
-        }
-        .hd-carousel-dot:focus-visible {
-          outline: 2px solid var(--warm-primary);
-          outline-offset: 3px;
-        }
+        /* 指示点的样式在 HeroCarousel 组件自己的 <style> 里 ——
+           不是随手放的：index.css 的移动端全局规则「button, a { min-width/height: 44px }」
+           会把圆点撑成 44px 大灰饼，而本样式块插入 DOM 的位置在 index.css 之前，
+           同权重下覆盖不掉它。组件里的 <style> 渲染在 index.css 之后，才能生效。 */
+        /* 注意：本段 CSS 位于 JS 模板字符串内，注释里**不能出现反引号**，
+           否则会提前结束字符串、整页白屏（踩过一次，症状是 body 只有 128 字节）。
+           doctor 的 [样式] 项会守这条。 */
+        /* 开着指示点时，名称和图片都要给底部那排圆点让位。
+           圆点的视觉尺寸只有 8px，但热区是 24px，
+           要让位的是**热区**：否则圆点会压住名称、也会压到图身上。 */
+        .hd-carousel.js-dots-on .hd-carousel-img.is-contain { padding-bottom: 32px; }
+        .hd-carousel.js-dots-on .hd-carousel-name { bottom: 32px; }
         @media (max-width: 820px) {
-          .hd-carousel-band { padding: 22px 20px 6px; }
-          .hd-carousel { --carousel-h: clamp(170px, 24vh, 240px); }
-          .hd-carousel-img.is-contain { padding: 10px 16px 28px; }
-          .hd-carousel-name { left: 18px; bottom: 16px; font-size: 13px; }
+          .hd-carousel-band { padding: 20px 16px 6px; }
+          /* 移动端把横向内边距压到 8px 并把舞台抬高一点：
+             超宽产品图（6.9:1）在窄屏上原本被 16px 横向内边距压得很小 ——
+             容器 350px 时图只渲染到约 304px 宽，占不满反而显得空。 */
+          .hd-carousel { --carousel-h: clamp(150px, 22vh, 230px); }
+          .hd-carousel-img.is-contain { padding: 8px 8px 30px; }
+          .hd-carousel.js-dots-on .hd-carousel-img.is-contain { padding-bottom: 34px; }
+          .hd-carousel-name { left: 14px; bottom: 16px; font-size: 13px; }
+          .hd-carousel.js-dots-on .hd-carousel-name { bottom: 34px; }
         }
 
         .hd-section-light {
