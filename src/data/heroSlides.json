@@ -24,12 +24,11 @@
       "name": "HRVAC VMM0412 视频处理器"
     },
     {
-      "$comment": "占位项：等着换成玩视的产品图。拿到图之后照 BRAND_GUIDE.md「加图片」转 WebP、取名（如 ws-01）登记到 productImages.ts，再把这里的 image 换成 'ws-01'、name 换成真实产品名即可。",
-      "id": "wanshi-pending",
-      "image": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 460'%3E%3Crect width='1200' height='460' fill='%23efe9de'/%3E%3Crect x='16' y='16' width='1168' height='428' rx='14' fill='none' stroke='%23e6dfd8' stroke-width='2' stroke-dasharray='12 10'/%3E%3Ctext x='600' y='232' text-anchor='middle' font-size='40' fill='%236c6a64' font-family='sans-serif'%3E%E7%8E%A9%E8%A7%86%E4%BA%A7%E5%93%81%E5%9B%BE%E5%BE%85%E4%B8%8A%E4%BC%A0%3C/text%3E%3Ctext x='600' y='284' text-anchor='middle' font-size='22' fill='%23a09d96' font-family='sans-serif'%3E%E6%9B%BF%E6%8D%A2%E6%96%B9%E6%B3%95%E8%A7%81 BRAND_GUIDE.md%3C/text%3E%3C/svg%3E",
-      "alt": "玩视产品图待上传",
+      "id": "rm-p1w",
+      "image": "hd-rmp1w",
+      "alt": "玩视 RM-P1W 综合管理套装",
       "fit": "contain",
-      "name": "玩视（产品图待上传）"
+      "name": "玩视 RM-P1W 综合管理套装"
     }
   ]
 }
