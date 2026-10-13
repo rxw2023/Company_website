@@ -7,6 +7,13 @@ import { useCarousel } from './useCarousel';
 
 const DATA = catalog as unknown as HeroSlidesCatalog;
 
+/**
+ * 是否显示右下/底部那排指示圆点。
+ * 按需求关闭：轮播上只留图 + 左下角名称。
+ * 关掉后轮播没有可点击的跳转入口，只剩自动播放 + 方向键/滑动。
+ */
+const SHOW_DOTS = false;
+
 interface SlideView extends HeroSlide {
   src: string;
   srcSet?: string;
@@ -87,19 +94,28 @@ export default function HeroCarousel({ className }: { className?: string }) {
         </AnimatePresence>
       </div>
 
-      {/* 指示点：做得比一般轮播更收敛（6px、无外圈），它是一个标记而不是控件主角 */}
-      <div className="hd-carousel-dots">
-        {SLIDES.map((s, i) => (
-          <button
-            key={s.id}
-            type="button"
-            className={`hd-carousel-dot ${i === index ? 'active' : ''}`}
-            aria-label={`第 ${i + 1} 张：${s.alt}`}
-            aria-current={i === index}
-            onClick={() => select(i)}
-          />
-        ))}
-      </div>
+      {/*
+        指示点按需求关闭了：轮播上只留图 + 左下角名称。
+        代码保留（而不是删掉）是因为它是唯一的「手动跳到第 N 张」入口 ——
+        现在只剩自动播放和左右方向键/滑动。哪天想开回来，把 SHOW_DOTS 改成 true。
+
+        关掉后要留意：访客不知道这里有几张图、也点不了；
+        同时轮播不再有可聚焦元素，键盘方向键需要先 Tab 到容器上才生效。
+      */}
+      {SHOW_DOTS && (
+        <div className="hd-carousel-dots">
+          {SLIDES.map((s, i) => (
+            <button
+              key={s.id}
+              type="button"
+              className={`hd-carousel-dot ${i === index ? 'active' : ''}`}
+              aria-label={`第 ${i + 1} 张：${s.alt}`}
+              aria-current={i === index}
+              onClick={() => select(i)}
+            />
+          ))}
+        </div>
+      )}
 
       {/* 给读屏用户的等价信息：轮播是视觉增强，文字内容不能只存在于图里 */}
       <p className="sr-only" aria-live="polite">
