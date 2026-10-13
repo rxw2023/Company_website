@@ -269,19 +269,16 @@ export default function Home() {
         .hd-nav .nav-cta:hover { text-decoration: underline; }
 
         .hd-hero {
-          /* 刚好一屏高，而不是「至少一屏」。
-             多了首屏轮播之后，内容自然高度远超一屏，min-height 会让首屏变成
-             1360px —— 四个数字在 1440×900 上正好被挤到 839px（只剩 60px 余量），
-             轮播整块掉到折叠线以下。改成固定 100vh 后，flex 的居中会把内容
-             均分到一屏里，数字与轮播都在首屏内。 */
-          height: 100vh;
+          /* 不想再撑满一屏：内容自然高度只有约 450px，硬撑到 100vh 会在
+             按钮和轮播之间留下一段谁也没用的空白（实测 216px，还被投诉过）。
+             现在首屏高度 = 内容 + 一段设计给的间隔，轮播紧接其后；
+             1040×900 下整块（含轮播）在约 837px 处收住，一屏能看全。
+             代价：首屏不再是严格的一屏高，屏幕很高时下方会看到「产品系列」的开头。 */
           display: flex; flex-direction: column;
-          align-items: center; justify-content: center;
+          align-items: center;
+          justify-content: space-between;
           text-align: center;
-          /* 底部只留 8px：四个数字移除后这里不再有内容，
-             留白全给下面的轮播带（它自己还有 14px 上边距）。
-             两者相加 22px ≈ 分隔线，屏幕高的机器上轮播会露出一条边。 */
-          padding: calc(var(--nav-h) + 36px) 24px 8px;
+          padding: calc(var(--nav-h) + 48px) 24px 0;
           position: relative; overflow: hidden;
         }
         /* Hero 机制：天花板阵列的声场与波束（见 components/SoundField.tsx）
@@ -354,6 +351,15 @@ export default function Home() {
           display: flex; gap: 12px; flex-wrap: wrap;
           justify-content: center; margin-top: 26px;
         }
+        /* 内容块与轮播之间的间隔由这个弹性占位决定，不再靠 hero 的内边距。
+           它吸掉首屏的剩余高度，于是「按钮 → 轮播」的距离 = 设计给的固定值
+           （不是 flex 居中摊出来的两半），首屏底部正好露出轮播的一截。
+           112px 是量出来的：hero 顶到按钮 517px，加 112 得 829px，
+           1440×900 下轮播露出约 70px —— 够看见、又不挤。 */
+        .hero-spacer {
+          flex: 1 0 auto;
+          min-height: 130px;
+        }
         .hd-hero .btn-primary {
           display: inline-block;
           background: var(--warm-primary); color: #fff;
@@ -403,7 +409,7 @@ export default function Home() {
           position: relative;
           z-index: 1;
           background: var(--warm-canvas);
-          padding: 14px 24px 10px;
+          padding: 12px 24px 10px;
         }
         .hd-carousel-band-inner {
           max-width: 1040px;
@@ -1066,6 +1072,10 @@ export default function Home() {
             <span className="btn-primary" onClick={() => scrollTo('products')}>探索产品</span>
             <span className="btn-outline" onClick={() => scrollTo('footer')}>样品 / 预约体验</span>
           </motion.div>
+
+          {/* 弹性占位：吸掉首屏剩余高度，让「按钮 → 轮播」的距离
+              在任何屏高下都是一段设计给的留白，而不是 flex 居中摊出来的两半 */}
+          <div className="hero-spacer" aria-hidden="true" />
         </motion.section>
         </motion.div>
 
