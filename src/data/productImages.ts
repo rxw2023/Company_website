@@ -8,6 +8,9 @@
  * 新增产品图片时：把文件放进 src/assets/images/，在下面加一行 import，
  * 并在 IMAGE_BY_KEY 里登记 key。key 必须与 products.json 中的
  * cardImage / images 完全一致，`pnpm run doctor` 会校验。
+ *
+ * 图片一律用 WebP（png/jpg 用 `pnpm towebp` 转换，见 BRAND_GUIDE.md）。
+ * 非思必驰品牌的产品图登记在文件末尾的 BRAND_IMAGE_BY_KEY，不要加到这里。
  */
 
 // ── 产品图集 ──
@@ -190,4 +193,22 @@ export const CASE_IMAGE_BY_KEY: Record<string, string> = {
 export const CASE_VIDEO_BY_KEY: Record<string, string> = {
   'e1': caseE1Video,
   'e2': caseE2Video,
+};
+
+/**
+ * 品牌产品图片 key → 打包后的图片 URL（首页「产品系列」多品牌卡片用）
+ *
+ * 为什么单独一张表而不是塞进 IMAGE_BY_KEY：
+ * IMAGE_BY_KEY 是**思必驰产品图集**的登记表，doctor 会拿它逐条比对
+ * products.json 的 cardImage / images；把别的品牌混进去会让两组校验互相干扰。
+ * 分表之后，品牌产品的图片只需在这里登记，`pnpm run doctor` 按品牌数据文件核对。
+ *
+ * 取图请走 src/data/brands.ts 的 brandImage(key)（它会同时查这两张表）。
+ *
+ * 新增图片的完整流程见 BRAND_GUIDE.md「加图片」。示例（取消注释并改成真实 key）：
+ *   import w1_1 from '../assets/images/w1-1.webp';
+ *   'w1-1': w1_1,
+ */
+export const BRAND_IMAGE_BY_KEY: Record<string, string> = {
+  // 恒迪 h1-1 / 玩视智能 w1-1 …
 };

@@ -1,0 +1,18 @@
+{
+  "$comment": "恒迪视讯自有品牌产品卡片数据。加产品只改这个文件（图片先按 BRAND_GUIDE.md 转成 WebP）。素材还没到位时保持 products 为空数组即可 —— 首页会显示 brands.json 里的 emptyState 空态。",
+  "$schema": {
+    "id": "产品 id。格式 <品牌前缀><数字>，如 h1 / h2；必须与思必驰、玩视智能的 id 都不重复（doctor 会查）",
+    "brand": "固定写 \"hengdi\"，doctor 会核对",
+    "model": "对外型号",
+    "name": "规范全名，SEO 与结构化数据用",
+    "tagline": "卡片副标题 / 一句话定位，一行为宜",
+    "desc": "卡片描述，建议 40～80 字，卡片最多显示 3 行",
+    "status": "live = 资料齐全；soon = 资料准备中（卡片显示「即将上线」）",
+    "href": "可选。站外链接填完整 https://；站内产品详情填 /product/<id>（该 id 必须已存在于 products.json）；没有就删掉这一行",
+    "cardImage": "可选。src/assets/images/<key>.webp 的 key，如 h1-1；并注册到 productImages.ts 的 BRAND_IMAGE_BY_KEY；没有图就删掉这一行",
+    "placeholder": "可选。无图时卡片占位图上显示的文字，通常写型号",
+    "hoverImage": "可选。卡片悬停时切换的图，规则同 cardImage"
+  },
+  "brand": "hengdi",
+  "products": []
+}

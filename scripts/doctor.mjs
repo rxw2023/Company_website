@@ -20,6 +20,11 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { webpSize, MAX_EDGE, CARD_WIDTH } from './lib/webp.mjs';
+// 品牌层是首页「产品系列」的卡片事实源。用 import attribute 读 JSON：
+// 静态 import 能让「文件被删/写坏」在启动时就炸出来，比 fs.readFileSync 更早发现问题。
+import brandsCatalog from '../src/data/brands.json' with { type: 'json' };
+import wanshiBrandData from '../src/data/brands/wanshi.json' with { type: 'json' };
+import hengdiBrandData from '../src/data/brands/hengdi.json' with { type: 'json' };
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, '..');
@@ -110,7 +115,10 @@ const productIds = new Set(products.map((x) => x.id));
 const caseIds = new Set(cases.map((x) => x.id));
 
 console.log('\n=== 知识一致性体检 (doctor) ===\n');
-console.log(`事实源：${products.length} 个产品 / ${cases.length} 个案例 / ${bundles.length} 个方案组合\n`);
+console.log(
+  `事实源：${products.length} 个产品 / ${cases.length} 个案例 / ${bundles.length} 个方案组合` +
+    ` / ${(brandsCatalog.brands || []).length} 个品牌卡片\n`
+);
 
 // ============ A. 结构校验 ============
 
@@ -151,6 +159,8 @@ const IMAGE_MAP_BODY = mapBody(imageMapSrc, 'IMAGE_BY_KEY');
 const PDF_MAP_BODY = mapBody(imageMapSrc, 'PDF_BY_FILE');
 const CASE_IMAGE_MAP_BODY = mapBody(imageMapSrc, 'CASE_IMAGE_BY_KEY');
 const CASE_VIDEO_MAP_BODY = mapBody(imageMapSrc, 'CASE_VIDEO_BY_KEY');
+// 品牌产品的图片单独一张表（见 productImages.ts 的说明），所以要单独切片校验
+const BRAND_IMAGE_MAP_BODY = mapBody(imageMapSrc, 'BRAND_IMAGE_BY_KEY');
 
 const videoDir = p('src/assets/videos');
 const videoFiles = fs.existsSync(videoDir)
@@ -199,6 +209,183 @@ for (const prod of products) {
   if (!prod.seoDescription) err(`[结构] ${prod.id} 缺少 seoDescription`);
   if (!prod.cardDesc) err(`[结构] ${prod.id} 缺少 cardDesc`);
   if (!prod.scenarios?.length) warn(`[结构] ${prod.id} 未填写适用场景`);
+}
+
+// ============ A2. 品牌层（首页「产品系列」的多品牌卡片） ============
+//
+// 这一层是后加的：首页产品系列从「只有思必驰」变成「思必驰 / 玩视智能 / 恒迪」
+// 三张卡片。它的失效模式全是静默的 ——
+//   · brands.json 写了个没有数据文件的品牌 → 那张卡片永远是空的
+//   · 品牌数据文件里的图没登记 → 卡片图静默消失（不报错，只是没图）
+//   · 同 id 出现在两个品牌 → 首页 key 重复，React 只渲染一个
+// 所以必须像产品一样逐条比对，而不是靠肉眼看页面。
+{
+  const brands = brandsCatalog.brands || [];
+
+  const BRAND_DATA_FILES = {
+    wanshi: wanshiBrandData,
+    hengdi: hengdiBrandData,
+  };
+
+  const IS_HEX = /^#[0-9a-f]{6}$/i;
+  const brandIds = new Set();
+  const primaryBrands = brands.filter((b) => b.isPrimary);
+
+  if (!brands.length) err('[品牌] brands.json 里没有任何品牌，首页产品系列会整段空掉');
+  if (primaryBrands.length !== 1) {
+    err(
+      `[品牌] brands.json 必须有且只有一个 isPrimary: true 的品牌，实际 ${primaryBrands.length} 个` +
+        `\n         主品牌决定首页默认显示谁的产品。`
+    );
+  }
+  const primaryBrandId = primaryBrands[0]?.id;
+
+  for (const b of brands) {
+    const where = `品牌 "${b.id || '(缺少 id)'}"`;
+
+    if (!b.id) err('[品牌] brands.json 有品牌缺少 id');
+    else if (brandIds.has(b.id)) err(`[品牌] brands.json 里 id 重复：${b.id}`);
+    else brandIds.add(b.id);
+
+    for (const key of ['name', 'enName', 'tabLabel', 'eyebrow', 'tagline']) {
+      if (!b[key]) err(`[品牌] ${where} 缺少 ${key}`);
+    }
+    if (!IS_HEX.test(b.color || '')) {
+      err(
+        `[品牌] ${where} 的 color 必须是 6 位十六进制，实际 ${JSON.stringify(b.color)}` +
+          `\n         它会被内联成 CSS 变量 --brandActive 控制选中态，写错会静默失效。`
+      );
+    }
+    if (!b.isPrimary && !BRAND_DATA_FILES[b.id]) {
+      err(
+        `[品牌] ${where} 在 brands.json 里登记了，但 doctor 的品牌数据文件清单里没有它 ——` +
+          `\n         那张卡片会永远显示空态。请同步登记：src/data/brands.ts 的 BRAND_DATA_FILES` +
+          `\n         与 scripts/doctor.mjs 顶部的 import + BRAND_DATA_FILES（步骤见 BRAND_GUIDE.md 第 2 节 ③）。`
+      );
+    }
+    if (b.isPrimary && b.dataFile) {
+      err(`[品牌] ${where} 是主品牌，不应再配 dataFile（产品来自 products.json）`);
+    }
+    if (!b.isPrimary && !b.dataFile) {
+      err(`[品牌] ${where} 缺少 dataFile —— 加产品时不知道该往哪个文件写`);
+    }
+  }
+
+  // products.json 里的产品必须都归属于 brands.json 里存在的品牌
+  for (const prod of products) {
+    const bid = prod.brand || primaryBrandId;
+    if (!brandIds.has(bid)) {
+      err(
+        `[结构] 产品 ${prod.id} 的 brand "${bid}" 不在 brands.json 里 ——` +
+          ` 它会从首页产品系列静默消失`
+      );
+    } else if (bid !== primaryBrandId) {
+      err(
+        `[结构] 产品 ${prod.id} 的 brand 是 "${bid}"，但它是 products.json（主品牌 ${primaryBrandId}）` +
+          `\n         里的条目。非主品牌的产品请写进 src/data/brands/<品牌>.json。`
+      );
+    }
+  }
+
+  // 各品牌自己的产品数据文件
+  const seenProductIds = new Map(products.map((p) => [p.id, primaryBrandId]));
+  let liveCount = 0;
+  let pendingCount = 0;
+
+  for (const b of brands) {
+    if (b.isPrimary) continue;
+    const data = BRAND_DATA_FILES[b.id];
+    if (!data) continue;
+
+    if (data.brand !== b.id) {
+      err(
+        `[品牌] ${b.dataFile} 里的 brand 是 ${JSON.stringify(data.brand)}，` +
+          `应为 "${b.id}"（文件名与品牌 id 必须对上）`
+      );
+    }
+    if (!Array.isArray(data.products)) {
+      err(`[品牌] ${b.dataFile} 的 products 不是数组（空也要写 []）`);
+      continue;
+    }
+
+    const prefix = (b.id[0] || '').toLowerCase();
+
+    for (const p of data.products) {
+      const label = `[品牌] ${b.dataFile} 的产品 "${p.id || '(缺少 id)'}"`;
+
+      if (!p.id) {
+        err(`${label} 缺少 id`);
+      } else {
+        if (seenProductIds.has(p.id)) {
+          err(
+            `${label} 的 id 与${seenProductIds.get(p.id) === primaryBrandId ? '主品牌 products.json' : `品牌 "${seenProductIds.get(p.id)}"`}里的产品重复` +
+              `\n         首页两张卡片的 React key 会撞车，只渲染得出一张。`
+          );
+        }
+        seenProductIds.set(p.id, b.id);
+        if (prefix && !new RegExp(`^${prefix}\\d+$`).test(p.id)) {
+          warn(`${label} 的 id 建议写成 <品牌前缀><数字>，如 ${prefix}1 / ${prefix}2`);
+        }
+      }
+
+      if (p.brand !== b.id) {
+        err(`${label} 的 brand 是 ${JSON.stringify(p.brand)}，应为 "${b.id}"`);
+      }
+      if (!p.model) err(`${label} 缺少 model`);
+      if (!p.name) err(`${label} 缺少 name`);
+      if (p.status && !['live', 'soon'].includes(p.status)) {
+        err(`${label} 的 status 只能是 "live" 或 "soon"，实际 ${JSON.stringify(p.status)}`);
+      }
+
+      // 图片：给了 key 就必须真的有文件、且登记进 BRAND_IMAGE_BY_KEY。
+      // 不写 cardImage 是**合法**的 —— 首页会渲染 CSS 占位图，不会有破图。
+      for (const field of ['cardImage', 'hoverImage']) {
+        const key = p[field];
+        if (!key) continue;
+        if (!imageKeyExists(key)) {
+          err(
+            `${label} 的 ${field} "${key}" 在 src/assets/images/ 下不存在` +
+              `\n         先按 BRAND_GUIDE.md「加图片」转成 WebP 再登记。`
+          );
+        }
+        if (!BRAND_IMAGE_MAP_BODY.includes(`'${key}':`)) {
+          err(`${label} 的 ${field} "${key}" 未登记到 productImages.ts 的 BRAND_IMAGE_BY_KEY`);
+        }
+      }
+
+      // 站内链接必须指向真实存在的产品详情页；站外链接必须是完整 URL
+      if (p.href) {
+        if (p.href.startsWith('/product/')) {
+          const target = p.href.slice('/product/'.length);
+          if (!productIds.has(target)) {
+            err(
+              `${label} 的 href 指向 ${p.href}，但 products.json 里没有 ${target} ——` +
+                ` 点进去是 404`
+            );
+          }
+        } else if (!/^https?:\/\//.test(p.href)) {
+          err(`${label} 的 href "${p.href}" 既不是 /product/<id> 也不是 http(s) 完整链接`);
+        }
+      }
+
+      if (p.status === 'soon' || !p.href) pendingCount++;
+      else liveCount++;
+    }
+
+    const live = data.products.filter((p) => p.href && p.status !== 'soon').length;
+    note(
+      `[品牌] ${b.name}（${b.id}）：${data.products.length} 个产品卡片` +
+        `（${live} 个已上线 / ${data.products.length - live} 个资料准备中）` +
+        (data.products.length === 0 ? ' —— 首页显示空态，属预期' : '')
+    );
+  }
+
+  if (brands.length) {
+    note(
+      `[品牌] ${brands.length} 个品牌卡片结构完整，主品牌 = ${primaryBrandId}；` +
+        `非主品牌共 ${liveCount + pendingCount} 个产品卡片（${liveCount} 已上线 / ${pendingCount} 准备中）✓`
+    );
+  }
 }
 
 for (const c of cases) {

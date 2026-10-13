@@ -7,6 +7,7 @@
     "dev:client": "vite --host --port 3000",
     "dev": "pnpm run dev:client",
     "clean": "node scripts/clean.mjs",
+    "towebp": "node scripts/to-webp.mjs",
     "optimize:images": "node scripts/optimize-images.mjs",
     "gen:images": "node scripts/gen-image-variants.mjs",
     "build:client": "vite build",

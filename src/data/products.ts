@@ -20,6 +20,12 @@ export interface KeySpec {
 
 export interface Product {
   id: string;
+  /**
+   * 所属品牌 id，取值必须是 src/data/brands.json 里登记过的品牌。
+   * 省略时视为主品牌（brands.json 里 isPrimary 的那个），
+   * 因此给本文件新增产品时不写 brand 也不会从首页消失。
+   */
+  brand?: string;
   /** 对外型号，如 MC10 / MA600D */
   model: string;
   /** 规范全名，用于 SEO title 与结构化数据 */

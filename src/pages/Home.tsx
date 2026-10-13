@@ -9,49 +9,116 @@ import MouseGlow from '../components/MouseGlow';
 import SoundField from '../components/SoundField';
 import Ma600dField from '../components/Ma600dField';
 import RoomPicker from '../components/RoomPicker';
-// 产品数据来自单一事实源 src/data/products.json
-import { PRODUCTS, CATEGORIES as PRODUCT_CATEGORIES } from '../data/products';
+// 品牌层：首页「产品系列」区块的品牌卡片从这里派生（src/data/brands.json）
+import {
+  BRAND_VIEWS,
+  PRIMARY_BRAND_ID,
+  brandImage,
+  type BrandProduct,
+} from '../data/brands';
 // 案例数据来自单一事实源 src/data/cases.json
 import { CASES, CASE_CATEGORIES as CASE_CATEGORY_LIST } from '../data/cases';
-import { IMAGE_BY_KEY, CASE_IMAGE_BY_KEY } from '../data/productImages';
+import { CASE_IMAGE_BY_KEY } from '../data/productImages';
 import { responsiveImage, CARD_SIZES } from '../data/responsiveImage';
 import quickImage from '../assets/images/aispeech-logo.png';
 import aispeechLogo from '../assets/images/aispeech-logo1.png';
 import qrcodeImage from '../assets/images/qrcode.jpg';
 import addressMapImage from '../assets/images/company-address-map.webp';
 
-/** 首页卡片视图模型 —— 由 products.json 派生，展示顺序即 PRODUCTS 的顺序 */
-interface HomeProduct {
+/**
+ * 品牌卡片视图模型。
+ *
+ * 数据全部由 src/data/brands.json 派生 —— 首页的「产品系列」区块现在是
+ * 「一张品牌卡片 = 一个品牌」，加品牌 / 加产品都不需要改这个文件：
+ *   · 主品牌（思必驰）的卡片来自 products.json，详情页、站内搜索照旧
+ *   · 其他品牌的卡片来自 src/data/brands/<id>.json，是纯展示卡片
+ */
+interface HomeBrandCard {
   id: string;
   name: string;
   desc: string;
-  img: string;
-  /** 尺寸变体的 srcset（由 gen:images 生成；缺失时为空，回落到原图） */
+  /** 分类，用于区块内的场景筛选；占位卡为空 */
+  category?: string;
+  /** 卡片图 URL；没有图时为 undefined，组件渲染 CSS 占位图（不会出现破图） */
+  img?: string;
   srcSet?: string;
   sizes?: string;
-  categories: string[];
+  /** 站内 /product/<id> 或外部链接；undefined = 资料未到位，卡片不可点 */
+  href?: string;
+  /** true = 资料准备中，卡片显示「即将上线」 */
+  soon: boolean;
 }
 
-const products: HomeProduct[] = [
-  ...PRODUCTS.map((p) => {
-    const img = IMAGE_BY_KEY[p.cardImage];
-    const { srcSet, sizes } = responsiveImage(p.cardImage, img, CARD_SIZES);
+interface HomeBrand {
+  id: string;
+  /** tab 上的文字 */
+  tabLabel: string;
+  eyebrow: string;
+  tagline: string;
+  /** 品牌强调色（来自 brands.json），供 tab 用 */
+  color: string;
+  /** 该品牌真实产品数（不含「敬请期待」占位卡），显示在 tab 上 */
+  count: number;
+  /** 该品牌产品覆盖的分类（已按出现顺序去重） */
+  categories: string[];
+  cards: HomeBrandCard[];
+  /** 没有任何产品时显示的空态文案 */
+  emptyState?: string;
+  /** 末尾是否补一张「后续产品尽情期待」占位卡 */
+  placeholderCard: boolean;
+}
+
+const BRANDS: HomeBrand[] = BRAND_VIEWS.map((brand) => {
+  const cards: HomeBrandCard[] = brand.products.map((p: BrandProduct) => {
+    const img = brandImage(p.cardImage);
+    const responsive = img ? responsiveImage(p.cardImage!, img, CARD_SIZES) : {};
     return {
       id: p.id,
-      name: p.cardName,
-      desc: p.cardDesc,
+      name: p.name,
+      desc: p.desc || '',
+      category: p.category,
       img,
-      srcSet,
-      sizes,
-      categories: [p.category],
+      ...responsive,
+      href: p.href,
+      soon: p.status === 'soon' || !p.href,
     };
-  }),
-  // 占位卡片：仅展示用，不进入 sitemap / SEO / AI 知识库
-  { id: 'a99', name: '后续产品尽情期待', desc: '', img: quickImage, categories: [] },
-];
+  });
 
-const CATEGORIES: string[] = ['all', ...PRODUCT_CATEGORIES];
+  /**
+   * 占位卡只在**该品牌已经有产品**时补。
+   *
+   * 曾经无条件补，结果是：一个还没有任何产品的品牌，区块里只孤零零立着一张
+   * 「后续产品尽情期待」，配的是思必驰的 logo —— 既误导（看着像有产品可点），
+   * 又把真正的空态提示挤掉了。空品牌应该显示空态，有产品的品牌才需要「更多在后面」的收尾。
+   */
+  if (brand.placeholderCard && cards.length > 0) {
+    cards.push({
+      id: `${brand.id}-more`,
+      name: '后续产品尽情期待',
+      desc: '',
+      img: quickImage,
+      soon: true,
+    });
+  }
 
+  // 分类只列真正有产品的项，避免点了必然 0 结果
+  const categories = Array.from(
+    new Set(brand.products.map((p) => p.category).filter(Boolean) as string[])
+  );
+
+  return {
+    id: brand.id,
+    tabLabel: brand.tabLabel,
+    eyebrow: brand.eyebrow,
+    tagline: brand.tagline,
+    color: brand.color,
+    count: brand.products.length,
+    categories,
+    cards,
+    emptyState: brand.emptyState,
+    placeholderCard: !!brand.placeholderCard,
+  };
+});
 /** 首页案例卡片视图模型 —— 由 cases.json 派生 */
 const cases = CASES.map((c) => {
   const img = CASE_IMAGE_BY_KEY[c.cardImage];
@@ -77,12 +144,26 @@ function scrollTo(id: string) {
 export default function Home() {
   const location = useLocation();
 
-  // 产品场景过滤
+  /**
+   * 产品系列：品牌卡片（tab）+ 场景过滤。
+   * 默认选中主品牌（brands.json 里 isPrimary 的那个），首屏内容与加品牌之前一致。
+   * 切换品牌时把场景筛选重置回「全部」，否则会出现「新品牌 + 上一个品牌的分类」
+   * 这种必然 0 结果的组合。
+   */
+  const [activeBrand, setActiveBrand] = useState<string>(PRIMARY_BRAND_ID);
   const [activeCat, setActiveCat] = useState<string>('all');
-  const filteredProducts =
-    activeCat === 'all'
-      ? products
-      : products.filter((p) => p.categories.includes(activeCat));
+  const currentBrand =
+    BRANDS.find((b) => b.id === activeBrand) || BRANDS[0];
+  const visibleCards = currentBrand
+    ? activeCat === 'all'
+      ? currentBrand.cards
+      : currentBrand.cards.filter((c) => c.category === activeCat)
+    : [];
+
+  const selectBrand = (id: string) => {
+    setActiveBrand(id);
+    setActiveCat('all');
+  };
 
   // 案例行业过滤
   const [caseCat, setCaseCat] = useState<string>('all');
@@ -446,6 +527,12 @@ export default function Home() {
           text-decoration: none; letter-spacing: -0.01em;
         }
         .hd-product-link:hover { color: var(--warm-primary-active); }
+        /* 资料未到位：保持同样的位置与字号，但不可点、不抢注意力 */
+        .hd-product-link.is-pending {
+          color: var(--warm-muted);
+          cursor: default;
+        }
+        .hd-product-link.is-pending:hover { color: var(--warm-muted); }
 
         .hd-feature-strip {
           background: var(--warm-surface);
@@ -515,6 +602,133 @@ export default function Home() {
           background: var(--warm-primary);
           color: #fff;
           border-color: var(--warm-primary);
+        }
+
+        /* ── 品牌切换卡片（产品系列的三个品牌）──────────────────
+           刻意做成与下方「场景筛选」不同的一层：卡片有底面、有品牌色顶边，
+           选中态用大色块而不是描边 —— 否则两层并排会读成同一组筛选器。
+           --brandActive 由 JSX 内联传入（见 brands.json 的 color 字段）。 */
+        .hd-brand-tabs {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 12px;
+          margin-bottom: 20px;
+        }
+        .hd-brand-tab {
+          --brandActive: var(--warm-primary);
+          display: inline-flex;
+          align-items: center;
+          gap: 10px;
+          font-family: var(--font-body);
+          font-size: 15px;
+          font-weight: 500;
+          color: var(--warm-body);
+          background: var(--warm-canvas);
+          border: 1px solid var(--warm-hairline);
+          /* 左侧留出的宽度就是品牌色条的位置（用 border 而不是绝对定位的伪元素：
+             伪元素一旦忘了 position:relative，整条会跑到区块左上角去） */
+          border-left: 3px solid var(--brandActive);
+          border-radius: 10px;
+          padding: 12px 20px 12px 17px;
+          cursor: pointer;
+          letter-spacing: 0.01em;
+          transition: color 0.18s, background 0.18s, border-color 0.18s, opacity 0.18s;
+        }
+          /* 未选中的品牌：色条压暗到 35%，选中才整条点亮。
+             用 color-mix 而不是 rgba()：品牌色是每个品牌各自配的（brands.json），
+             写不成一条固定色值；color-mix 在 Chrome 111+ / Safari 16.2+ / Firefox 113+ 均可用，
+             不支持的浏览器只是色条不透明，不影响可读性。 */
+          border-left-color: color-mix(in srgb, var(--brandActive) 35%, transparent);
+        .hd-brand-tab:hover {
+          color: var(--warm-ink);
+          background: var(--warm-card-hover);
+        }
+        .hd-brand-tab:focus-visible {
+          outline: 2px solid var(--brandActive);
+          outline-offset: 2px;
+        }
+        .hd-brand-tab.active {
+          color: var(--warm-ink);
+          /* 选中态除了色条与角标，再给一层很淡的品牌色底 ——
+             只靠色条的话，三个 tab 在浅底上几乎分不出哪个是选中的。 */
+          background: color-mix(in srgb, var(--brandActive) 8%, var(--warm-canvas));
+          border-color: var(--warm-hairline);
+          border-left-color: var(--brandActive);
+        }
+        /* 数量角标 */
+        .hd-brand-tab-count {
+          font-size: 12px;
+          font-weight: 500;
+          line-height: 1;
+          padding: 4px 7px;
+          border-radius: 999px;
+          color: var(--warm-muted);
+          background: var(--warm-surface);
+          border: 1px solid var(--warm-hairline);
+          transition: color 0.18s, background 0.18s, border-color 0.18s;
+        }
+        .hd-brand-tab.active .hd-brand-tab-count {
+          color: #fff;
+          background: var(--brandActive);
+          border-color: var(--brandActive);
+        }
+        @media (max-width: 640px) {
+          .hd-brand-tabs { gap: 8px; }
+          .hd-brand-tab { font-size: 14px; gap: 8px; padding: 10px 14px 10px 13px; }
+        }
+
+        /* ── 无图产品的占位图 ──────────────────────────────────
+           素材还没到位时不会有破图：显示型号 + 一层淡色斜纹。 */
+        .hd-product-img-empty {
+          width: 100%;
+          height: 100%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 20px;
+          color: var(--warm-muted);
+          font-family: var(--font-body);
+          font-size: 14px;
+          letter-spacing: 0.06em;
+          text-align: center;
+          background-image: repeating-linear-gradient(
+            45deg,
+            transparent 0 10px,
+            rgba(20,20,19,0.035) 10px 20px
+          );
+        }
+        .hd-product-img-empty span {
+          border: 1px dashed var(--warm-hairline);
+          border-radius: 8px;
+          padding: 10px 16px;
+          max-width: 100%;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        }
+        /* 资料未到位的卡片：整卡不可点，但保留「即将上线」的说明 */
+        .hd-product-empty {
+          grid-column: 1 / -1;
+          background: var(--warm-canvas);
+          border: 1px dashed var(--warm-hairline);
+          border-radius: 12px;
+          padding: 48px 28px;
+          text-align: center;
+          display: flex;
+          flex-direction: column;
+          gap: 8px;
+        }
+        .hd-product-empty-title {
+          font-family: var(--font-display);
+          font-size: 20px;
+          color: var(--warm-ink);
+          letter-spacing: -0.02em;
+        }
+        .hd-product-empty-desc {
+          font-family: var(--font-body);
+          font-size: 14px;
+          line-height: 1.6;
+          color: var(--warm-muted);
         }
 
         /* 案例横向画廊 */
@@ -758,8 +972,15 @@ export default function Home() {
             variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0, transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] } } }}
           >
             <div className="stat">
-              {/* 由事实源派生，避免新增产品/案例后这个数字失真（原为写死的 14 / 12） */}
-              <div className="stat-num"><CountUp to={PRODUCTS.length} suffix="+" /></div>
+              {/* 由事实源派生，避免新增产品/案例后这个数字失真（原为写死的 14 / 12）。
+                  产品数现在是全品牌合计（含玩视智能、恒迪自己的产品），
+                  算的是真实产品条目 —— brands.json 里的「敬请期待」占位卡不计入。 */}
+              <div className="stat-num">
+                <CountUp
+                  to={BRAND_VIEWS.reduce((n, b) => n + b.products.length, 0)}
+                  suffix="+"
+                />
+              </div>
               <div className="stat-label">核心产品线</div>
             </div>
             <div className="stat">
@@ -826,67 +1047,144 @@ export default function Home() {
         {/* PRODUCTS */}
         <section className="hd-section-gray scroll-mt-16" id="products">
           <div className="hd-section-inner">
-             {/* 形态 A · 分栏 + 顶部规则线。多数内容直接就在，不做入场动画 */}
+             {/* 形态 A · 分栏 + 顶部规则线。多数内容直接就在，不做入场动画
+                 品牌文案（eyebrow / 说明）跟随当前选中的品牌卡片 —— 数据见 brands.json */}
              <div className="hd-sec-head hd-sec-head--split">
                <div>
-                 <p className="hd-section-eyebrow">思必驰</p>
+                 <p className="hd-section-eyebrow">{currentBrand?.eyebrow}</p>
                  <h2 className="hd-section-title">产品系列</h2>
                </div>
-               <p className="hd-section-desc">
-                 专为现代会议室设计的智能音视频设备，覆盖从教室到大礼堂的全场景需求。
-               </p>
+               <p className="hd-section-desc">{currentBrand?.tagline}</p>
              </div>
 
-            {/* 场景过滤 tab */}
-            <div className="hd-cat-tabs">
-              {CATEGORIES.map((cat) => (
+            {/* 品牌切换卡片：一个品牌一张卡片，顺序与文案见 src/data/brands.json */}
+            <div className="hd-brand-tabs" role="tablist" aria-label="产品品牌">
+              {BRANDS.map((b) => (
                 <button
-                  key={cat}
-                  className={`hd-cat-tab ${activeCat === cat ? 'active' : ''}`}
-                  onClick={() => setActiveCat(cat)}
+                  key={b.id}
                   type="button"
+                  role="tab"
+                  id={`brand-tab-${b.id}`}
+                  aria-selected={b.id === activeBrand}
+                  aria-controls="brand-panel"
+                  className={`hd-brand-tab ${b.id === activeBrand ? 'active' : ''}`}
+                  style={{ '--brandActive': b.color } as React.CSSProperties}
+                  onClick={() => selectBrand(b.id)}
                 >
-                  {cat === 'all' ? '全部' : cat}
+                  <span className="hd-brand-tab-label">{b.tabLabel}</span>
+                  {/* 数量角标：让「这个品牌还没有产品」在选择之前就看得见，
+                      而不是点进去才发现是空的 */}
+                  <span className="hd-brand-tab-count">
+                    {b.count > 0 ? b.count : '待'}
+                  </span>
                 </button>
               ))}
             </div>
 
-            <motion.div layout className="hd-product-grid">
-              <AnimatePresence mode="popLayout">
-                {filteredProducts.map((p, i) => (
-                  <motion.div
-                    layout
-                    key={p.id}
-                    className="hd-product-card"
-                    initial={{ opacity: 0, y: 20, scale: 0.96 }}
-                    animate={{ opacity: 1, y: 0, scale: 1 }}
-                    exit={{ opacity: 0, scale: 0.9 }}
-                    transition={{ duration: 0.4, delay: Math.min(i * 0.03, 0.3), ease: [0.22, 1, 0.36, 1] }}
-                    whileHover={{ y: -4 }}
-                  >
-                    <div className="hd-product-img-wrap">
-                      <img
-                        src={p.img}
-                        srcSet={p.srcSet}
-                        sizes={p.sizes}
-                        alt={p.name}
-                        loading="lazy"
-                        decoding="async"
-                      />
-                    </div>
-                    <div className="hd-product-info">
-                      <div className="hd-product-name">{p.name}</div>
-                      <div className="hd-product-desc">{p.desc || '更多产品即将上线，敬请期待。'}</div>
-                      {p.id !== 'a99' ? (
-                        <Link to={`/product/${p.id}`} className="hd-product-link">了解更多</Link>
-                      ) : (
-                        <span className="hd-product-link" style={{ color: '#999', cursor: 'default' }}>即将上线</span>
-                      )}
-                    </div>
-                  </motion.div>
-                ))}
-              </AnimatePresence>
-            </motion.div>
+            <AnimatePresence mode="wait" initial={false}>
+              <motion.div
+                key={activeBrand}
+                id="brand-panel"
+                role="tabpanel"
+                aria-labelledby={`brand-tab-${activeBrand}`}
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -8 }}
+                transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
+              >
+                {/* 场景过滤 tab。分类由该品牌自己的产品派生，所以新品牌加产品时
+                    这里会自动多出对应的筛选项，不需要改代码（也不会有点了 0 结果的空项） */}
+                {currentBrand && currentBrand.categories.length > 0 && (
+                  <div className="hd-cat-tabs">
+                    {['all', ...currentBrand.categories].map((cat) => (
+                      <button
+                        key={cat}
+                        className={`hd-cat-tab ${activeCat === cat ? 'active' : ''}`}
+                        onClick={() => setActiveCat(cat)}
+                        type="button"
+                      >
+                        {cat === 'all' ? '全部' : cat}
+                      </button>
+                    ))}
+                  </div>
+                )}
+
+                <motion.div layout className="hd-product-grid">
+                  {visibleCards.map((p, i) => (
+                    <motion.div
+                      layout
+                      key={p.id}
+                      className="hd-product-card"
+                      initial={{ opacity: 0, y: 20, scale: 0.96 }}
+                      animate={{ opacity: 1, y: 0, scale: 1 }}
+                      exit={{ opacity: 0, scale: 0.9 }}
+                      transition={{ duration: 0.4, delay: Math.min(i * 0.03, 0.3), ease: [0.22, 1, 0.36, 1] }}
+                      whileHover={{ y: -4 }}
+                    >
+                      <div className="hd-product-img-wrap">
+                        {p.img ? (
+                          <img
+                            src={p.img}
+                            srcSet={p.srcSet}
+                            sizes={p.sizes}
+                            alt={p.name}
+                            loading="lazy"
+                            decoding="async"
+                          />
+                        ) : (
+                          <div className="hd-product-img-empty" aria-hidden="true">
+                            <span>{p.name}</span>
+                          </div>
+                        )}
+                      </div>
+                      <div className="hd-product-info">
+                        <div className="hd-product-name">{p.name}</div>
+                        <div className="hd-product-desc">
+                          {p.desc || '更多产品即将上线，敬请期待。'}
+                        </div>
+                        {p.href && !p.soon ? (
+                          p.href.startsWith('/') ? (
+                            <Link to={p.href} className="hd-product-link">了解更多</Link>
+                          ) : (
+                            <a
+                              href={p.href}
+                              className="hd-product-link"
+                              target="_blank"
+                              rel="noopener noreferrer"
+                            >
+                              了解更多
+                            </a>
+                          )
+                        ) : (
+                          <span className="hd-product-link is-pending">即将上线</span>
+                        )}
+                      </div>
+                    </motion.div>
+                  ))}
+
+                  {/* 空态：品牌已建卡片、产品资料还没录进来时的样子（不会出现破图） */}
+                  {visibleCards.length === 0 && (
+                    <motion.div
+                      layout
+                      className="hd-product-empty"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                    >
+                      <span className="hd-product-empty-title">
+                        {activeCat === 'all' ? '产品资料准备中' : '该分类下暂无产品'}
+                      </span>
+                      <span className="hd-product-empty-desc">
+                        {activeCat === 'all'
+                          ? currentBrand?.emptyState ||
+                            '该品牌的产品资料正在整理，即将上线。'
+                          : '换个分类看看，或选择「全部」。'}
+                      </span>
+                    </motion.div>
+                  )}
+                </motion.div>
+              </motion.div>
+            </AnimatePresence>
           </div>
         </section>
 

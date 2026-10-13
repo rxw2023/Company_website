@@ -8,6 +8,7 @@
 - **SEO 优化** — 预渲染静态 HTML + 结构化数据 + Sitemap 自动生成
 - **AI 智能客服** — 接入 SiliconFlow 大模型 API（当前 `tencent/Hy4-preview`），流式输出回答产品咨询
 - **全站搜索** — Cmd/Ctrl + K 呼出搜索弹窗，覆盖产品、案例、FAQ，支持多词加权匹配和高亮
+- **多品牌产品系列** — 首页产品系列按品牌切换卡片（思必驰 / 玩视智能 / 恒迪），加品牌、加产品只改 JSON，见 [BRAND_GUIDE.md](./BRAND_GUIDE.md)
 - **产品全景展示** — 图片灯箱浏览、规格参数表、PDF 彩页下载
 - **工程案例** — 分类筛选展示，图文并茂
 
@@ -78,13 +79,16 @@ pnpm build
 │   │   ├── Navigation.tsx           # 全局导航栏 + 全站搜索弹窗
 │   │   └── SeoHead.tsx              # SEO 结构化数据
 │   ├── data/                        # ★ 单一事实源（Single Source of Truth）
-│   │   ├── products.json            # 全部产品数据：名称/规格/场景/关联/图片/彩页
+│   │   ├── products.json            # 思必驰产品数据：名称/规格/场景/关联/图片/彩页
 │   │   ├── products.ts              # 产品访问层 + AI 知识库生成器
+│   │   ├── brands.json              # 首页产品系列的品牌卡片（顺序/文案/品牌色）
+│   │   ├── brands/                  # 非主品牌的产品卡片（wanshi.json / hengdi.json）
+│   │   ├── brands.ts                # 品牌访问层：品牌 + 产品 → 首页视图模型
 │   │   ├── cases.json               # 全部工程案例数据
 │   │   ├── cases.ts                 # 案例访问层
 │   │   └── productImages.ts         # 图片/PDF 资源映射（静态 import 集中处）
 │   ├── pages/
-│   │   ├── Home.tsx                 # 首页（产品卡片 + 案例网格，数据均派生）
+│   │   ├── Home.tsx                 # 首页（品牌切换产品卡片 + 案例网格，数据均派生）
 │   │   ├── ProductDetailPage.tsx    # 产品详情页（图集 + 规格 + 下载）
 │   │   ├── CaseDetailPage.tsx       # 案例详情页
 │   │   ├── FaqPage.tsx              # FAQ 常见问题
@@ -94,7 +98,10 @@ pnpm build
 │   ├── index.css                    # Tailwind 指令 + 全局样式
 │   └── vite-env.d.ts                # Vite 类型声明
 ├── scripts/
-│   └── doctor.mjs                   # ★ 知识一致性体检（校验事实源是否漂移）
+│   ├── doctor.mjs                   # ★ 知识一致性体检（校验事实源是否漂移）
+│   ├── to-webp.mjs                  # png/jpg → WebP（图片进仓库前的那一步）
+│   ├── optimize-images.mjs          # 源图缩到 1920px 上限（幂等，带备份）
+│   └── gen-image-variants.mjs       # 生成 640px 卡片变体 + imageVariants.json
 ├── .env.example                     # 环境变量模板
 ├── .env.local                       # 本地环境变量（gitignore，不提交）
 ├── .gitignore
@@ -107,6 +114,7 @@ pnpm build
 ├── postcss.config.js                # PostCSS 配置
 ├── prerender.js                     # 构建后预渲染脚本（读事实源 + manifest）
 ├── sitemap-generator.js             # Vite 插件：自动生成 sitemap
+├── BRAND_GUIDE.md                   # ★ 多品牌产品系列维护指南（加品牌/加产品/加图）
 ├── DEPLOYMENT_GUIDE.md              # 部署指南（含 nginx 密钥注入配置）
 ├── LICENSE
 └── README.md
@@ -117,6 +125,11 @@ pnpm build
 **改产品信息只需要改 `src/data/products.json` 一个文件。** 首页卡片、产品详情、
 站内搜索索引、sitemap、预渲染 SEO、AI 客服知识库、`index.html` 的 ItemList
 结构化数据，全部由它派生。
+
+首页「产品系列」区块现在按品牌切换卡片（思必驰 / 玩视智能 / 恒迪）：
+思必驰是主品牌，走 `products.json` 这一整套；另外两个品牌是纯展示卡片，
+数据在 `src/data/brands/*.json`，**不进入 AI 客服知识库**。
+加品牌 / 加产品 / 加图的完整流程见 **[BRAND_GUIDE.md](./BRAND_GUIDE.md)**。
 
 以前这些数据在 6 个文件里各存一份，已经产生过真实事故：
 
@@ -131,17 +144,22 @@ pnpm build
 
 ```bash
 # 1. 编辑 src/data/products.json（图片先放进 src/assets/images/）
+#    图片不是 WebP 时：pnpm towebp <文件或目录> --out src/assets/images
 # 2. 在 src/data/productImages.ts 登记新的图片/PDF key
-# 3. 体检：校验图片存在、名称一致、规格数值不漂移
+# 3. 大图补一档卡片变体：pnpm gen:images
+# 4. 体检：校验图片存在、名称一致、规格数值不漂移
 pnpm run doctor
 
-# 4. 构建 + 体检（推荐发版前执行）
+# 5. 构建 + 体检（推荐发版前执行）
 pnpm run verify
 ```
+
+> 非思必驰品牌（玩视智能 / 恒迪）的产品不走这里，见 [BRAND_GUIDE.md](./BRAND_GUIDE.md)。
 
 `pnpm run doctor` 会检查：
 
 - 结构：图片 key / 彩页 / 关联产品 / 方案组合是否都真实存在
+- 品牌：品牌卡片与数据文件是否对应、产品 id 是否撞车、卡片图与链接是否有效
 - 名称漂移：产品详情页、站内搜索、`index.html` 的 ItemList 与事实源是否一致
 - 数值漂移：同一规格标签在不同来源里的首个数字是否一致
 - 临界事实：拾音半径这类易错参数，事实源是否覆盖了详情页/搜索里的全部数值

@@ -1,0 +1,42 @@
+{
+  "$comment": "品牌层事实源：定义首页「产品系列」区块的卡片（= 品牌）。新增一个代理品牌只改这个文件 + 加一个 src/data/brands/<id>.json，不需要改任何组件代码。字段含义与改动流程见 BRAND_GUIDE.md。",
+  "brands": [
+    {
+      "id": "aispeech",
+      "name": "思必驰",
+      "enName": "AISPEECH",
+      "tabLabel": "思必驰",
+      "eyebrow": "思必驰",
+      "tagline": "专为现代会议室设计的智能音视频设备，覆盖从教室到大礼堂的全场景需求。",
+      "color": "#cc785c",
+      "isPrimary": true,
+      "placeholderCard": true
+    },
+    {
+      "id": "wanshi",
+      "name": "玩视智能",
+      "enName": "WANSHI",
+      "tabLabel": "玩视智能",
+      "eyebrow": "玩视智能",
+      "tagline": "玩视智能的音视频产品线，与思必驰方案互补，覆盖更多会议室组合。",
+      "color": "#4a7c9b",
+      "isPrimary": false,
+      "dataFile": "src/data/brands/wanshi.json",
+      "emptyState": "深圳市玩视智能有限公司的产品资料正在整理，即将上线。",
+      "placeholderCard": true
+    },
+    {
+      "id": "hengdi",
+      "name": "恒迪",
+      "enName": "HDI",
+      "tabLabel": "恒迪视讯",
+      "eyebrow": "恒迪视讯",
+      "tagline": "恒迪视讯自有品牌产品线，由我们自己定义规格、包装与交付，现货与定制兼顾。",
+      "color": "#8a7a5c",
+      "isPrimary": false,
+      "dataFile": "src/data/brands/hengdi.json",
+      "emptyState": "恒迪自有品牌产品正在上架，即将上线。",
+      "placeholderCard": true
+    }
+  ]
+}
