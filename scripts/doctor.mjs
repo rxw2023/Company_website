@@ -566,6 +566,8 @@ for (const b of bundles) {
 
     // alt 是图片加载失败/读屏用户唯一的信息来源，不能省
     if (!s.alt) err(`${where} 缺少 alt`);
+    // 左下角名称：轮播上唯一的文字，缺了图就没有任何标识
+    if (!s.name) err(`${where} 缺少 name（左下角显示的公司 + 产品名）`);
     if (!s.image) {
       err(`${where} 缺少 image`);
     } else if (s.image.startsWith('data:')) {
@@ -613,7 +615,11 @@ for (const b of bundles) {
       }
     }
 
-    // 链接：站内必须是真实存在的路由，站外必须是完整 URL
+    /**
+     * 链接校验保留：当前 schema 里已经没有 href（轮播只列名称、不放按钮），
+     * 但只要有人再加回 href，就必须是真实存在的目标 ——
+     * 曾经写过 /products 这种不存在的路由，点进去直接 404。
+     */
     if (s.href) {
       if (s.href.startsWith('/product/')) {
         const target = s.href.slice('/product/'.length);

@@ -394,25 +394,30 @@ export default function Home() {
           margin-top: 4px; letter-spacing: -0.1px;
         }
 
-        /* ── 首屏产品图轮播 ─────────────────────────────────────
-           数据在 src/data/heroSlides.json；暂停/圆点/滑动逻辑在
+        /* ── 产品图轮播（首屏之下的通栏展示带）──────────────────
+           数据在 src/data/heroSlides.json；暂停/切换逻辑在
            components/HeroCarousel（含 useCarousel）。
 
-           关键取舍：**容器高度固定**（aspect-ratio），三张图比例差很多
-           （产品图 6.9:1，管理套装海报 2:1），如果让容器跟着图走，
-           每次切换整页都会跳一下。所以固定容器 + 图自己适配：
-             · contain → 完整显示整台设备（超宽产品图必须这样，否则两端被切）
-             · cover   → 铺满容器（带背景的海报用） */
+           三条刻意定下的规则，别随手改：
+             · 容器高度固定 —— 三张图比例差 3 倍以上（产品图 6.9:1、
+               管理套装海报 2:1），跟着图走每切一张整页都会跳
+             · 背景恒定 —— 底色只用 --warm-canvas，不跟图片变色；
+               图自带的白底/蓝底已经够不同，容器再变色就是双份刺激
+             · 图上只有一个左下角名称 —— 不放按钮、不放参数 */
         .hero-carousel-wrap {
           width: 100%;
           max-width: 1040px;
         }
         /* 轮播区块：首屏与「产品系列」之间的一条通栏展示带。
-           背景刻意用 canvas（首屏是 canvas + 声场、产品系列是 surface），
-           三段之间因此有可见的明暗层次，不会连成一片。 */
+           z-index: 1 是**必需的**，不是装饰 ——
+           .hd-hero 是 height:100vh + overflow:hidden，内容比盒子高时
+           会溢到这条带子上（实测矮屏上「四个数字」会和轮播的圆点叠在一起）。
+           把带子抬到 hero 之上，溢出的那点内容自然被遮住。 */
         .hd-carousel-band {
+          position: relative;
+          z-index: 1;
           background: var(--warm-canvas);
-          padding: 28px 24px 10px;
+          padding: 26px 24px 10px;
         }
         .hd-carousel-band-inner {
           max-width: 1040px;
@@ -420,12 +425,8 @@ export default function Home() {
         }
         .hd-carousel {
           /* --carousel-h 是舞台高度：**唯一**按屏高调的参数。
-             三张图比例差 3 倍以上（产品图 6.9:1、管理套装海报 2:1），
-             容器必须固定高度，否则每切一张整页都跳一下。
-
-             独立成段之后有余量了：桌面 360px、矮屏 240px。
-             超宽产品图靠 contain 完整显示，海报靠 cover 铺满。 */
-          --carousel-h: clamp(240px, 33vh, 360px);
+             超宽产品图靠 contain 完整显示，海报同理。 */
+          --carousel-h: clamp(200px, 27vh, 300px);
           position: relative;
           border-radius: 16px;
           overflow: hidden;
@@ -437,13 +438,13 @@ export default function Home() {
           outline: 2px solid var(--warm-primary);
           outline-offset: 3px;
         }
-        /* 舞台：高度固定，宽度按比例；图片切换时页面不位移 */
+        /* 舞台：高度固定，图片切换时页面不位移。
+           背景**恒定**为 canvas，不跟图片走。 */
         .hd-carousel-stage-inner {
           position: relative;
           width: 100%;
           height: var(--carousel-h);
-          background:
-            radial-gradient(ellipse 70% 80% at 50% 45%, var(--warm-canvas) 0%, var(--warm-surface) 100%);
+          background: var(--warm-canvas);
         }
         .hd-carousel-slide {
           position: absolute; inset: 0;
@@ -455,10 +456,9 @@ export default function Home() {
         }
         .hd-carousel-img.is-contain {
           object-fit: contain;
-          /* 上下留白比左右小：产品图几乎都是超宽比例（6.9:1），
-             纵向留白多了设备会被压成很细的一条，白白浪费容器高度。
-             横向留 36px 是给「机器两端被切掉」留的余量。 */
-          padding: 14px 36px;
+          /* 底部多留 34px 给左下角的名称：图是 contain 居中的，
+             名称要压在图片下方的空白里，不要压在图身上。 */
+          padding: 14px 36px 34px;
         }
         .hd-carousel-img.is-cover {
           object-fit: cover;
@@ -470,76 +470,49 @@ export default function Home() {
           padding: 24px;
           text-align: center;
         }
-        /* 图上文字：只在图片本身没印产品名时才由数据给出（见 heroSlides.json） */
-        .hd-carousel-caption {
-          position: absolute;
-          left: 32px; bottom: 28px;
-          text-align: left;
-          max-width: 60%;
-          pointer-events: none;
-        }
+        /* 左下角的名称：整条展示带上唯一的文字 */
         .hd-carousel-name {
-          font-family: var(--font-display);
-          font-size: clamp(20px, 2.4vw, 28px);
-          color: var(--warm-ink);
-          letter-spacing: -0.03em;
-          line-height: 1.2;
-        }
-        .hd-carousel-note {
+          position: absolute;
+          left: 32px; bottom: 20px;
           font-family: var(--font-body);
           font-size: 14px;
-          color: var(--warm-muted);
-          margin-top: 6px;
+          font-weight: 500;
+          color: var(--warm-body);
           letter-spacing: -0.01em;
+          pointer-events: none;
+          max-width: 70%;
         }
-        .hd-carousel-link {
-          position: absolute;
-          right: 28px; bottom: 26px;
-          font-family: var(--font-body);
-          font-size: 14px; font-weight: 500;
-          color: #fff;
-          background: var(--warm-primary);
-          padding: 9px 18px;
-          border-radius: 999px;
-          text-decoration: none;
-          letter-spacing: 0.01em;
-          transition: background 0.18s, transform 0.18s;
-        }
-        .hd-carousel-link:hover {
-          background: var(--warm-primary-active);
-          transform: translateY(-1px);
-        }
+        /* 指示点：比一般轮播收敛（6px、无外圈），它是标记不是控件主角 */
         .hd-carousel-dots {
           position: absolute;
-          left: 0; right: 0; bottom: 14px;
+          left: 0; right: 0; bottom: 12px;
           display: flex;
           justify-content: center;
-          gap: 8px;
+          gap: 7px;
         }
         .hd-carousel-dot {
-          width: 8px; height: 8px;
+          width: 6px; height: 6px;
           padding: 0;
           border: 0;
           border-radius: 50%;
           background: var(--warm-hairline);
           cursor: pointer;
-          transition: background 0.18s, transform 0.18s;
+          transition: background 0.2s, transform 0.2s;
         }
         .hd-carousel-dot:hover { background: var(--warm-muted); }
         .hd-carousel-dot.active {
-          background: var(--warm-primary);
-          transform: scale(1.25);
+          background: var(--warm-muted);
+          transform: scale(1.35);
         }
         .hd-carousel-dot:focus-visible {
           outline: 2px solid var(--warm-primary);
-          outline-offset: 2px;
+          outline-offset: 3px;
         }
         @media (max-width: 820px) {
-          .hd-carousel-band { padding: 28px 20px 6px; }
+          .hd-carousel-band { padding: 22px 20px 6px; }
           .hd-carousel { --carousel-h: clamp(170px, 24vh, 240px); }
-          .hd-carousel-img.is-contain { padding: 10px 16px; }
-          .hd-carousel-caption { left: 18px; bottom: 30px; max-width: 78%; }
-          .hd-carousel-link { right: 14px; bottom: 26px; padding: 8px 14px; font-size: 13px; }
+          .hd-carousel-img.is-contain { padding: 10px 16px 28px; }
+          .hd-carousel-name { left: 18px; bottom: 16px; font-size: 13px; }
         }
 
         .hd-section-light {

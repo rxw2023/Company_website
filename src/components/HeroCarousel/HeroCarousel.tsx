@@ -1,4 +1,3 @@
-import { Link } from 'react-router-dom';
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import catalog from '../../data/heroSlides.json';
 import type { HeroSlide, HeroSlidesCatalog } from '../../data/heroSlides';
@@ -24,13 +23,15 @@ const SLIDES: SlideView[] = (DATA.slides || []).map((s) => {
 });
 
 /**
- * 首屏轮播（三张图）
+ * 产品图轮播（首页 hero 之下的展示带）
  *
- * 设计要点：
- *   · 容器高度固定（CSS aspect-ratio），切换时页面不发生位移
- *   · 超宽产品图用 contain 完整显示 —— 用 cover 会把机器两端切掉
- *   · 悬停 / 键盘聚焦 / 切到后台 / 系统开了「减弱动态效果」都会暂停自动播放
- *   · 返回结构自定义：`fit` 字段决定裁切方式，见 heroSlides.json 的说明
+ * 设计约束（都是改出来的，别轻易动）：
+ *   · **只有淡入淡出，没有位移**。曾经让新图从下方滑入（y: 12），
+ *     在一张 6.9:1 的超宽产品图上看起来像整条带子在上下抖。
+ *   · **背景恒定**。容器底色只用 --warm-canvas，不跟着图片走 ——
+ *     三张图自带的白底/蓝底已经够不同了，容器再变色就是双份刺激。
+ *   · **每张图只在左下角列一个名称**，不放按钮、不放参数。
+ *   · 容器高度固定，切换时页面不位移。
  */
 export default function HeroCarousel({ className }: { className?: string }) {
   const { index, select, handlers } = useCarousel(SLIDES.length, DATA.autoplayMs);
@@ -39,9 +40,10 @@ export default function HeroCarousel({ className }: { className?: string }) {
   if (SLIDES.length === 0) return null;
   const current = SLIDES[index];
 
+  // 减弱动态效果时直接切换，不做淡入淡出
   const transition = prefersReduced
     ? { duration: 0 }
-    : { duration: 0.7, ease: [0.22, 1, 0.36, 1] as const };
+    : { duration: 0.55, ease: [0.4, 0, 0.2, 1] as const };
 
   return (
     <div
@@ -61,7 +63,6 @@ export default function HeroCarousel({ className }: { className?: string }) {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={transition}
-            aria-hidden={false}
           >
             {current.src ? (
               <img
@@ -71,7 +72,7 @@ export default function HeroCarousel({ className }: { className?: string }) {
                 sizes={current.sizes}
                 alt={current.alt}
                 decoding="async"
-                /* 第一张是首屏内容，必须立刻可见；其余懒加载 */
+                /* 第一张是页面主要内容，必须立刻可见；其余懒加载 */
                 loading={index === 0 ? 'eager' : 'lazy'}
                 fetchPriority={index === 0 ? 'high' : 'auto'}
               />
@@ -80,33 +81,13 @@ export default function HeroCarousel({ className }: { className?: string }) {
               <div className="hd-carousel-missing">{current.alt}</div>
             )}
 
-            {(current.name || current.note) && (
-              <div className="hd-carousel-caption">
-                {current.name && <div className="hd-carousel-name">{current.name}</div>}
-                {current.note && <div className="hd-carousel-note">{current.note}</div>}
-              </div>
-            )}
-
-            {current.href && (
-              current.href.startsWith('/') && !current.href.startsWith('//') ? (
-                <Link to={current.href} className="hd-carousel-link">
-                  {current.linkLabel || '了解更多'}
-                </Link>
-              ) : (
-                <a
-                  href={current.href}
-                  className="hd-carousel-link"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  {current.linkLabel || '了解更多'}
-                </a>
-              )
-            )}
+            {/* 左下角只有一个名称：公司 + 产品名 */}
+            {current.name && <div className="hd-carousel-name">{current.name}</div>}
           </motion.div>
         </AnimatePresence>
       </div>
 
+      {/* 指示点：做得比一般轮播更收敛（6px、无外圈），它是一个标记而不是控件主角 */}
       <div className="hd-carousel-dots">
         {SLIDES.map((s, i) => (
           <button
