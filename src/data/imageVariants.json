@@ -804,5 +804,27 @@
         "bytes": 20690
       }
     ]
+  },
+  "hd-rmp1w": {
+    "originalWidth": 1920,
+    "originalHeight": 946,
+    "variants": [
+      {
+        "w": 640,
+        "file": "hd-rmp1w.640.webp",
+        "bytes": 11908
+      }
+    ]
+  },
+  "hd-vmm0412": {
+    "originalWidth": 1366,
+    "originalHeight": 222,
+    "variants": [
+      {
+        "w": 640,
+        "file": "hd-vmm0412.640.webp",
+        "bytes": 8166
+      }
+    ]
   }
 }

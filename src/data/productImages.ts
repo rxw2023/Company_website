@@ -127,6 +127,10 @@ import caseE12_2 from '../assets/images/e12-2.webp';
 import caseE1Video from '../assets/videos/e1.mp4';
 import caseE2Video from '../assets/videos/e2.mp4';
 
+// ── 首屏轮播图（HRVAC 自营产品）──
+import hdRmp1w from '../assets/images/hd-rmp1w.webp';
+import hdVmm0412 from '../assets/images/hd-vmm0412.webp';
+
 /** 资源 key（如 "a1-1"）→ 打包后的图片 URL */
 export const IMAGE_BY_KEY: Record<string, string> = {
   'a1-1': a1_1, 'a1-2': a1_2, 'a1-3': a1_3, 'a1-4': a1_4,
@@ -211,4 +215,16 @@ export const CASE_VIDEO_BY_KEY: Record<string, string> = {
  */
 export const BRAND_IMAGE_BY_KEY: Record<string, string> = {
   // 恒迪 h1-1 / 玩视智能 w1-1 …
+};
+
+/**
+ * 首屏轮播图 key → 打包后的图片 URL（src/data/heroSlides.json 引用）
+ *
+ * 为什么又是单独一张表：这三张图的用途是「首屏大图」，和产品卡片图是两套
+ * 尺寸与裁切策略（超宽产品图不能按卡片那样裁）。分表之后换图只影响首屏，
+ * doctor 也能按 heroSlides.json 精确校验「这张图到底在不在」。
+ */
+export const HERO_IMAGE_BY_KEY: Record<string, string> = {
+  'hd-rmp1w': hdRmp1w,
+  'hd-vmm0412': hdVmm0412,
 };

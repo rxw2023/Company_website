@@ -8,7 +8,8 @@
 - **SEO 优化** — 预渲染静态 HTML + 结构化数据 + Sitemap 自动生成
 - **AI 智能客服** — 接入 SiliconFlow 大模型 API（当前 `tencent/Hy4-preview`），流式输出回答产品咨询
 - **全站搜索** — Cmd/Ctrl + K 呼出搜索弹窗，覆盖产品、案例、FAQ，支持多词加权匹配和高亮
-- **多品牌产品系列** — 首页产品系列按品牌切换卡片（思必驰 / 玩视智能 / 恒迪），加品牌、加产品只改 JSON，见 [BRAND_GUIDE.md](./BRAND_GUIDE.md)
+- **多品牌产品系列** — 首页产品系列按品牌切换卡片（思必驰 / 玩视 / HRVAC），加品牌、加产品只改 JSON，见 [BRAND_GUIDE.md](./BRAND_GUIDE.md)
+- **首屏产品图轮播** — 首屏之下的通栏展示带，自动播放（悬停 / 键盘聚焦 / 标签页后台 / 开启「减弱动态效果」时暂停），数据在 `src/data/heroSlides.json`
 - **产品全景展示** — 图片灯箱浏览、规格参数表、PDF 彩页下载
 - **工程案例** — 分类筛选展示，图文并茂
 
@@ -75,6 +76,9 @@ pnpm build
 │   │   ├── AiChatWidget/            # AI 悬浮聊天窗
 │   │   │   ├── AiChatWidget.tsx     # 聊天 UI 组件（不持有 API Key）
 │   │   │   └── aiService.ts         # API 调用 + 知识库生成
+│   │   ├── HeroCarousel/            # 首屏产品图轮播
+│   │   │   ├── HeroCarousel.tsx     # 轮播渲染（圆点 / 滑动 / 暂停语义）
+│   │   │   └── useCarousel.ts       # 自动播放与切换逻辑
 │   │   ├── Header.tsx               # 面包屑头部
 │   │   ├── Navigation.tsx           # 全局导航栏 + 全站搜索弹窗
 │   │   └── SeoHead.tsx              # SEO 结构化数据
@@ -84,6 +88,8 @@ pnpm build
 │   │   ├── brands.json              # 首页产品系列的品牌卡片（顺序/文案/品牌色）
 │   │   ├── brands/                  # 非主品牌的产品卡片（wanshi.json / hengdi.json）
 │   │   ├── brands.ts                # 品牌访问层：品牌 + 产品 → 首页视图模型
+│   │   ├── heroSlides.json          # 首屏轮播的图片与文案
+│   │   ├── heroSlides.ts            # 首屏轮播的类型定义
 │   │   ├── cases.json               # 全部工程案例数据
 │   │   ├── cases.ts                 # 案例访问层
 │   │   └── productImages.ts         # 图片/PDF 资源映射（静态 import 集中处）

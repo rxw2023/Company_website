@@ -1,0 +1,37 @@
+{
+  "$comment": "首屏轮播（首页紧接 hero 的展示带）的事实源。换图/加图只改这个文件：图片 key 在 productImages.ts 任意一张登记表里登记过即可，不需要动组件。字段含义见 BRAND_GUIDE.md「首屏轮播」。",
+  "$schema": {
+    "id": "轮播项 id，同一个文件内不能重复（React key）",
+    "image": "图片 key，任何一张登记表（HERO_IMAGE_BY_KEY / IMAGE_BY_KEY / BRAND_IMAGE_BY_KEY）里有就行；或直接写完整 data:image/svg+xml,...（占位用，不产生资源文件）",
+    "alt": "必填。图片的替代文字，读屏与图片加载失败时显示",
+    "fit": "contain = 完整显示整张图（推荐：产品图两端不会被切、海报标题不会被切）；cover = 铺满容器，必然裁切上下左右",
+    "name": "可选。**会叠加显示在图上**；图片里已经印了产品名就不要再写（会重复，RM-P1W 海报上就印着「综合管理套装」）",
+    "note": "可选。**会叠加显示在图上**的副标题；写的参数必须与事实源一致，不要凭图猜",
+    "href": "可选。站内产品详情填 /product/<id>（对应 id 必须已存在于 products.json）；站内区块填 /#products；站外填完整 https://。不写则不可点",
+    "linkLabel": "可选。链接文字，默认「了解更多」"
+  },
+  "autoplayMs": 6000,
+  "slides": [
+    {
+      "id": "ma600d",
+      "image": "a2-1",
+      "alt": "思必驰 MA600D 矩阵麦克风",
+      "fit": "contain",
+      "note": "64 单元 MEMS 阵列 · 现场扩声 3m 拾音半径",
+      "href": "/product/a2",
+      "linkLabel": "查看产品"
+    },
+    {
+      "id": "vmm0412",
+      "image": "hd-vmm0412",
+      "alt": "HRVAC VMM0412 HDMI 2.0 视频处理器",
+      "fit": "contain"
+    },
+    {
+      "id": "rm-p1w",
+      "image": "hd-rmp1w",
+      "alt": "HRVAC RM-P1W 综合管理套装",
+      "fit": "contain"
+    }
+  ]
+}

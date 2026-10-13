@@ -48,6 +48,20 @@
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
+/* 视觉隐藏但保留给读屏。项目没装 @tailwindcss/aspect-ratio 之外的插件，
+   Tailwind 核心也不产出 sr-only，所以在这里定义一次给全站用
+   （轮播的「第 2 / 3 张：…」播报、搜索弹窗的隐藏标签都靠它）。 */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
 /* 增加触摸目标大小，提高移动设备可用性 */
 @media (max-width: 768px) {
   button, a {

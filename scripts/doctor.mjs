@@ -25,6 +25,7 @@ import { webpSize, MAX_EDGE, CARD_WIDTH } from './lib/webp.mjs';
 import brandsCatalog from '../src/data/brands.json' with { type: 'json' };
 import wanshiBrandData from '../src/data/brands/wanshi.json' with { type: 'json' };
 import hengdiBrandData from '../src/data/brands/hengdi.json' with { type: 'json' };
+import heroSlidesCatalog from '../src/data/heroSlides.json' with { type: 'json' };
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, '..');
@@ -533,6 +534,110 @@ for (const b of bundles) {
   }
   if (!deadTags.length && !anyInvalidTag && !areaBoundsBroken) {
     note(`[选型器] ${bundles.length} 个方案的标签全部合法，且 ${TAGS.length} 个选项都有方案命中 ✓`);
+  }
+}
+
+// ============ A3. 首屏轮播（heroSlides.json） ============
+//
+// 轮播的失效模式是「看起来正常，实际缺东西」：
+//   · 换了图忘了登记 → 组件显示 alt 文本兜底，页面上不报错，得靠人眼发现
+//   · href 写成 /products 这种不存在的路由 → 点进去 404（真发生过，见下方注释）
+//   · 同一个 id 重复 → React key 撞车
+//   · autoplayMs 写成 0 或负数 → 自动播放静默失效
+{
+  const HERO_IMAGE_MAP_BODY = mapBody(imageMapSrc, 'HERO_IMAGE_BY_KEY');
+  const slides = heroSlidesCatalog.slides || [];
+  const ms = heroSlidesCatalog.autoplayMs;
+
+  if (!slides.length) {
+    warn('[首屏] heroSlides.json 没有任何 slides，首屏轮播不会渲染');
+  }
+  if (typeof ms !== 'number' || !Number.isFinite(ms) || ms < 0) {
+    err(`[首屏] autoplayMs 必须是非负数字（0 = 关闭自动播放），实际 ${JSON.stringify(ms)}`);
+  }
+
+  const seen = new Set();
+  for (const s of slides) {
+    const where = `[首屏] 轮播项 "${s.id || '(缺少 id)'}"`;
+
+    if (!s.id) err('[首屏] 有轮播项缺少 id');
+    else if (seen.has(s.id)) err(`${where} 的 id 重复 —— React key 会撞车`);
+    else seen.add(s.id);
+
+    // alt 是图片加载失败/读屏用户唯一的信息来源，不能省
+    if (!s.alt) err(`${where} 缺少 alt`);
+    if (!s.image) {
+      err(`${where} 缺少 image`);
+    } else if (s.image.startsWith('data:')) {
+      // 内联占位图：不需要登记，也不产生资源文件
+    } else {
+      if (!imageKeyExists(s.image)) {
+        err(
+          `${where} 的 image "${s.image}" 在 src/assets/images/ 下不存在` +
+            `\n         先按 BRAND_GUIDE.md「加图片」转成 WebP 再登记。`
+        );
+      }
+      // 三张登记表是同一个 key 空间（见 brands.ts 的 resolveImageKey）：
+      // 思必驰图集里的图可以直接用在轮播上，不必抄进 HERO_IMAGE_BY_KEY
+      const registered =
+        HERO_IMAGE_MAP_BODY.includes(`'${s.image}':`) ||
+        IMAGE_MAP_BODY.includes(`'${s.image}':`) ||
+        BRAND_IMAGE_MAP_BODY.includes(`'${s.image}':`);
+      if (!registered) {
+        err(
+          `${where} 的 image "${s.image}" 没有登记到 productImages.ts 的任何一张表` +
+            `（HERO_IMAGE_BY_KEY / IMAGE_BY_KEY / BRAND_IMAGE_BY_KEY）`
+        );
+      }
+    }
+
+    if (s.fit && !['contain', 'cover'].includes(s.fit)) {
+      err(`${where} 的 fit 只能是 "contain" 或 "cover"，实际 ${JSON.stringify(s.fit)}`);
+    }
+
+    /**
+     * 超宽产品图用 cover 会被裁掉两端 —— 这条不是洁癖：
+     * 产品图 1920×278（6.9:1）、海报 1920×946（2:1），容器比例固定在 2.6:1 附近，
+     * 产品图按 cover 摆会横向切掉机器的左右两端，图上正好是接口和品牌 logo。
+     */
+    if (s.fit === 'cover' && s.image && !s.image.startsWith('data:')) {
+      const abs = path.join(imageDir, `${s.image}.webp`);
+      if (fs.existsSync(abs)) {
+        const dim = webpSize(fs.readFileSync(abs));
+        if (dim && dim.w / dim.h > 3.2) {
+          warn(
+            `${where} 是超宽图（${dim.w}×${dim.h}，${(dim.w / dim.h).toFixed(1)}:1）却用了 fit: "cover"，` +
+              `\n         两端会被容器裁掉。建议改成 "contain"。`
+          );
+        }
+      }
+    }
+
+    // 链接：站内必须是真实存在的路由，站外必须是完整 URL
+    if (s.href) {
+      if (s.href.startsWith('/product/')) {
+        const target = s.href.slice('/product/'.length);
+        if (!productIds.has(target)) {
+          err(`${where} 的 href 指向 ${s.href}，但 products.json 里没有 ${target} —— 点进去是 404`);
+        }
+      } else if (s.href.startsWith('/#')) {
+        // 首页区块锚点，运行时由浏览器处理，这里只校验格式
+      } else if (!/^https?:\/\//.test(s.href)) {
+        err(
+          `${where} 的 href "${s.href}" 不是有效目标。` +
+            `\n         站内产品用 /product/<id>，首页区块用 /#products，站外用完整 https:// 链接。` +
+            `\n         写成 /products 这类不存在的路由会直接 404。`
+        );
+      }
+    }
+  }
+
+  if (slides.length && !errors.some((e) => e.startsWith('[首屏]'))) {
+    const containCount = slides.filter((s) => (s.fit || 'contain') === 'contain').length;
+    note(
+      `[首屏] ${slides.length} 张轮播图结构完整（${containCount} 张完整显示 / ` +
+        `${slides.length - containCount} 张铺满），自动播放 ${ms}ms ✓`
+    );
   }
 }
 

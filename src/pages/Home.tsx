@@ -7,6 +7,7 @@ import Reveal from '../components/Reveal';
 import CountUp from '../components/CountUp';
 import MouseGlow from '../components/MouseGlow';
 import SoundField from '../components/SoundField';
+import HeroCarousel from '../components/HeroCarousel/HeroCarousel';
 import Ma600dField from '../components/Ma600dField';
 import RoomPicker from '../components/RoomPicker';
 // 品牌层：首页「产品系列」区块的品牌卡片从这里派生（src/data/brands.json）
@@ -269,11 +270,19 @@ export default function Home() {
         .hd-nav .nav-cta:hover { text-decoration: underline; }
 
         .hd-hero {
-          min-height: 100vh;
+          /* 刚好一屏高，而不是「至少一屏」。
+             多了首屏轮播之后，内容自然高度远超一屏，min-height 会让首屏变成
+             1360px —— 四个数字在 1440×900 上正好被挤到 839px（只剩 60px 余量），
+             轮播整块掉到折叠线以下。改成固定 100vh 后，flex 的居中会把内容
+             均分到一屏里，数字与轮播都在首屏内。 */
+          height: 100vh;
           display: flex; flex-direction: column;
           align-items: center; justify-content: center;
           text-align: center;
-          padding: calc(var(--nav-h) + 60px) 24px 80px;
+          /* 底部 32px：轮播带紧随其后还有 28px 上边距，两者相加约 60px。
+             曾经是 80px + 44px = 124px —— 那是「首屏之后直接接深色区」时的
+             间隙，中间插进轮播后就成了明显的断层。 */
+          padding: calc(var(--nav-h) + 36px) 24px 32px;
           position: relative; overflow: hidden;
         }
         /* Hero 机制：天花板阵列的声场与波束（见 components/SoundField.tsx）
@@ -311,7 +320,11 @@ export default function Home() {
           margin-bottom: 20px;
         }
         .hd-hero .hero-logo {
-          height: 192px; width: auto; display: block;
+          /* 192px 是「首屏只有 logo + 文案」时的尺寸；多了轮播之后
+             它在 900/768 高的屏幕上会挤掉数字行和轮播，所以按屏高分档。
+             用 vh 而不是媒体查询：真正的约束是高度，不是宽度。 */
+          height: clamp(96px, 15vh, 176px);
+          width: auto; display: block;
           mix-blend-mode: multiply;
         }
         .hd-hero .hero-eyebrow {
@@ -322,7 +335,9 @@ export default function Home() {
         }
         .hd-hero h1 {
           font-family: var(--font-display);
-          font-size: clamp(40px, 6vw, 72px);
+          /* 字号也要看屏高：6vw 在 1440×900 上出 72px 的两行标题（156px 高），
+             是首屏里第二大的开支。取 vw 与 vh 的较小值，宽屏矮屏都不会爆。 */
+          font-size: min(clamp(40px, 6vw, 72px), 8vh);
           font-weight: 400; line-height: 1.08;
           letter-spacing: -0.03em;
           color: var(--warm-ink);
@@ -330,15 +345,15 @@ export default function Home() {
         }
         .hd-hero .hero-sub {
           font-family: var(--font-body);
-          font-size: clamp(17px, 2.5vw, 20px);
+          font-size: clamp(16px, 2.5vw, 20px);
           font-weight: 400; line-height: 1.45;
           color: var(--warm-muted);
-          margin-top: 20px; max-width: 540px;
+          margin-top: 16px; max-width: 540px;
           letter-spacing: -0.01em;
         }
         .hd-hero .hero-actions {
           display: flex; gap: 12px; flex-wrap: wrap;
-          justify-content: center; margin-top: 36px;
+          justify-content: center; margin-top: 26px;
         }
         .hd-hero .btn-primary {
           display: inline-block;
@@ -377,6 +392,154 @@ export default function Home() {
         .hd-hero .stat-label {
           font-size: 13px; color: var(--warm-muted);
           margin-top: 4px; letter-spacing: -0.1px;
+        }
+
+        /* ── 首屏产品图轮播 ─────────────────────────────────────
+           数据在 src/data/heroSlides.json；暂停/圆点/滑动逻辑在
+           components/HeroCarousel（含 useCarousel）。
+
+           关键取舍：**容器高度固定**（aspect-ratio），三张图比例差很多
+           （产品图 6.9:1，管理套装海报 2:1），如果让容器跟着图走，
+           每次切换整页都会跳一下。所以固定容器 + 图自己适配：
+             · contain → 完整显示整台设备（超宽产品图必须这样，否则两端被切）
+             · cover   → 铺满容器（带背景的海报用） */
+        .hero-carousel-wrap {
+          width: 100%;
+          max-width: 1040px;
+        }
+        /* 轮播区块：首屏与「产品系列」之间的一条通栏展示带。
+           背景刻意用 canvas（首屏是 canvas + 声场、产品系列是 surface），
+           三段之间因此有可见的明暗层次，不会连成一片。 */
+        .hd-carousel-band {
+          background: var(--warm-canvas);
+          padding: 28px 24px 10px;
+        }
+        .hd-carousel-band-inner {
+          max-width: 1040px;
+          margin: 0 auto;
+        }
+        .hd-carousel {
+          /* --carousel-h 是舞台高度：**唯一**按屏高调的参数。
+             三张图比例差 3 倍以上（产品图 6.9:1、管理套装海报 2:1），
+             容器必须固定高度，否则每切一张整页都跳一下。
+
+             独立成段之后有余量了：桌面 360px、矮屏 240px。
+             超宽产品图靠 contain 完整显示，海报靠 cover 铺满。 */
+          --carousel-h: clamp(240px, 33vh, 360px);
+          position: relative;
+          border-radius: 16px;
+          overflow: hidden;
+          border: 1px solid var(--warm-hairline);
+          background: var(--warm-canvas);
+          box-shadow: 0 20px 50px -30px rgba(20,20,19,0.45);
+        }
+        .hd-carousel:focus-visible {
+          outline: 2px solid var(--warm-primary);
+          outline-offset: 3px;
+        }
+        /* 舞台：高度固定，宽度按比例；图片切换时页面不位移 */
+        .hd-carousel-stage-inner {
+          position: relative;
+          width: 100%;
+          height: var(--carousel-h);
+          background:
+            radial-gradient(ellipse 70% 80% at 50% 45%, var(--warm-canvas) 0%, var(--warm-surface) 100%);
+        }
+        .hd-carousel-slide {
+          position: absolute; inset: 0;
+          display: flex; align-items: center; justify-content: center;
+        }
+        .hd-carousel-img {
+          width: 100%; height: 100%;
+          display: block;
+        }
+        .hd-carousel-img.is-contain {
+          object-fit: contain;
+          /* 上下留白比左右小：产品图几乎都是超宽比例（6.9:1），
+             纵向留白多了设备会被压成很细的一条，白白浪费容器高度。
+             横向留 36px 是给「机器两端被切掉」留的余量。 */
+          padding: 14px 36px;
+        }
+        .hd-carousel-img.is-cover {
+          object-fit: cover;
+        }
+        .hd-carousel-missing {
+          font-family: var(--font-body);
+          font-size: 14px;
+          color: var(--warm-muted);
+          padding: 24px;
+          text-align: center;
+        }
+        /* 图上文字：只在图片本身没印产品名时才由数据给出（见 heroSlides.json） */
+        .hd-carousel-caption {
+          position: absolute;
+          left: 32px; bottom: 28px;
+          text-align: left;
+          max-width: 60%;
+          pointer-events: none;
+        }
+        .hd-carousel-name {
+          font-family: var(--font-display);
+          font-size: clamp(20px, 2.4vw, 28px);
+          color: var(--warm-ink);
+          letter-spacing: -0.03em;
+          line-height: 1.2;
+        }
+        .hd-carousel-note {
+          font-family: var(--font-body);
+          font-size: 14px;
+          color: var(--warm-muted);
+          margin-top: 6px;
+          letter-spacing: -0.01em;
+        }
+        .hd-carousel-link {
+          position: absolute;
+          right: 28px; bottom: 26px;
+          font-family: var(--font-body);
+          font-size: 14px; font-weight: 500;
+          color: #fff;
+          background: var(--warm-primary);
+          padding: 9px 18px;
+          border-radius: 999px;
+          text-decoration: none;
+          letter-spacing: 0.01em;
+          transition: background 0.18s, transform 0.18s;
+        }
+        .hd-carousel-link:hover {
+          background: var(--warm-primary-active);
+          transform: translateY(-1px);
+        }
+        .hd-carousel-dots {
+          position: absolute;
+          left: 0; right: 0; bottom: 14px;
+          display: flex;
+          justify-content: center;
+          gap: 8px;
+        }
+        .hd-carousel-dot {
+          width: 8px; height: 8px;
+          padding: 0;
+          border: 0;
+          border-radius: 50%;
+          background: var(--warm-hairline);
+          cursor: pointer;
+          transition: background 0.18s, transform 0.18s;
+        }
+        .hd-carousel-dot:hover { background: var(--warm-muted); }
+        .hd-carousel-dot.active {
+          background: var(--warm-primary);
+          transform: scale(1.25);
+        }
+        .hd-carousel-dot:focus-visible {
+          outline: 2px solid var(--warm-primary);
+          outline-offset: 2px;
+        }
+        @media (max-width: 820px) {
+          .hd-carousel-band { padding: 28px 20px 6px; }
+          .hd-carousel { --carousel-h: clamp(170px, 24vh, 240px); }
+          .hd-carousel-img.is-contain { padding: 10px 16px; }
+          .hd-carousel-caption { left: 18px; bottom: 30px; max-width: 78%; }
+          .hd-carousel-link { right: 14px; bottom: 26px; padding: 8px 14px; font-size: 13px; }
         }
 
         .hd-section-light {
@@ -712,7 +875,7 @@ export default function Home() {
           background: var(--warm-canvas);
           border: 1px dashed var(--warm-hairline);
           border-radius: 12px;
-          padding: 48px 28px;
+          padding: 40px 28px;
           text-align: center;
           display: flex;
           flex-direction: column;
@@ -998,6 +1161,24 @@ export default function Home() {
           </motion.div>
         </motion.section>
         </motion.div>
+
+        {/* 产品图轮播：紧接首屏的独立区块。
+            为什么不放首屏里面：首屏内容（logo + 标题 + 副标题 + 按钮 + 四个数字）
+            在 1366×768 上已经占到 586px，只剩约 180px —— 轮播塞进去后
+            圆点和「查看产品」按钮会被切到屏幕外，产品图也会小到看不清。
+            独立成段后从 1040px 通栏、按屏高给 240～360px，两边都不牺牲。
+            数据在 src/data/heroSlides.json。 */}
+        <section className="hd-carousel-band">
+          <motion.div
+            className="hd-carousel-band-inner"
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.3 }}
+            transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+          >
+            <HeroCarousel />
+          </motion.div>
+        </section>
 
         {/* FEATURE STRIP */}
         <div className="hd-feature-strip">

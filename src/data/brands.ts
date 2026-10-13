@@ -22,6 +22,7 @@ import hengdiData from './brands/hengdi.json';
 import { PRODUCTS } from './products';
 import {
   BRAND_IMAGE_BY_KEY,
+  HERO_IMAGE_BY_KEY,
   IMAGE_BY_KEY,
   PDF_BY_FILE,
 } from './productImages';
@@ -171,12 +172,25 @@ export const BRAND_VIEWS: readonly BrandView[] = BRANDS.map((brand) => ({
 /**
  * 品牌图片 key → 打包后的 URL。
  *
- * 与 IMAGE_BY_KEY 分表登记，但两张表最终都指向 src/assets/images/：
- * 分表的目的是让 doctor 能按品牌表精确校验，而不是在几百行 import 里找。
+ * 三张登记表按用途分开（思必驰产品图集 / 品牌卡片图 / 首屏轮播图），
+ * 但**取图时是同一个 key 空间**：一张图只登记一次，用到哪个场景都能取到。
+ * 分开登记是为了让 doctor 按各自的数据文件精确校验，
+ * 而不是逼同一张图在两张表里各写一遍（那样迟早漏一处）。
  */
 export function brandImage(key?: string): string | undefined {
+  return resolveImageKey(key);
+}
+
+/** 任意图片 key → URL：按「品牌卡片 → 首屏轮播 → 思必驰产品图集」顺序查找 */
+export function resolveImageKey(key?: string): string | undefined {
   if (!key) return undefined;
-  return BRAND_IMAGE_BY_KEY[key] || IMAGE_BY_KEY[key] || undefined;
+  if (key.startsWith('data:')) return key; // 内联占位图，没有资源文件
+  return (
+    BRAND_IMAGE_BY_KEY[key] ||
+    HERO_IMAGE_BY_KEY[key] ||
+    IMAGE_BY_KEY[key] ||
+    undefined
+  );
 }
 
 /** 品牌产品彩页 key（文件名）→ 打包后的 PDF URL；没有登记就返回 undefined */
