@@ -89,78 +89,94 @@ export default function HeroCarousel({ className }: { className?: string }) {
               /* 图片 key 没登记时不显示破图，也不静默留白 —— doctor 会报这个错 */
               <div className="hd-carousel-missing">{current.alt}</div>
             )}
-
-            {/* 左下角只有一个名称：公司 + 产品名 */}
-            {current.name && <div className="hd-carousel-name">{current.name}</div>}
           </motion.div>
         </AnimatePresence>
       </div>
 
       {/*
-        指示点按需求关闭了：轮播上只留图 + 左下角名称。
-        代码保留（而不是删掉）是因为它是唯一的「手动跳到第 N 张」入口 ——
-        现在只剩自动播放和左右方向键/滑动。哪天想开回来，把 SHOW_DOTS 改成 true。
+        结构改成「舞台（图）+ 底部信息行（左：产品名 / 中：指示点）」。
+        此前名称与圆点都绝对定位叠在舞台里，矮屏上空间一紧，
+        名称就压在机器上、它的底衬又压住圆点 —— 怎么调留白都只是把问题挪位置。
+        排成上下两行之后三者互不遮挡，舞台高度也能按图片本身定。
 
-        关掉后要留意：访客不知道这里有几张图、也点不了；
-        同时轮播不再有可聚焦元素，键盘方向键需要先 Tab 到容器上才生效。
+        圆点样式写在组件自己的 <style> 里，不是随手放：index.css 有一条
+        移动端全局规则给所有 button/a 设 44px 最小尺寸（那是给文字按钮留触控目标的），
+        会把圆点撑成大灰饼。页面样式块插在 index.css **之前**，同权重覆盖不掉，
+        组件样式渲染在它之后才能生效。
       */}
-      {/* 指示点样式写在这里而不是 Home.tsx 的页面样式块里，是有原因的：
-          index.css 有一条移动端全局规则 `button, a { min-width/height: 44px }`，
-          它把圆点也当成按钮一起撑成 44px 的大灰饼。Home.tsx 的 <style> 虽然写在
-          后面，但插入 DOM 的位置在 index.css **之前**，同权重下赢不了它。
-          组件自己的 <style> 渲染在 index.css 之后，同权重即可覆盖。
-          （更省事的 !important 也能修，但那会让以后调尺寸的人莫名其妙。） */}
       <style>{`
         .hd-carousel-dots {
-          position: absolute;
-          left: 0; right: 0; bottom: 8px;
           display: flex;
           justify-content: center;
           align-items: center;
-          gap: 4px;
+          gap: 2px;
         }
         .hd-carousel-dot {
           box-sizing: border-box;
-          /* 尺寸全部钉死：width/height 是 24px 的热区，视觉上的点是 8px */
-          width: 24px; height: 24px;
-          min-width: 24px; min-height: 24px;
-          max-width: 24px; max-height: 24px;
+          /* 尺寸全部钉死：width/height 是 22px 的热区，视觉上的点是 6px。
+             之前视觉点 8px + active 再放大 1.15 倍，显得又大又抢眼 ——
+             它是「第几张」的标记，不该比产品名还显眼。 */
+          width: 22px; height: 22px;
+          min-width: 22px; min-height: 22px;
+          max-width: 22px; max-height: 22px;
           padding: 8px;
           margin: 0;
           border: 0;
           border-radius: 50%;
           background: var(--warm-muted);
           background-clip: content-box;
-          opacity: 0.35;
+          opacity: 0.3;
           cursor: pointer;
-          transition: opacity 0.2s, background 0.2s, transform 0.2s;
+          transition: opacity 0.2s, background 0.2s;
         }
-        .hd-carousel-dot:hover { opacity: 0.7; }
+        .hd-carousel-dot:hover { opacity: 0.65; }
+        /* 选中态只靠深浅区分，不再放大 —— 放大一圈会让人以为点错了 */
         .hd-carousel-dot.active {
           opacity: 1;
           background: var(--warm-ink);
-          transform: scale(1.15);
         }
         .hd-carousel-dot:focus-visible {
           outline: 2px solid var(--warm-primary);
-          outline-offset: 2px;
+          outline-offset: 1px;
         }
+        /* 底部信息行：左名称、中指示点 */
+        .hd-carousel-foot {
+          display: flex;
+          align-items: center;
+          padding: 8px 20px;
+          min-height: 38px;
+          background: var(--warm-canvas);
+        }
+        .hd-carousel-foot-name {
+          flex: 0 0 auto;
+          font-family: var(--font-body);
+          font-size: 14px;
+          font-weight: 500;
+          color: var(--warm-body);
+          letter-spacing: -0.01em;
+        }
+        /* 指示点占满剩余宽度，因此视觉上居中于整条带子而不是名称右侧 */
+        .hd-carousel-foot .hd-carousel-dots { flex: 1; }
       `}</style>
 
-      {SHOW_DOTS && (
-        <div className="hd-carousel-dots">
-          {SLIDES.map((s, i) => (
-            <button
-              key={s.id}
-              type="button"
-              className={`hd-carousel-dot ${i === index ? 'active' : ''}`}
-              aria-label={`第 ${i + 1} 张：${s.alt}`}
-              aria-current={i === index}
-              onClick={() => select(i)}
-            />
-          ))}
-        </div>
-      )}
+      {/* 底部信息行：产品名在左，指示点居中 */}
+      <div className="hd-carousel-foot">
+        <span className="hd-carousel-foot-name">{current.name || ''}</span>
+        {SHOW_DOTS && (
+          <div className="hd-carousel-dots">
+            {SLIDES.map((s, i) => (
+              <button
+                key={s.id}
+                type="button"
+                className={`hd-carousel-dot ${i === index ? 'active' : ''}`}
+                aria-label={`第 ${i + 1} 张：${s.alt}`}
+                aria-current={i === index}
+                onClick={() => select(i)}
+              />
+            ))}
+          </div>
+        )}
+      </div>
 
       {/* 给读屏用户的等价信息：轮播是视觉增强，文字内容不能只存在于图里 */}
       <p className="sr-only" aria-live="polite">

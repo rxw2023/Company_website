@@ -410,9 +410,15 @@ export default function Home() {
           margin: 0 auto;
         }
         .hd-carousel {
-          /* --carousel-h 是舞台高度：**唯一**按屏高调的参数。
-             超宽产品图靠 contain 完整显示，海报同理。 */
-          --carousel-h: clamp(200px, 27vh, 300px);
+          /* --carousel-h 是舞台高度：**唯一**按屏高调的参数，
+             它同时决定「图片上下留多少白」。
+             调这个值之前先想清楚代价：
+               · 调矮 → 超宽产品图（6.9:1）撑满宽度后上下留白变少、显得更实，
+                 但 2:1 的横版海报（RM-P1W）会被压小
+               · 调高 → 反过来
+             三张图比例差 3 倍以上，这个值必然是折中，不存在让三张都满意的数。
+             现在的取值让产品图占到舞台高度的 ~72%。 */
+          --carousel-h: clamp(180px, 22vh, 246px);
           position: relative;
           border-radius: 16px;
           overflow: hidden;
@@ -442,9 +448,9 @@ export default function Home() {
         }
         .hd-carousel-img.is-contain {
           object-fit: contain;
-          /* 底部多留 34px 给左下角的名称：图是 contain 居中的，
-             名称要压在图片下方的空白里，不要压在图身上。 */
-          padding: 14px 36px 34px;
+          /* 上下留白对称：名称已经移到舞台下方的信息行里（见 HeroCarousel），
+             图不再需要为文字预留底部空间。 */
+          padding: 12px 28px;
         }
         .hd-carousel-img.is-cover {
           object-fit: cover;
@@ -456,40 +462,21 @@ export default function Home() {
           padding: 24px;
           text-align: center;
         }
-        /* 左下角的名称：整条展示带上唯一的文字 */
-        .hd-carousel-name {
-          position: absolute;
-          left: 32px; bottom: 20px;
-          font-family: var(--font-body);
-          font-size: 14px;
-          font-weight: 500;
-          color: var(--warm-body);
-          letter-spacing: -0.01em;
-          pointer-events: none;
-          max-width: 70%;
-        }
-        /* 指示点的样式在 HeroCarousel 组件自己的 <style> 里 ——
-           不是随手放的：index.css 的移动端全局规则「button, a { min-width/height: 44px }」
-           会把圆点撑成 44px 大灰饼，而本样式块插入 DOM 的位置在 index.css 之前，
-           同权重下覆盖不掉它。组件里的 <style> 渲染在 index.css 之后，才能生效。 */
+        /* 名称与指示点的样式都在 HeroCarousel 组件自己的 <style> 里 ——
+           不是随手放的：index.css 有一条移动端全局规则给所有 button/a 设 44px
+           最小尺寸（给文字按钮留触控目标的），会把指示点撑成大灰饼；
+           而本样式块插入 DOM 的位置在 index.css 之前，同权重覆盖不掉它。
+           组件里的 <style> 渲染在它之后，才能生效。 */
         /* 注意：本段 CSS 位于 JS 模板字符串内，注释里**不能出现反引号**，
            否则会提前结束字符串、整页白屏（踩过一次，症状是 body 只有 128 字节）。
            doctor 的 [样式] 项会守这条。 */
-        /* 开着指示点时，名称和图片都要给底部那排圆点让位。
-           圆点的视觉尺寸只有 8px，但热区是 24px，
-           要让位的是**热区**：否则圆点会压住名称、也会压到图身上。 */
-        .hd-carousel.js-dots-on .hd-carousel-img.is-contain { padding-bottom: 32px; }
-        .hd-carousel.js-dots-on .hd-carousel-name { bottom: 32px; }
         @media (max-width: 820px) {
           .hd-carousel-band { padding: 20px 16px 6px; }
-          /* 移动端把横向内边距压到 8px 并把舞台抬高一点：
-             超宽产品图（6.9:1）在窄屏上原本被 16px 横向内边距压得很小 ——
-             容器 350px 时图只渲染到约 304px 宽，占不满反而显得空。 */
-          .hd-carousel { --carousel-h: clamp(150px, 22vh, 230px); }
-          .hd-carousel-img.is-contain { padding: 8px 8px 30px; }
-          .hd-carousel.js-dots-on .hd-carousel-img.is-contain { padding-bottom: 34px; }
-          .hd-carousel-name { left: 14px; bottom: 16px; font-size: 13px; }
-          .hd-carousel.js-dots-on .hd-carousel-name { bottom: 34px; }
+          /* 移动端把横向内边距压到 8px 并把舞台压矮一点：
+             超宽产品图（6.9:1）在窄屏上原本被 16px 横向内边距压着，
+             容器 350px 时图只渲染到约 304px 宽。 */
+          .hd-carousel { --carousel-h: clamp(130px, 18vh, 186px); }
+          .hd-carousel-img.is-contain { padding: 6px 8px; }
         }
 
         .hd-section-light {
